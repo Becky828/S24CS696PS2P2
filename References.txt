@@ -1,0 +1,4 @@
+//https://stackoverflow.com/questions/63925255/googletest-compile-with-mt-staticrelease-errors
+//https://github.com/google/googletest
+//https://sentry.io/answers/revert-a-git-repository-to-a-previous-commit/
+//https://github.com/cpp-for-yourself/supplementary-materials/blob/main/lectures/googletest.md

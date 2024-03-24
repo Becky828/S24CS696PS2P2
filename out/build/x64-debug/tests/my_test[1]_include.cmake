@@ -1,0 +1,5 @@
+if(EXISTS "C:/Users/Owner/source/repos/S24CS696hw/S24CS696PS2P2/out/build/x64-debug/tests/my_test[1]_tests.cmake")
+  include("C:/Users/Owner/source/repos/S24CS696hw/S24CS696PS2P2/out/build/x64-debug/tests/my_test[1]_tests.cmake")
+else()
+  add_test(my_test_NOT_BUILT my_test_NOT_BUILT)
+endif()
