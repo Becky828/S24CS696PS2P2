@@ -34,9 +34,57 @@ double dot_product(std::vector<double> &v1, std::vector<double> &v2) {
     return result;
 }
 
+
+//Put custom functions here
+//int derived_u_getter(std::vector<std::vector<double>> u) {
+double derived_u_getter(double lambda, double current_derived_u_sum, double current_u) {
+
+    //int derived_u_sum = 0;
+    double current_u_regularization = 2*lambda*current_u;
+    return current_derived_u_sum+current_u_regularization;
+}
+
+//int derived_v_getter(std::vector<std::vector<double>> v) {
+double derived_v_getter(double lambda, double current_derived_v_sum, double current_v) {
+
+	//int derived_v_sum = 0;
+    double current_v_regularization = 2*lambda*current_v;
+    return current_derived_v_sum + current_v_regularization;
+}
+
+//Put V transposer here
+
+//Put u dot v transposer here
+
+//Put ratings difference here
+
+//Put derived u product here
+
+//Put derived v product here
+
+//Put gradient u here
+
+//Put gradient v here
+
+//Put stochastic u gradient here
+
+//Put stochastic v gradient here
+
+//Put u gradient descent here
+
+//Put v gradient descent here
+
+//Put stochastic u gradient descent here
+
+//Put stochastic v gradient descent here
+
+
 int main() {
 
-    std::ifstream file("datasets/movie-ratings-small.csv");
+    //std::ifstream file("datasets/movie-ratings-small.csv");
+    std::ifstream file("Dataset.csv");
+   // std::ifstream file("Movie_Id_Titles.csv");    
+    //std::ifstream file("ratings.csv");
     std::string line;
     std::map<std::pair<int, int>, double> ratings;
     std::map<std::pair<int, int>, double> test_set;
@@ -118,7 +166,27 @@ int main() {
         // to iterate over all users and movies instead of for (int i = 0; i < m; i++) and for (int j = 0; j < n; j++)
         // to avoid iterating over users and movies that are not in the training set
 
-        cout << "Finished iteration " << t << endl;
+        // you may also want to use the dot_product function to calculate the dot product of U[i] and V[j]
+        // and the derived_u_getter and derived_v_getter functions to calculate the sum of the derived U and V values
+        // you can also use the lambda, eta, and decay variables
+       double u_regularization_sum = 0;
+        for (int i : users) {
+            //for (int k = 0; k < K; k++) {
+              // u_sum = derived_u_getter(lambda, u_sum, U[i][k]);
+            //}
+            
+            u_regularization_sum = derived_u_getter(lambda, u_regularization_sum, U[i][t]);
+		}
+
+       double v_regularization_sum = 0;
+        for (int j : movies) {
+          //  for (int k = 0; k < K; k++) {
+			//	v_sum = derived_v_getter(lambda, v_sum, V[j][k]);
+			//}
+            v_regularization_sum = derived_v_getter(lambda, v_regularization_sum, V[j][t]);
+		}
+
+        std::cout << "Finished iteration " << t << endl;
     }
 
     std::cout << "Finish Gradient Descent" << std::endl;
