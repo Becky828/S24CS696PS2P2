@@ -1,20 +1,18 @@
 # ninja log v5
-26	1814	7330405380189393	CMakeFiles/CMakeS24CS696_PS2_p2.dir/collaborative_filtering_template-3.cpp.obj	8ab845bf13ab9fa
-1815	2137	7330405382679403	CMakeS24CS696_PS2_p2.exe	401128420dca4602
+26	1432	7330407916516229	CMakeFiles/CMakeS24CS696_PS2_p2.dir/collaborative_filtering_template-3.cpp.obj	8ab845bf13ab9fa
 10	2945	7330406900263399	tests/CMakeFiles/my_test.dir/my_test.cpp.obj	ae03f97f22b28c33
 38	3504	7330406905970696	external/googletest/googlemock/CMakeFiles/gmock_main.dir/src/gmock_main.cc.obj	6d2486ad124d2c1c
+1433	1621	7330407918026241	CMakeS24CS696_PS2_p2.exe	401128420dca4602
 32	4769	7330406917668407	external/googletest/googlemock/CMakeFiles/gmock_main.dir/src/gmock-all.cc.obj	32c787564156548f
 20	4972	7330406920538402	external/googletest/googlemock/CMakeFiles/gmock.dir/src/gmock-all.cc.obj	b2faefb8b3176c7a
 3505	7301	7330406943957823	external/googletest/googletest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.obj	3d2c0f504c6bcfe9
 15	7550	7330406946373158	external/googletest/googlemock/CMakeFiles/gmock.dir/__/googletest/src/gtest-all.cc.obj	cedf03dd4a249e12
 27	7617	7330406947033214	external/googletest/googlemock/CMakeFiles/gmock_main.dir/__/googletest/src/gtest-all.cc.obj	9d78e809ffd8434c
 7550	7732	7330406948103177	lib/gmock.lib	fbc3e5afdd1ea766
-7618	7778	7330406948613191	lib/gmock_main.lib	7252c24e3ae71c7
 2947	9227	7330406963243119	external/googletest/googletest/CMakeFiles/gtest.dir/src/gtest-all.cc.obj	4ddd146c77d68a32
+7618	7778	7330406948613191	lib/gmock_main.lib	7252c24e3ae71c7
 9227	9322	7330406964133119	lib/gtest.lib	ef1d40cb0731fd2d
 9322	9372	7330406964763131	lib/gtest_main.lib	30dc949ef953f8ae
 9372	10161	7330406972653929	tests/my_test.exe	1dbcdf0e06b1358f
 9372	10161	7330406972653929	tests/my_test[1]_tests.cmake	1dbcdf0e06b1358f
 9372	10161	7330406972653929	C:/Users/Owner/source/repos/S24CS696hw/S24CS696PS2P2/out/build/x64-debug/tests/my_test[1]_tests.cmake	1dbcdf0e06b1358f
-26	1432	7330407916516229	CMakeFiles/CMakeS24CS696_PS2_p2.dir/collaborative_filtering_template-3.cpp.obj	8ab845bf13ab9fa
-1433	1621	7330407918026241	CMakeS24CS696_PS2_p2.exe	401128420dca4602

@@ -37,19 +37,17 @@ double dot_product(std::vector<double> &v1, std::vector<double> &v2) {
 
 //Put custom functions here
 //int derived_u_getter(std::vector<std::vector<double>> u) {
-double derived_u_getter(double lambda, double current_derived_u_sum, double current_u) {
-
-    //int derived_u_sum = 0;
+double derived_u_getter(double current_derived_u_regularized_norm, double lambda,  double current_u) {
     double current_u_regularization = 2*lambda*current_u;
-    return current_derived_u_sum+current_u_regularization;
+    return current_derived_u_regularized_norm +current_u_regularization;
 }
 
 //int derived_v_getter(std::vector<std::vector<double>> v) {
-double derived_v_getter(double lambda, double current_derived_v_sum, double current_v) {
+double derived_v_getter(double current_derived_v_regularized_norm,double lambda, double current_v) {
 
 	//int derived_v_sum = 0;
     double current_v_regularization = 2*lambda*current_v;
-    return current_derived_v_sum + current_v_regularization;
+    return current_derived_v_regularized_norm + current_v_regularization;
 }
 
 //Put V transposer here
@@ -158,6 +156,17 @@ int main() {
         }
     }
 
+
+    //initialize shared derived variables
+
+    //U
+    double derived_norm_u = 0;
+    double derived_regularized_loss_u = 0;
+
+    //V
+    double derived_norm_v = 0;
+    double derived_regularized_loss_v = 0;
+
     for (int t = 0; t < n_iterations; t++) {
         eta = eta * decay; // decay the learning rate over time
 
@@ -169,21 +178,34 @@ int main() {
         // you may also want to use the dot_product function to calculate the dot product of U[i] and V[j]
         // and the derived_u_getter and derived_v_getter functions to calculate the sum of the derived U and V values
         // you can also use the lambda, eta, and decay variables
-       double u_regularization_sum = 0;
+       derived_norm_u = 0;
+       derived_regularized_loss_u = 0;
+       
+       //Initialize U variables for gradient descent
+       double derived_regularized_gradient_u = 0;
+       double derived_regularized_gradient_descent_u = 0;
+
+
         for (int i : users) {
             //for (int k = 0; k < K; k++) {
               // u_sum = derived_u_getter(lambda, u_sum, U[i][k]);
             //}
             
-            u_regularization_sum = derived_u_getter(lambda, u_regularization_sum, U[i][t]);
+            derived_norm_u = derived_u_getter(derived_norm_u,lambda, U[i][t]);
 		}
 
-       double v_regularization_sum = 0;
+       derived_norm_v = 0;
+       derived_regularized_loss_v = 0;
+       
+       //Initialize V variables for gradient descent
+       double derived_regularized_gradient_v = 0;
+       double derived_regularized_gradient_descent_v = 0;
+
         for (int j : movies) {
           //  for (int k = 0; k < K; k++) {
 			//	v_sum = derived_v_getter(lambda, v_sum, V[j][k]);
 			//}
-            v_regularization_sum = derived_v_getter(lambda, v_regularization_sum, V[j][t]);
+            derived_regularized_loss_v = derived_v_getter(derived_norm_v, lambda, V[j][t]);
 		}
 
         std::cout << "Finished iteration " << t << endl;
@@ -213,6 +235,26 @@ int main() {
     mae_random = static_cast<double>(mae_random / test_set.size());
     std::cout << "Mean Absolute Error: " << mae << std::endl;
     std::cout << "Mean Absolute Error Random Guess: " << mae_random << std::endl;
+
+
+    //Stochastic
+
+    //relevant U reset
+    derived_norm_u = 0;
+    derived_regularized_loss_u = 0;
+
+	//initialize U variables for stochastic gradient descent
+    double derived_regularized_stochastic_gradient_u = 0;
+    double derived_regularized_stochastic_gradient_descent_u = 0;
+
+    //relevant V reset
+    derived_norm_v = 0;
+    derived_regularized_loss_v = 0;
+
+    //initialize V variables for stochastic gradient descent
+    double derived_regularized_stochastic_gradient_v = 0;
+    double derived_regularized_stochastic_gradient_descent_v = 0;
+
 
     return 0;
 }
