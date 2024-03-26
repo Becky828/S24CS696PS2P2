@@ -222,7 +222,7 @@ int main() {
 		//derived_regularized_loss_u = 0;
 
 		std::vector<std::vector<double>> V_transposed = v_transposer(K, V, movies);
-		u_dot_v = dot_product(U, V_transposed);
+		U_dot_V_transposed = dot_product(U, V_transposed);
 		
 		//Initialize U variables for gradient descent
 		
