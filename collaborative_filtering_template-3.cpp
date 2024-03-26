@@ -44,27 +44,32 @@ double derived_u_getter(double current_derived_u_regularized_norm, double lambda
 
 //int derived_v_getter(std::vector<std::vector<double>> v) {
 double derived_v_getter(double current_derived_v_regularized_norm, double lambda, double current_v) {
-
-	//int derived_v_sum = 0;
 	double current_v_regularization = 2 * lambda * current_v;
 	return current_derived_v_regularized_norm + current_v_regularization;
 }
 
 //Put V transposer here
-std::vector<std::vector<double>>  v_transposer(int K, std::vector<std::vector<double>> V) {
-//void  v_transposer(int K, std::vector<std::vector<double>> V) {
+std::vector<std::vector<double>>  v_transposer(int K, std::vector<std::vector<double>> V, std::set<int> movies) {
+	int n = V.size();
+	std::vector<std::vector<double>> V_transposed(n, std::vector<double>(movies.size()+1, 0));
+	//std::vector<std::vector<double>> V_transposed(std::vector<double>(K, 0),m);
 
-    int m = V.size();
-    std::vector<std::vector<double>> V_transposed(m, std::vector<double>(K, 0));
+	/*for (int j = 0; j < m_size; j++) {
+		for (int k = 0; k < K; k++) {
+			V_transposed[k][j] = V[j][k];
+		}
+	}*/
 
-    for (int j = 0; j < m; j++) {
-       for (int k = 0; k < K; k++) {
-            V_transposed[k][j] = V[j][k];
-        }
-    }
+
+	for (int j : movies) {
+		for (int k = 0; k < K; k++) {
+			V_transposed[k][j] = V[j][k];
+		}
+	}
+
 	return V_transposed;
 }
-//Put u dot v transposer here
+//Put u dot transposed v here
 
 //Put ratings difference here
 
@@ -131,8 +136,8 @@ int main() {
 			if (toss_coin(1 - test_set_size)) {
 				// if the coin toss is true, add the rating to the training set
 				ratings[std::make_pair(user, movie)] = rating;
-				users_movies[user].insert(movie); // add song to user's list of songs
-				movies_users[movie].insert(user); // add user to song's list of users
+				users_movies[user].insert(movie); // add movie to user's list of movies
+				movies_users[movie].insert(user); // add user to movie's list of users
 			}
 			else {
 				// if the coin toss is false, add the rating to the test set
@@ -171,7 +176,8 @@ int main() {
 	}
 
 	//std::vector<std::vector<double>> V(n, std::vector<double>(K, 0));
-	std::vector<std::vector<double>> V_transposed = v_transposer(K, V);
+	int m_size = movies.size();
+	std::vector<std::vector<double>> V_transposed = v_transposer(K, V, movies);
 
 	//initialize shared derived variables
 
@@ -207,6 +213,7 @@ int main() {
 				derived_norm_u = derived_u_getter(derived_norm_u, lambda, U[i][k]);
 			}
 			//derived_norm_u = derived_u_getter(derived_norm_u, lambda, U[i][t]);
+			//derived_regularized_gradient_descent_u = gradient_descent_u_utility(eta, ratings, derived_norm_u, V_transposed);
 		}
 
 		derived_norm_v = 0;
@@ -221,6 +228,8 @@ int main() {
 				derived_norm_v = derived_v_getter(derived_norm_v, lambda, V[j][k]);
 			}
 			//derived_norm_v = derived_v_getter(derived_norm_v, lambda, V[j][t]);
+			//derived_regularized_gradient_descent_v = gradient_descent_v_utility(eta, ratings, derived_norm_v, V_transposed);
+
 		}
 
 		std::cout << "Finished iteration " << t << endl;
