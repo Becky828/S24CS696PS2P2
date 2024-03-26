@@ -37,15 +37,28 @@ double dot_product(std::vector<double>& v1, std::vector<double>& v2) {
 
 //Put custom functions here
 //int derived_u_getter(std::vector<std::vector<double>> u) {
-double derived_u_getter(double current_derived_u_regularized_norm, double lambda, double current_u) {
-	double current_u_regularization = 2 * lambda * current_u;
-	return current_derived_u_regularized_norm + current_u_regularization;
+std::vector<std::vector<double>> derived_u_getter(int m, int K, double lambda, std::vector<std::vector<double>> U, std::set<int> users ){
+	std::vector<std::vector<double>> regularized_U(m, std::vector<double>(K, 0));
+	for (int i : users) {
+		for (int k = 0; k < K; k++) {
+			regularized_U[i][k] = 2 * lambda * U[i][k];
+		}
+	}
+	return regularized_U;
+	//return current_derived_u_regularized_norm + current_u_regularization;
 }
 
 //int derived_v_getter(std::vector<std::vector<double>> v) {
-double derived_v_getter(double current_derived_v_regularized_norm, double lambda, double current_v) {
-	double current_v_regularization = 2 * lambda * current_v;
-	return current_derived_v_regularized_norm + current_v_regularization;
+std::vector<std::vector<double>> derived_v_getter(int n, int K, double lambda, std::vector<std::vector<double>> V, std::set<int> movies) {
+	std::vector<std::vector<double>> regularized_V(n, std::vector<double>(K, 0));
+	for (int j : movies) {
+		for (int k = 0; k < K; k++) {
+			regularized_V[j][k] = 2 * lambda * V[j][k];
+		}
+	}
+	return regularized_V;
+	//double current_v_regularization = 2 * lambda * current_v;
+	//return current_derived_v_regularized_norm + current_v_regularization;
 }
 
 //Put V transposer here
@@ -162,6 +175,11 @@ int main() {
 	std::vector<std::vector<double>> U(m, std::vector<double>(K, 0));
 	std::vector<std::vector<double>> V(n, std::vector<double>(K, 0));
 
+
+	std::vector<std::vector<double>> derived_norm_U(m, std::vector<double>(K, 0));
+	std::vector<std::vector<double>> derived_norm_V(n, std::vector<double>(K, 0));
+
+
 	// initialize U and V with random values
 	for (int i : users) {
 		for (int k = 0; k < K; k++) {
@@ -182,11 +200,11 @@ int main() {
 	//initialize shared derived variables
 
 	//U
-	double derived_norm_u = 0;
+	//double derived_norm_u = 0;
 	double derived_regularized_loss_u = 0;
 
 	//V
-	double derived_norm_v = 0;
+	//double derived_norm_v = 0;
 	double derived_regularized_loss_v = 0;
 
 	for (int t = 0; t < n_iterations; t++) {
@@ -200,33 +218,37 @@ int main() {
 		// you may also want to use the dot_product function to calculate the dot product of U[i] and V[j]
 		// and the derived_u_getter and derived_v_getter functions to calculate the sum of the derived U and V values
 		// you can also use the lambda, eta, and decay variables
-		derived_norm_u = 0;
-		derived_regularized_loss_u = 0;
+		//derived_norm_u = 0;
+		//derived_regularized_loss_u = 0;
 
 		//Initialize U variables for gradient descent
 		double derived_regularized_gradient_u = 0;
 		double derived_regularized_gradient_descent_u = 0;
+		derived_norm_U = derived_u_getter(m, K, lambda, U, users);
 
 
 		for (int i : users) {
-			for (int k = 0; k < K; k++) {
-				derived_norm_u = derived_u_getter(derived_norm_u, lambda, U[i][k]);
-			}
+			//for (int k = 0; k < K; k++) {
+				//derived_norm_u = derived_u_getter(m, K, lambda, U, users);
+			//}
 			//derived_norm_u = derived_u_getter(derived_norm_u, lambda, U[i][t]);
 			//derived_regularized_gradient_descent_u = gradient_descent_u_utility(eta, ratings, derived_norm_u, V_transposed);
 		}
 
-		derived_norm_v = 0;
+		//derived_norm_v = 0;
 		derived_regularized_loss_v = 0;
 
 		//Initialize V variables for gradient descent
 		double derived_regularized_gradient_v = 0;
 		double derived_regularized_gradient_descent_v = 0;
 
+		derived_norm_V = derived_v_getter(n, K, lambda, V, movies);
+
 		for (int j : movies) {
-			for (int k = 0; k < K; k++) {
-				derived_norm_v = derived_v_getter(derived_norm_v, lambda, V[j][k]);
-			}
+			//for (int k = 0; k < K; k++) {
+
+				//
+			//}
 			//derived_norm_v = derived_v_getter(derived_norm_v, lambda, V[j][t]);
 			//derived_regularized_gradient_descent_v = gradient_descent_v_utility(eta, ratings, derived_norm_v, V_transposed);
 
@@ -265,7 +287,7 @@ int main() {
 	//Stochastic
 
 	//relevant U reset
-	derived_norm_u = 0;
+	//derived_norm_u = 0;
 	derived_regularized_loss_u = 0;
 
 	//initialize U variables for stochastic gradient descent
@@ -273,7 +295,7 @@ int main() {
 	double derived_regularized_stochastic_gradient_descent_u = 0;
 
 	//relevant V reset
-	derived_norm_v = 0;
+	//derived_norm_v = 0;
 	derived_regularized_loss_v = 0;
 
 	//initialize V variables for stochastic gradient descent
