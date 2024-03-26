@@ -195,7 +195,7 @@ int main() {
 
 	//std::vector<std::vector<double>> V(n, std::vector<double>(K, 0));
 	int m_size = movies.size();
-	std::vector<std::vector<double>> V_transposed = v_transposer(K, V, movies);
+	
 
 	//initialize shared derived variables
 
@@ -221,10 +221,13 @@ int main() {
 		//derived_norm_u = 0;
 		//derived_regularized_loss_u = 0;
 
+		std::vector<std::vector<double>> V_transposed = v_transposer(K, V, movies);
+		u_dot_v = dot_product(U, V_transposed);
+		
 		//Initialize U variables for gradient descent
-		double derived_regularized_gradient_u = 0;
-		double derived_regularized_gradient_descent_u = 0;
+		
 		derived_norm_U = derived_u_getter(m, K, lambda, U, users);
+		
 
 
 		for (int i : users) {
