@@ -149,7 +149,14 @@ int main() {
 			if (toss_coin(1 - test_set_size)) {
 				// if the coin toss is true, add the rating to the training set
 				ratings[std::make_pair(user, movie)] = rating;
+				double current_rating_a = ratings[std::make_pair(user, movie)];
 				users_movies[user].insert(movie); // add movie to user's list of movies
+				auto user_movie = users_movies[user];
+				//std::map<int, std::set<int>>::iterator it = users_movies.find(user);
+				
+				//auto current_movie = it->second.begin();
+				//int current_movie = users_movies.find(user);
+				//int current_movie = users_movies.at(user).;
 				movies_users[movie].insert(user); // add user to movie's list of users
 			}
 			else {
@@ -222,7 +229,6 @@ int main() {
 		//derived_regularized_loss_u = 0;
 
 		std::vector<std::vector<double>> V_transposed = v_transposer(K, V, movies);
-		U_dot_V_transposed = dot_product(U, V_transposed);
 		
 		//Initialize U variables for gradient descent
 		
@@ -236,6 +242,12 @@ int main() {
 			//}
 			//derived_norm_u = derived_u_getter(derived_norm_u, lambda, U[i][t]);
 			//derived_regularized_gradient_descent_u = gradient_descent_u_utility(eta, ratings, derived_norm_u, V_transposed);
+			double U_dot_V_transposed = dot_product(U[i], V_transposed[i]);
+			
+			
+			//int current_movie = users_movies[i];
+			//double current_rating = ratings[std::make_pair(i, movie)];
+
 		}
 
 		//derived_norm_v = 0;
