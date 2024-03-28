@@ -234,15 +234,25 @@ int main() {
 		
 		derived_norm_U = derived_u_getter(m, K, lambda, U, users);
 		
-
+	
 
 		for (int i : users) {
+			int current_user = i;
+			std::set<int> current_user_movie_set = users_movies[i];
+			for (int j : current_user_movie_set) {
+				int current_movie = j;
+				double current_rating = ratings[std::make_pair(i, j)];
+				double U_dot_V_transposed = dot_product(U[i], V_transposed[j]);
+				//double ratings_difference = current;
+			}
+		
+			//int current_movie = current_user_movie;
 			//for (int k = 0; k < K; k++) {
 				//derived_norm_u = derived_u_getter(m, K, lambda, U, users);
 			//}
 			//derived_norm_u = derived_u_getter(derived_norm_u, lambda, U[i][t]);
 			//derived_regularized_gradient_descent_u = gradient_descent_u_utility(eta, ratings, derived_norm_u, V_transposed);
-			double U_dot_V_transposed = dot_product(U[i], V_transposed[i]);
+			//double U_dot_V_transposed = dot_product(U[i], V_transposed[i]);
 			
 			
 			//int current_movie = users_movies[i];
