@@ -242,8 +242,11 @@ int main() {
 			for (int j : current_user_movie_set) {
 				int current_movie = j;
 				double current_rating = ratings[std::make_pair(i, j)];
-				double U_dot_V_transposed = dot_product(U[i], V_transposed[j]);
-				//double ratings_difference = current;
+				auto current_U = U[i];
+				auto current_V_transposed = V_transposed[j];
+				double U_dot_V_transposed = dot_product(current_U, current_V_transposed);
+				double ratings_difference = U_dot_V_transposed - current_rating;
+
 			}
 		
 			//int current_movie = current_user_movie;
