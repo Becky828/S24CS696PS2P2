@@ -37,7 +37,7 @@ double dot_product(std::vector<double>& v1, std::vector<double>& v2) {
 
 //Put custom functions here
 //int derived_u_getter(std::vector<std::vector<double>> u) {
-std::vector<std::vector<double>> derived_u_getter(int m, int K, double lambda, std::vector<std::vector<double>> U, std::set<int> users ){
+std::vector<std::vector<double>> derived_u_getter(int m, int K, double lambda, std::vector<std::vector<double>> U, std::set<int> users) {
 	std::vector<std::vector<double>> regularized_U(m, std::vector<double>(K, 0));
 	for (int i : users) {
 		for (int k = 0; k < K; k++) {
@@ -64,7 +64,7 @@ std::vector<std::vector<double>> derived_v_getter(int n, int K, double lambda, s
 //Put V transposer here
 std::vector<std::vector<double>>  v_transposer(int K, std::vector<std::vector<double>> V, std::set<int> movies) {
 	int n = V.size();
-	std::vector<std::vector<double>> V_transposed(n, std::vector<double>(movies.size()+1, 0));
+	std::vector<std::vector<double>> V_transposed(n, std::vector<double>(movies.size() + 1, 0));
 	//std::vector<std::vector<double>> V_transposed(std::vector<double>(K, 0),m);
 
 	/*for (int j = 0; j < m_size; j++) {
@@ -153,7 +153,7 @@ int main() {
 				users_movies[user].insert(movie); // add movie to user's list of movies
 				auto user_movie = users_movies[user];
 				//std::map<int, std::set<int>>::iterator it = users_movies.find(user);
-				
+
 				//auto current_movie = it->second.begin();
 				//int current_movie = users_movies.find(user);
 				//int current_movie = users_movies.at(user).;
@@ -187,6 +187,9 @@ int main() {
 	std::vector<std::vector<double>> derived_norm_V(n, std::vector<double>(K, 0));
 
 
+	std::vector<std::vector<double>> ratings_difference_U_product(m, std::vector<double>(K, 0));
+	std::vector<std::vector<double>> ratings_difference_V_product(n, std::vector<double>(K, 0));
+
 	// initialize U and V with random values
 	for (int i : users) {
 		for (int k = 0; k < K; k++) {
@@ -200,9 +203,11 @@ int main() {
 		}
 	}
 
+	int base_gradient_U;
+	int base_gradient_V;
 	//std::vector<std::vector<double>> V(n, std::vector<double>(K, 0));
 	int m_size = movies.size();
-	
+
 
 	//initialize shared derived variables
 
@@ -229,35 +234,44 @@ int main() {
 		//derived_regularized_loss_u = 0;
 
 		std::vector<std::vector<double>> V_transposed = v_transposer(K, V, movies);
-		
+
 		//Initialize U variables for gradient descent
-		
+
 		derived_norm_U = derived_u_getter(m, K, lambda, U, users);
-		
-	
 
 		for (int i : users) {
+			base_gradient_U = 0;
 			int current_user = i;
 			std::set<int> current_user_movie_set = users_movies[i];
-			for (int j : current_user_movie_set) {
+		
+	for (int j : current_user_movie_set) {
 				int current_movie = j;
 				double current_rating = ratings[std::make_pair(i, j)];
 				auto current_U = U[i];
 				auto current_V_transposed = V_transposed[j];
 				double U_dot_V_transposed = dot_product(current_U, current_V_transposed);
 				double ratings_difference = U_dot_V_transposed - current_rating;
-
-			}
-		
+				
+				for (int j : movies) {
+						for (int k = 0; k < K; k++) {
+							auto current_V = V[j][k];
+							ratings_difference_V_product[j][k] = ratings_difference * current_V;
+						}
+				}
+				//std::vector<std::vector<double>>ratings_difference_V_product = ratings_difference * current_V;
+				// 
+				//base_gradient_U = base_gradient_U + ratings_difference_V_product;
+			
+	}
+			
 			//int current_movie = current_user_movie;
 			//for (int k = 0; k < K; k++) {
 				//derived_norm_u = derived_u_getter(m, K, lambda, U, users);
 			//}
-			//derived_norm_u = derived_u_getter(derived_norm_u, lambda, U[i][t]);
 			//derived_regularized_gradient_descent_u = gradient_descent_u_utility(eta, ratings, derived_norm_u, V_transposed);
 			//double U_dot_V_transposed = dot_product(U[i], V_transposed[i]);
-			
-			
+
+
 			//int current_movie = users_movies[i];
 			//double current_rating = ratings[std::make_pair(i, movie)];
 

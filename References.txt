@@ -27,3 +27,5 @@
 //https://www.geeksforgeeks.org/map-find-function-in-c-stl/
 //https://cplusplus.com/forum/beginner/134157/
 //https://www.geeksforgeeks.org/how-to-access-elements-in-set-by-index-in-cpp/
+//https://www.geeksforgeeks.org/program-for-scalar-multiplication-of-a-matrix/
+//https://timroughgarden.org/s16/l/l6.pdf
