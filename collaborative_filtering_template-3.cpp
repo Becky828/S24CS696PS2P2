@@ -239,17 +239,15 @@ int main() {
 				double U_dot_V_transposed = dot_product(current_U, current_V_transposed);
 				double ratings_difference = U_dot_V_transposed - current_rating;
 
-				for (int j : movies) {
-					for (int k = 0; k < K; k++) {
-						auto current_V = V[j][k];
-						ratings_difference_V_product[j][k] = ratings_difference * current_V;
-						cf_gradient_base_U[i][k] = cf_gradient_base_U[i][k] + ratings_difference_V_product[j][k];
-						cf_gradient_regularization_U = derived_norm_U;
-						U_difference_base[i][k] = -eta * cf_gradient_base_U[i][k];
-						U_difference_regularization[i][k] = -eta * cf_gradient_regularization_U[i][k];
-						cf_gradient_descent_U[i][k] = U[i][k] - U_difference_base[i][k] - U_difference_regularization[i][k];
-						U[i][k] = cf_gradient_descent_U[i][k];
-					}
+				for (int k = 0; k < K; k++) {
+					auto current_V = V[j][k];
+					ratings_difference_V_product[j][k] = ratings_difference * current_V;
+					cf_gradient_base_U[i][k] = cf_gradient_base_U[i][k] + ratings_difference_V_product[j][k];
+					cf_gradient_regularization_U = derived_norm_U;
+					U_difference_base[i][k] = -eta * cf_gradient_base_U[i][k];
+					U_difference_regularization[i][k] = -eta * cf_gradient_regularization_U[i][k];
+					cf_gradient_descent_U[i][k] = U[i][k] - U_difference_base[i][k] - U_difference_regularization[i][k];
+					U[i][k] = cf_gradient_descent_U[i][k];
 				}
 			}
 		}
@@ -269,18 +267,17 @@ int main() {
 				double U_dot_V_transposed = dot_product(current_U, current_V_transposed);
 				double ratings_difference = U_dot_V_transposed - current_rating;
 
-				for (int j : movies) {
-					for (int k = 0; k < K; k++) {
-						auto current_U = U[j][k];
-						ratings_difference_U_product[j][k] = ratings_difference * current_U;
-						cf_gradient_base_V[i][k] = cf_gradient_base_V[i][k] + ratings_difference_U_product[j][k];
-						cf_gradient_regularization_V = derived_norm_V;
-						V_difference_base[i][k] = -eta * cf_gradient_base_V[i][k];
-						V_difference_regularization[i][k] = -eta * cf_gradient_regularization_V[i][k];
-						cf_gradient_descent_V[i][k] = V[i][k] - V_difference_base[i][k] - V_difference_regularization[i][k];
-						V[i][k] = cf_gradient_descent_V[i][k];
-					}
+				for (int k = 0; k < K; k++) {
+					auto current_U = V[j][k];
+					ratings_difference_V_product[i][k] = ratings_difference * current_U;
+					cf_gradient_base_V[i][k] = cf_gradient_base_V[i][k] + ratings_difference_V_product[j][k];
+					cf_gradient_regularization_V = derived_norm_V;
+					V_difference_base[i][k] = -eta * cf_gradient_base_V[i][k];
+					V_difference_regularization[i][k] = -eta * cf_gradient_regularization_V[i][k];
+					cf_gradient_descent_V[i][k] = V[i][k] - V_difference_base[i][k] - V_difference_regularization[i][k];
+					V[i][k] = cf_gradient_descent_V[i][k];
 				}
+				
 			}
 		}
 
