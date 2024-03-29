@@ -182,13 +182,37 @@ int main() {
 	std::vector<std::vector<double>> U(m, std::vector<double>(K, 0));
 	std::vector<std::vector<double>> V(n, std::vector<double>(K, 0));
 
-
+	//initialize the partial derivatives for U and V
 	std::vector<std::vector<double>> derived_norm_U(m, std::vector<double>(K, 0));
 	std::vector<std::vector<double>> derived_norm_V(n, std::vector<double>(K, 0));
 
-
+	//initialize the difference in ratings for U and V 
 	std::vector<std::vector<double>> ratings_difference_U_product(m, std::vector<double>(K, 0));
 	std::vector<std::vector<double>> ratings_difference_V_product(n, std::vector<double>(K, 0));
+
+	//initialize the gradient for U and V base
+	std::vector<std::vector<double>> cf_gradient_base_U(m, std::vector<double>(K, 0));
+	std::vector<std::vector<double>> cf_gradient_base_V(n, std::vector<double>(K, 0));
+
+	//initialize the gradient regularization for U and V
+	std::vector<std::vector<double>> cf_gradient_regularization_U(m, std::vector<double>(K, 0));
+	std::vector<std::vector<double>> cf_gradient_regularization_V(n, std::vector<double>(K, 0));
+
+	//initialize the difference for U and V base
+	std::vector<std::vector<double>> U_difference_base(m, std::vector<double>(K, 0));
+	std::vector<std::vector<double>> V_difference_base(n, std::vector<double>(K, 0));
+
+	//initialize the difference for U and V regularization
+	std::vector<std::vector<double>> U_difference_regularization(m, std::vector<double>(K, 0));
+	std::vector<std::vector<double>> V_difference_regularization(n, std::vector<double>(K, 0));
+
+	//initialize the gradient descent for U and V
+	std::vector<std::vector<double>> cf_gradient_descent_U(m, std::vector<double>(K, 0));
+	std::vector<std::vector<double>> cf_gradient_descent_V(n, std::vector<double>(K, 0));
+
+	//initialize the stochastic gradient descent for U and V
+	std::vector<std::vector<double>> cf_stochastic_gradient_descent_U(m, std::vector<double>(K, 0));
+	std::vector<std::vector<double>> cf_stochastic_gradient_descent_V(n, std::vector<double>(K, 0));
 
 	// initialize U and V with random values
 	for (int i : users) {
@@ -205,19 +229,8 @@ int main() {
 
 	int base_gradient_U;
 	int base_gradient_V;
-	//std::vector<std::vector<double>> V(n, std::vector<double>(K, 0));
 	int m_size = movies.size();
 
-
-	//initialize shared derived variables
-
-	//U
-	//double derived_norm_u = 0;
-	double derived_regularized_loss_u = 0;
-
-	//V
-	//double derived_norm_v = 0;
-	double derived_regularized_loss_v = 0;
 
 	for (int t = 0; t < n_iterations; t++) {
 		eta = eta * decay; // decay the learning rate over time
@@ -230,12 +243,9 @@ int main() {
 		// you may also want to use the dot_product function to calculate the dot product of U[i] and V[j]
 		// and the derived_u_getter and derived_v_getter functions to calculate the sum of the derived U and V values
 		// you can also use the lambda, eta, and decay variables
-		//derived_norm_u = 0;
-		//derived_regularized_loss_u = 0;
+		
 
 		std::vector<std::vector<double>> V_transposed = v_transposer(K, V, movies);
-
-		//Initialize U variables for gradient descent
 
 		derived_norm_U = derived_u_getter(m, K, lambda, U, users);
 
@@ -243,42 +253,23 @@ int main() {
 			base_gradient_U = 0;
 			int current_user = i;
 			std::set<int> current_user_movie_set = users_movies[i];
-		
-	for (int j : current_user_movie_set) {
+
+			for (int j : current_user_movie_set) {
 				int current_movie = j;
 				double current_rating = ratings[std::make_pair(i, j)];
 				auto current_U = U[i];
 				auto current_V_transposed = V_transposed[j];
 				double U_dot_V_transposed = dot_product(current_U, current_V_transposed);
 				double ratings_difference = U_dot_V_transposed - current_rating;
-				
+
 				for (int j : movies) {
-						for (int k = 0; k < K; k++) {
-							auto current_V = V[j][k];
-							ratings_difference_V_product[j][k] = ratings_difference * current_V;
-						}
+					for (int k = 0; k < K; k++) {
+						auto current_V = V[j][k];
+						ratings_difference_V_product[j][k] = ratings_difference * current_V;
+					}
 				}
-				//std::vector<std::vector<double>>ratings_difference_V_product = ratings_difference * current_V;
-				// 
-				//base_gradient_U = base_gradient_U + ratings_difference_V_product;
-			
-	}
-			
-			//int current_movie = current_user_movie;
-			//for (int k = 0; k < K; k++) {
-				//derived_norm_u = derived_u_getter(m, K, lambda, U, users);
-			//}
-			//derived_regularized_gradient_descent_u = gradient_descent_u_utility(eta, ratings, derived_norm_u, V_transposed);
-			//double U_dot_V_transposed = dot_product(U[i], V_transposed[i]);
-
-
-			//int current_movie = users_movies[i];
-			//double current_rating = ratings[std::make_pair(i, movie)];
-
+			}
 		}
-
-		//derived_norm_v = 0;
-		derived_regularized_loss_v = 0;
 
 		//Initialize V variables for gradient descent
 		double derived_regularized_gradient_v = 0;
@@ -287,13 +278,7 @@ int main() {
 		derived_norm_V = derived_v_getter(n, K, lambda, V, movies);
 
 		for (int j : movies) {
-			//for (int k = 0; k < K; k++) {
-
-				//
-			//}
-			//derived_norm_v = derived_v_getter(derived_norm_v, lambda, V[j][t]);
-			//derived_regularized_gradient_descent_v = gradient_descent_v_utility(eta, ratings, derived_norm_v, V_transposed);
-
+			
 		}
 
 		std::cout << "Finished iteration " << t << endl;
@@ -326,24 +311,9 @@ int main() {
 	std::cout << "Mean Absolute Error Random Guess: " << mae_random << std::endl;
 
 
-	//Stochastic
+	//Stochastic here
 
-	//relevant U reset
-	//derived_norm_u = 0;
-	derived_regularized_loss_u = 0;
-
-	//initialize U variables for stochastic gradient descent
-	double derived_regularized_stochastic_gradient_u = 0;
-	double derived_regularized_stochastic_gradient_descent_u = 0;
-
-	//relevant V reset
-	//derived_norm_v = 0;
-	derived_regularized_loss_v = 0;
-
-	//initialize V variables for stochastic gradient descent
-	double derived_regularized_stochastic_gradient_v = 0;
-	double derived_regularized_stochastic_gradient_descent_v = 0;
-
+	
 
 	return 0;
 }
