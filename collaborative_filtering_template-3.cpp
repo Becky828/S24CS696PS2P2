@@ -34,9 +34,7 @@ double dot_product(std::vector<double>& v1, std::vector<double>& v2) {
 	return result;
 }
 
-
 //Put custom functions here
-//int derived_u_getter(std::vector<std::vector<double>> u) {
 std::vector<std::vector<double>> derived_u_getter(int m, int K, double lambda, std::vector<std::vector<double>> U, std::set<int> users) {
 	std::vector<std::vector<double>> regularized_U(m, std::vector<double>(K, 0));
 	for (int i : users) {
@@ -45,10 +43,8 @@ std::vector<std::vector<double>> derived_u_getter(int m, int K, double lambda, s
 		}
 	}
 	return regularized_U;
-	//return current_derived_u_regularized_norm + current_u_regularization;
 }
 
-//int derived_v_getter(std::vector<std::vector<double>> v) {
 std::vector<std::vector<double>> derived_v_getter(int n, int K, double lambda, std::vector<std::vector<double>> V, std::set<int> movies) {
 	std::vector<std::vector<double>> regularized_V(n, std::vector<double>(K, 0));
 	for (int j : movies) {
@@ -57,29 +53,17 @@ std::vector<std::vector<double>> derived_v_getter(int n, int K, double lambda, s
 		}
 	}
 	return regularized_V;
-	//double current_v_regularization = 2 * lambda * current_v;
-	//return current_derived_v_regularized_norm + current_v_regularization;
 }
 
 //Put V transposer here
 std::vector<std::vector<double>>  v_transposer(int K, std::vector<std::vector<double>> V, std::set<int> movies) {
 	int n = V.size();
 	std::vector<std::vector<double>> V_transposed(n, std::vector<double>(movies.size() + 1, 0));
-	//std::vector<std::vector<double>> V_transposed(std::vector<double>(K, 0),m);
-
-	/*for (int j = 0; j < m_size; j++) {
-		for (int k = 0; k < K; k++) {
-			V_transposed[k][j] = V[j][k];
-		}
-	}*/
-
-
 	for (int j : movies) {
 		for (int k = 0; k < K; k++) {
 			V_transposed[k][j] = V[j][k];
 		}
 	}
-
 	return V_transposed;
 }
 //Put u dot transposed v here
@@ -105,7 +89,6 @@ std::vector<std::vector<double>>  v_transposer(int K, std::vector<std::vector<do
 //Put stochastic u gradient descent here
 
 //Put stochastic v gradient descent here
-
 
 int main() {
 
@@ -151,12 +134,6 @@ int main() {
 				ratings[std::make_pair(user, movie)] = rating;
 				double current_rating_a = ratings[std::make_pair(user, movie)];
 				users_movies[user].insert(movie); // add movie to user's list of movies
-				auto user_movie = users_movies[user];
-				//std::map<int, std::set<int>>::iterator it = users_movies.find(user);
-
-				//auto current_movie = it->second.begin();
-				//int current_movie = users_movies.find(user);
-				//int current_movie = users_movies.at(user).;
 				movies_users[movie].insert(user); // add user to movie's list of users
 			}
 			else {
