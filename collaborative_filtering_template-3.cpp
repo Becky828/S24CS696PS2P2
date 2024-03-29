@@ -220,7 +220,7 @@ int main() {
 		// you may also want to use the dot_product function to calculate the dot product of U[i] and V[j]
 		// and the derived_u_getter and derived_v_getter functions to calculate the sum of the derived U and V values
 		// you can also use the lambda, eta, and decay variables
-		
+
 
 		std::vector<std::vector<double>> V_transposed = v_transposer(K, V, movies);
 
@@ -245,8 +245,8 @@ int main() {
 						ratings_difference_V_product[j][k] = ratings_difference * current_V;
 						cf_gradient_base_U[i][k] = cf_gradient_base_U[i][k] + ratings_difference_V_product[j][k];
 						cf_gradient_regularization_U = derived_norm_U;
-						U_difference_base[i][k] = - eta * cf_gradient_base_U[i][k];
-						U_difference_regularization[i][k] =  - eta * cf_gradient_regularization_U[i][k];
+						U_difference_base[i][k] = -eta * cf_gradient_base_U[i][k];
+						U_difference_regularization[i][k] = -eta * cf_gradient_regularization_U[i][k];
 						cf_gradient_descent_U[i][k] = U[i][k] - U_difference_base[i][k] - U_difference_regularization[i][k];
 						U[i][k] = cf_gradient_descent_U[i][k];
 					}
@@ -254,21 +254,34 @@ int main() {
 			}
 		}
 
-
-		/*for (int j : movies) {
-			for (int k = 0; k < K; k++) {
-				regularized_V[j][k] = 2 * lambda * V[j][k];
-			}
-		}*/
-
-		//Initialize V variables for gradient descent
-		double derived_regularized_gradient_v = 0;
-		double derived_regularized_gradient_descent_v = 0;
-
 		derived_norm_V = derived_v_getter(n, K, lambda, V, movies);
 
 		for (int j : movies) {
-			
+			base_gradient_V = 0;
+			int current_movie = j;
+			std::set<int> current_movie_user_set = movies_users[j];
+
+			for (int i : current_movie_user_set) {
+				int current_user = i;
+				double current_rating = ratings[std::make_pair(i, j)];
+				auto current_U = U[i];
+				auto current_V_transposed = V_transposed[j];
+				double U_dot_V_transposed = dot_product(current_U, current_V_transposed);
+				double ratings_difference = U_dot_V_transposed - current_rating;
+
+				for (int j : movies) {
+					for (int k = 0; k < K; k++) {
+						auto current_U = U[j][k];
+						ratings_difference_U_product[j][k] = ratings_difference * current_U;
+						cf_gradient_base_V[i][k] = cf_gradient_base_V[i][k] + ratings_difference_U_product[j][k];
+						cf_gradient_regularization_V = derived_norm_V;
+						V_difference_base[i][k] = -eta * cf_gradient_base_V[i][k];
+						V_difference_regularization[i][k] = -eta * cf_gradient_regularization_V[i][k];
+						cf_gradient_descent_V[i][k] = V[i][k] - V_difference_base[i][k] - V_difference_regularization[i][k];
+						V[i][k] = cf_gradient_descent_V[i][k];
+					}
+				}
+			}
 		}
 
 		std::cout << "Finished iteration " << t << endl;
@@ -303,7 +316,7 @@ int main() {
 
 	//Stochastic here
 
-	
+
 
 	return 0;
 }
