@@ -243,10 +243,23 @@ int main() {
 					for (int k = 0; k < K; k++) {
 						auto current_V = V[j][k];
 						ratings_difference_V_product[j][k] = ratings_difference * current_V;
+						cf_gradient_base_U[i][k] = cf_gradient_base_U[i][k] + ratings_difference_V_product[j][k];
+						cf_gradient_regularization_U = derived_norm_U;
+						U_difference_base[i][k] = - eta * cf_gradient_base_U[i][k];
+						U_difference_regularization[i][k] =  - eta * cf_gradient_regularization_U[i][k];
+						cf_gradient_descent_U[i][k] = U[i][k] - U_difference_base[i][k] - U_difference_regularization[i][k];
+						U[i][k] = cf_gradient_descent_U[i][k];
 					}
 				}
 			}
 		}
+
+
+		/*for (int j : movies) {
+			for (int k = 0; k < K; k++) {
+				regularized_V[j][k] = 2 * lambda * V[j][k];
+			}
+		}*/
 
 		//Initialize V variables for gradient descent
 		double derived_regularized_gradient_v = 0;
