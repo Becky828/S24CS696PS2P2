@@ -58,8 +58,10 @@ std::vector<std::vector<double>> derived_v_getter(int n, int K, double lambda, s
 //Put V transposer here
 std::vector<std::vector<double>>  v_transposer(int K, std::vector<std::vector<double>> V, std::set<int> movies, int n) {
 	//int n = V.size();
-	std::vector<std::vector<double>> V_transposed(K, std::vector<double>(n, 0));
-	
+	//std::vector<std::vector<double>> V_transposed(n, std::vector<double>(K, 0));
+	//    vector<vector<int> > trans_vec(b[0].size(), vector<int>());
+
+	std::vector<std::vector<double>> V_transposed(V[0].size(), std::vector<double>(n, 0));
 	for (int j : movies) {
 		for (int k = 0; k < K; k++) {
 			V_transposed[k][j] = V[j][k];
@@ -237,13 +239,17 @@ int main() {
 				int current_movie = j;
 				double current_rating = ratings[std::make_pair(i, j)];
 				auto current_U = U[i];
-				auto current_V_transposed = V_transposed[j];
-				double U_dot_V_transposed = dot_product(current_U, current_V_transposed);
-				double ratings_difference = U_dot_V_transposed - current_rating;
+				//auto current_V_transposed = V_transposed[j];
+				//double U_dot_V_transposed = dot_product(current_U, current_V_transposed);
+				//double ratings_difference = U_dot_V_transposed - current_rating;
 
 				for (int k = 0; k < K; k++) {
-					auto current_V = V[j][k];
-					ratings_difference_V_product[j][k] = ratings_difference * current_V;
+					auto current_V_transposed = V_transposed[k];
+					double U_dot_V_transposed = dot_product(current_U, current_V_transposed);
+					double ratings_difference = U_dot_V_transposed - current_rating;
+
+					auto current_V_iteration = V[j][k];
+					ratings_difference_V_product[j][k] = ratings_difference * current_V_iteration;
 					cf_gradient_base_U[i][k] = cf_gradient_base_U[i][k] + ratings_difference_V_product[j][k];
 					cf_gradient_regularization_U = derived_norm_U;
 					U_difference_base[i][k] = -eta * cf_gradient_base_U[i][k];
@@ -265,13 +271,19 @@ int main() {
 				int current_user = i;
 				double current_rating = ratings[std::make_pair(i, j)];
 				auto current_U = U[i];
-				auto current_V_transposed = V_transposed[j];
+
+				/*auto current_V_transposed = V_transposed[j];
 				double U_dot_V_transposed = dot_product(current_U, current_V_transposed);
-				double ratings_difference = U_dot_V_transposed - current_rating;
+				double ratings_difference = U_dot_V_transposed - current_rating;*/
 
 				for (int k = 0; k < K; k++) {
-					auto current_U = V[j][k];
-					ratings_difference_V_product[i][k] = ratings_difference * current_U;
+					//auto current_U = V[j][k];
+					auto current_U_iteration = U[i][k];
+
+					auto current_V_transposed = V_transposed[k];
+					double U_dot_V_transposed = dot_product(current_U, current_V_transposed);
+					double ratings_difference = U_dot_V_transposed - current_rating;
+					ratings_difference_V_product[i][k] = ratings_difference * current_U_iteration;
 					cf_gradient_base_V[i][k] = cf_gradient_base_V[i][k] + ratings_difference_V_product[j][k];
 					cf_gradient_regularization_V = derived_norm_V;
 					V_difference_base[i][k] = -eta * cf_gradient_base_V[i][k];

@@ -29,3 +29,4 @@
 //https://www.geeksforgeeks.org/how-to-access-elements-in-set-by-index-in-cpp/
 //https://www.geeksforgeeks.org/program-for-scalar-multiplication-of-a-matrix/
 //https://timroughgarden.org/s16/l/l6.pdf
+//https://stackoverflow.com/questions/49444856/transpose-of-a-2d-matrix-using-vectors-in-c
