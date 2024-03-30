@@ -96,8 +96,8 @@ std::vector<std::vector<double>>  v_transposer(int K, std::vector<std::vector<do
 
 int main() {
 
-	std::ifstream file("very_abridged_Dataset.csv");
-	//std::ifstream file("Dataset.csv");
+	//std::ifstream file("very_abridged_Dataset.csv");
+	std::ifstream file("Dataset.csv");
 	// std::ifstream file("Movie_Id_Titles.csv");    
 	 //std::ifstream file("ratings.csv");
 	std::string line;
@@ -234,6 +234,7 @@ int main() {
 			base_gradient_U = 0;
 			int current_user = i;
 			std::set<int> current_user_movie_set = users_movies[i];
+			//std::set<int> current_user_movie_set = users_movies[i];
 
 			for (int j : current_user_movie_set) {
 				int current_movie = j;
