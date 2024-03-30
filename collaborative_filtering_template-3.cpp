@@ -56,14 +56,16 @@ std::vector<std::vector<double>> derived_v_getter(int n, int K, double lambda, s
 }
 
 //Put V transposer here
-std::vector<std::vector<double>>  v_transposer(int K, std::vector<std::vector<double>> V, std::set<int> movies) {
-	int n = V.size();
-	std::vector<std::vector<double>> V_transposed(n, std::vector<double>(movies.size() + 1, 0));
+std::vector<std::vector<double>>  v_transposer(int K, std::vector<std::vector<double>> V, std::set<int> movies, int n) {
+	//int n = V.size();
+	std::vector<std::vector<double>> V_transposed(K, std::vector<double>(n, 0));
+	
 	for (int j : movies) {
 		for (int k = 0; k < K; k++) {
 			V_transposed[k][j] = V[j][k];
 		}
 	}
+
 	return V_transposed;
 }
 //Put u dot transposed v here
@@ -92,8 +94,8 @@ std::vector<std::vector<double>>  v_transposer(int K, std::vector<std::vector<do
 
 int main() {
 
-	//std::ifstream file("datasets/movie-ratings-small.csv");
-	std::ifstream file("Dataset.csv");
+	std::ifstream file("very_abridged_Dataset.csv");
+	//std::ifstream file("Dataset.csv");
 	// std::ifstream file("Movie_Id_Titles.csv");    
 	 //std::ifstream file("ratings.csv");
 	std::string line;
@@ -222,7 +224,7 @@ int main() {
 		// you can also use the lambda, eta, and decay variables
 
 
-		std::vector<std::vector<double>> V_transposed = v_transposer(K, V, movies);
+		std::vector<std::vector<double>> V_transposed = v_transposer(K, V, movies, n);
 
 		derived_norm_U = derived_u_getter(m, K, lambda, U, users);
 
