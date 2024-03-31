@@ -102,10 +102,10 @@ std::vector<std::vector<double>> derived_v_getter(int n, int K, double lambda, s
 int main() {
 
 	//for quick debugging
-	std::ifstream file("very_abridged_Dataset.csv");
+	//std::ifstream file("very_abridged_Dataset.csv");
 
 	//for first part of p2
-	//std::ifstream file("Dataset.csv");
+	std::ifstream file("Dataset.csv");
 	// std::ifstream file("Movie_Id_Titles.csv");    
 
 	//for second part of p2
@@ -119,14 +119,15 @@ int main() {
 	std::set<int> users;
 	std::set<int> movies;
 
-	//int K = 15; // number of latent dimensions
-	//int m = 2000; // upper bound for number of users
-	//int n = 2000; // upper bound number of movies
+	//Full Dataset
+	int K = 15; // number of latent dimensions
+	int m = 2000; // upper bound for number of users
+	int n = 2000; // upper bound number of movies
 
 	//Abirdged Dataset
-	int K = 15; // number of latent dimensions
-	int m = 500; // upper bound for number of users
-	int n = 500; // upper bound number of movies
+	//int K = 15; // number of latent dimensions
+	//int m = 500; // upper bound for number of users
+	//int n = 500; // upper bound number of movies
 
 	double test_set_size = 0.1; // percentage of the data will be used for testing
 	double lambda = 1e-3; // regularization parameter
@@ -185,9 +186,9 @@ int main() {
 
 	//Using variables for debuggine purposes
 
-	////initialize the difference in ratings for U and V 
-	//std::vector<std::vector<double>> ratings_difference_U_product(m, std::vector<double>(K, 0));
-	//std::vector<std::vector<double>> ratings_difference_V_product(n, std::vector<double>(K, 0));
+	//initialize the difference in ratings for U and V 
+	std::vector<std::vector<double>> ratings_difference_U_product(m, std::vector<double>(K, 0));
+	std::vector<std::vector<double>> ratings_difference_V_product(n, std::vector<double>(K, 0));
 
 	//initialize the gradient for U and V base
 	std::vector<std::vector<double>> cf_gradient_base_U(m, std::vector<double>(K, 0));
@@ -244,27 +245,31 @@ int main() {
 		// and the derived_u_getter and derived_v_getter functions to calculate the sum of the derived U and V values
 		// you can also use the lambda, eta, and decay variables
 
-		
+		double rating_difference = 0;
 
+		
 		for (int i : users) {
-			base_gradient_U = 0;
+			//base_gradient_U = 0;
 			int current_user = i;
 			std::set<int> current_user_movie_set = users_movies[i];
 
+			
 			for (int k = 0; k < K; k++) {
 				for (int j : current_user_movie_set) {
 
 					int current_movie = j;
 					double current_rating = ratings[std::make_pair(i, j)];				
-					cf_gradient_base_U[i][k] = (dot_product(U[i], V[j]) - current_rating) * V[j][k];
+					cf_gradient_base_U[i][k] = cf_gradient_base_U[i][k] + ((dot_product(U[i], V[j]) - current_rating) * V[j][k]);
+				 //rating_difference = dot_product(U[i], V[j]) - current_rating;
+				 //ratings_difference_U_product[i][k] = rating_difference * V[j][k];
+
 				}
 				U[i][k] = U[i][k] - eta * (cf_gradient_base_U[i][k] + (2 * lambda * U[i][k]));
-			}
-			
+			}			
 		}
 
 		for (int j : movies) {
-			base_gradient_V = 0;
+			//base_gradient_V = 0;
 			int current_movie = j;
 			std::set<int> current_movie_user_set = movies_users[j];
 
@@ -275,10 +280,9 @@ int main() {
 					double current_rating = ratings[std::make_pair(i, j)];
 					auto current_U = U[i];
 				
-					cf_gradient_base_V[i][k] = (dot_product(U[i], V[j]) - current_rating) * U[i][k];
+					cf_gradient_base_V[i][k] = cf_gradient_base_V[i][k]  + ((dot_product(U[i], V[j]) - current_rating) * U[i][k]);
 				}
 				V[j][k] = V[j][k] - eta * (cf_gradient_base_V[j][k] + (2 * lambda * V[j][k]));
-
 			}			
 		}
 
