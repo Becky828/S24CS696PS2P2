@@ -36,11 +36,11 @@ double dot_product(std::vector<double>& v1, std::vector<double>& v2) {
 
 //Put V transposer here
 std::vector<std::vector<double>>  v_transposer(int K, std::vector<std::vector<double>> V, std::set<int> movies, int n) {
-//std::vector<std::vector<double>>  v_transposer(int K, std::vector<double>& v1, std::set<int> movies, int n) {
+	//std::vector<std::vector<double>>  v_transposer(int K, std::vector<double>& v1, std::set<int> movies, int n) {
 
-	//int n = V.size();
-	//std::vector<std::vector<double>> V_transposed(n, std::vector<double>(K, 0));
-	//    vector<vector<int> > trans_vec(b[0].size(), vector<int>());
+		//int n = V.size();
+		//std::vector<std::vector<double>> V_transposed(n, std::vector<double>(K, 0));
+		//    vector<vector<int> > trans_vec(b[0].size(), vector<int>());
 
 	std::vector<std::vector<double>> V_transposed(V[0].size(), std::vector<double>(n, 0));
 	for (int j : movies) {
@@ -107,7 +107,7 @@ int main() {
 	//for first part of p2
 	//std::ifstream file("Dataset.csv");
 	// std::ifstream file("Movie_Id_Titles.csv");    
-	 
+
 	//for second part of p2
 	//std::ifstream file("ratings.csv");
 
@@ -254,7 +254,7 @@ int main() {
 		//derived_norm_V = derived_v_getter(n, K, lambda, V[j], movies);
 
 		//updates V^T each iteration
-		std::vector<std::vector<double>> V_transposed = v_transposer(K, V, movies, n);
+		//std::vector<std::vector<double>> V_transposed = v_transposer(K, V, movies, n);
 
 		for (int i : users) {
 			base_gradient_U = 0;
@@ -262,15 +262,17 @@ int main() {
 			std::set<int> current_user_movie_set = users_movies[i];
 
 			for (int k = 0; k < K; k++) {
-				for (int j : current_user_movie_set) {			
-					
+				for (int j : current_user_movie_set) {
+
 					int current_movie = j;
 					double current_rating = ratings[std::make_pair(i, j)];
 					auto current_U = U[i];
 					//auto current_V_transposed = V_transposed[j];
-					auto current_V_transposed = V_transposed[k];
+			//		auto current_V_transposed = V_transposed[k];
 
-					cf_gradient_base_U[i][k] = cf_gradient_base_U[i][k] + ((dot_product(current_U, current_V_transposed) - current_rating)*U[i][k]);
+					//cf_gradient_base_U[i][k] = cf_gradient_base_U[i][k] + ((dot_product(current_U, current_V_transposed) - current_rating)*U[i][k]);
+					cf_gradient_base_U[i][k] = cf_gradient_base_U[i][k] + ((dot_product(current_U, V[j]) - current_rating) * U[i][k]);
+
 				}
 
 				//updates 2 * lambda * U_i each iteration 
