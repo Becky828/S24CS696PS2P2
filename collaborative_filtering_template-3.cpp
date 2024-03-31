@@ -153,7 +153,7 @@ int main() {
 			if (toss_coin(1 - test_set_size)) {
 				// if the coin toss is true, add the rating to the training set
 				ratings[std::make_pair(user, movie)] = rating;
-				double current_rating_a = ratings[std::make_pair(user, movie)];
+				//double current_rating_a = ratings[std::make_pair(user, movie)];
 				users_movies[user].insert(movie); // add movie to user's list of movies
 				movies_users[movie].insert(user); // add user to movie's list of users
 			}
@@ -191,8 +191,8 @@ int main() {
 	std::vector<std::vector<double>> ratings_difference_V_product(n, std::vector<double>(K, 0));
 
 	//initialize the gradient for U and V base
-	std::vector<std::vector<double>> cf_gradient_base_U(m, std::vector<double>(K, 0));
-	std::vector<std::vector<double>> cf_gradient_base_V(n, std::vector<double>(K, 0));
+	//std::vector<std::vector<double>> cf_gradient_base_U(m, std::vector<double>(K, 0));
+	//std::vector<std::vector<double>> cf_gradient_base_V(n, std::vector<double>(K, 0));
 
 	//initialize the gradient regularization for U and V
 	std::vector<std::vector<double>> cf_gradient_regularization_U(m, std::vector<double>(K, 0));
@@ -227,8 +227,8 @@ int main() {
 		}
 	}
 
-	int base_gradient_U;
-	int base_gradient_V;
+	//int base_gradient_U;
+	//int base_gradient_V;
 	int m_size = movies.size();
 
 
@@ -245,45 +245,89 @@ int main() {
 		// and the derived_u_getter and derived_v_getter functions to calculate the sum of the derived U and V values
 		// you can also use the lambda, eta, and decay variables
 
-		double rating_difference = 0;
 
-		
+		//resets the base gradient for U and V
+		//std::fill(cf_gradient_base_U.begin(), cf_gradient_base_U.end(), 0);
+		//std::fill(cf_gradient_base_V.begin(), cf_gradient_base_V.end(), 0);
+
+		/*std::vector<std::vector<double>>cf_gradient_base_U(m, std::vector<double>(K, 0));
+		std::vector<std::vector<double>> cf_gradient_base_V(n, std::vector<double>(K, 0));*/
+
+		//initialize the gradient for U and V base. This is the gradient for the base of the gradient descent. 
+		//since the gradient base of you involves the scalar product of V, it is initialized to the size of vector V
+		//Likewise, gradient base of V involves the scalar product of U, so it is initialized to the size of vector U
+		std::vector<std::vector<double>>cf_gradient_base_U(n, std::vector<double>(K, 0));
+
+		derived_norm_U = derived_u_getter(m, K, lambda, U, users);
+
+
 		for (int i : users) {
 			//base_gradient_U = 0;
 			int current_user = i;
+			double rating_difference = 0;
+
 			std::set<int> current_user_movie_set = users_movies[i];
 
-			
 			for (int k = 0; k < K; k++) {
-				for (int j : current_user_movie_set) {
 
+				for (int j : current_user_movie_set) {
 					int current_movie = j;
-					double current_rating = ratings[std::make_pair(i, j)];				
+					double current_rating = ratings[std::make_pair(current_user, current_movie)];
 					cf_gradient_base_U[i][k] = cf_gradient_base_U[i][k] + ((dot_product(U[i], V[j]) - current_rating) * V[j][k]);
-				 //rating_difference = dot_product(U[i], V[j]) - current_rating;
-				 //ratings_difference_U_product[i][k] = rating_difference * V[j][k];
+					//rating_difference = dot_product(U[i], V[j]) - current_rating;
+					//ratings_difference_U_product[i][k] = rating_difference * V[j][k];
 
 				}
-				U[i][k] = U[i][k] - eta * (cf_gradient_base_U[i][k] + (2 * lambda * U[i][k]));
-			}			
+				//U[i][k] = U[i][k] - eta * (cf_gradient_base_U[i][k] + (2 * lambda * U[i][k]));
+
+				//performs the base gradient descent for U
+				U[i][k] = U[i][k] - eta * (cf_gradient_base_U[i][k]);
+
+				//performs the regularization gradient descent for U
+				//U[i][k] = U[i][k] - eta * (2 * lambda * U[i][k]);
+
+				//performs the regularization gradient descent for U excepting the eta
+				U[i][k] = U[i][k] - (2 * lambda * U[i][k]);
+			}
 		}
+
+		/*for (int i : users) {
+			for (int k = 0; k < K; k++)
+				derived_norm_U[i][k] = eta * derived_norm_U[i][k];
+
+		}
+
+		U[i] = U[i] - derived_norm_U[i];*/
+		//}
+
+		derived_norm_V = derived_v_getter(n, K, lambda, V, movies);
+		std::vector<std::vector<double>> cf_gradient_base_V(m, std::vector<double>(K, 0));
 
 		for (int j : movies) {
 			//base_gradient_V = 0;
 			int current_movie = j;
+			double rating_difference = 0;
+
 			std::set<int> current_movie_user_set = movies_users[j];
 
 			for (int k = 0; k < K; k++) {
 				for (int i : current_movie_user_set) {
 
 					int current_user = i;
-					double current_rating = ratings[std::make_pair(i, j)];
+					double current_rating = ratings[std::make_pair(current_user, current_movie)];
 					auto current_U = U[i];
-				
-					cf_gradient_base_V[i][k] = cf_gradient_base_V[i][k]  + ((dot_product(U[i], V[j]) - current_rating) * U[i][k]);
+
+					cf_gradient_base_V[i][k] = cf_gradient_base_V[i][k] + ((dot_product(U[i], V[j]) - current_rating) * U[i][k]);
 				}
-				V[j][k] = V[j][k] - eta * (cf_gradient_base_V[j][k] + (2 * lambda * V[j][k]));
-			}			
+				//performs the base gradient descent for U
+				V[j][k] = V[j][k] - eta * (cf_gradient_base_V[j][k]);
+
+				//performs the regularization gradient descent for U
+				//V[j][k] = V[j][k] - eta * (2 * lambda * V[j][k]);
+
+				//performs the regularization gradient descent for U excepting the eta
+				V[j][k] = V[j][k] - (2 * lambda * V[j][k]);
+			}
 		}
 
 		std::cout << "Finished iteration " << t << endl;
@@ -306,12 +350,6 @@ int main() {
 		else if (prediction < 1) {
 			prediction = 1;
 		}
-
-		//for debugging purposes
-		auto current_U = U[i];
-		auto current_V = V[j];
-		double U_dot_V = dot_product(current_U, current_V);
-		double ratings_difference = U_dot_V - r;
 		mae += abs(dot_product(U[i], V[j]) - r);
 		mae_random += abs(3 - r);
 	}
@@ -320,11 +358,6 @@ int main() {
 	mae_random = static_cast<double>(mae_random / test_set.size());
 	std::cout << "Mean Absolute Error: " << mae << std::endl;
 	std::cout << "Mean Absolute Error Random Guess: " << mae_random << std::endl;
-
-
-	//Stochastic here
-
-
 
 	return 0;
 }

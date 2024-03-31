@@ -32,3 +32,4 @@
 //https://stackoverflow.com/questions/49444856/transpose-of-a-2d-matrix-using-vectors-in-c
 //https://www.geeksforgeeks.org/gradient-descent-in-linear-regression/
 //https://github.com/Pauloguilhermepp/GradientDescent/blob/main/src/GradientDescent/VanillaGradientDescent/VanillaGradientDescent.cpp
+//https://stackoverflow.com/questions/8848575/fastest-way-to-reset-every-value-of-stdvectorint-to-0
