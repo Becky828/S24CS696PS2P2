@@ -247,11 +247,11 @@ int main() {
 		////updates V^T each iteration
 		//std::vector<std::vector<double>> V_transposed = v_transposer(K, V[j], movies, n);
 
-		////updates 2 * lambda * U_i each iteration 
-		//derived_norm_U = derived_u_getter(m, K, lambda, U[i], users);
+		//updates 2 * lambda * U_i each iteration 
+//		derived_norm_U = derived_u_getter(m, K, lambda, U[i], users);
 
-		////updates 2 * lambda * V_j each iteration
-		//derived_norm_V = derived_v_getter(n, K, lambda, V[j], movies);
+		//updates 2 * lambda * V_j each iteration
+	//	derived_norm_V = derived_v_getter(n, K, lambda, V[j], movies);
 
 		//updates V^T each iteration
 		//std::vector<std::vector<double>> V_transposed = v_transposer(K, V, movies, n);
@@ -266,22 +266,92 @@ int main() {
 
 					int current_movie = j;
 					double current_rating = ratings[std::make_pair(i, j)];
-					auto current_U = U[i];
+					//auto current_U = U[i];
 					//auto current_V_transposed = V_transposed[j];
 			//		auto current_V_transposed = V_transposed[k];
 
 					//cf_gradient_base_U[i][k] = cf_gradient_base_U[i][k] + ((dot_product(current_U, current_V_transposed) - current_rating)*U[i][k]);
-					cf_gradient_base_U[i][k] = cf_gradient_base_U[i][k] + ((dot_product(current_U, V[j]) - current_rating) * U[i][k]);
-
+					//cf_gradient_base_U[i][k] = cf_gradient_base_U[i][k] + ((dot_product(current_U, V[j]) - current_rating) * V[j][k]);
+					cf_gradient_base_U[i][k] = (dot_product(U[i], V[j]) - current_rating) * V[j][k];
 				}
 
 				//updates 2 * lambda * U_i each iteration 
-				derived_norm_U = derived_u_getter(m, K, lambda, U, users);
-				cf_gradient_regularization_U = derived_norm_U;
+				//derived_norm_U = derived_u_getter(m, K, lambda, U[i], users);
+				//cf_gradient_regularization_U = derived_norm_U;
 
-				cf_gradient_descent_U[i][k] = U[i][k] - eta * (cf_gradient_base_U[i][k] + cf_gradient_regularization_U[i][k]);
+				//cf_gradient_descent_U[i][k] = U[i][k] - eta * (cf_gradient_base_U[i][k] + cf_gradient_regularization_U[i][k]);
+				U[i][k] = U[i][k] - eta * (cf_gradient_base_U[i][k] + (2 * lambda * U[i][k]));
+				//U[i][k] = U[i][k] - eta * (gradient_base_U + (2 * lambda * U[i][k]));
+
+
 			}
-			U[i] = cf_gradient_descent_U[i];
+			//U[i] = cf_gradient_descent_U[i];
+			//std::set<int> current_user_movie_set = users_movies[i];
+
+			//for (int j : current_user_movie_set) {
+			//	//updates V^T each iteration
+			//	std::vector<std::vector<double>> V_transposed = v_transposer(K, V, movies, n);
+
+			//	//updates 2 * lambda * U_i each iteration 
+			//	derived_norm_U = derived_u_getter(m, K, lambda, U, users);
+
+			//	//updates 2 * lambda * V_j each iteration
+			//	derived_norm_V = derived_v_getter(n, K, lambda, V, movies);
+
+
+
+			//	int current_movie = j;
+			//	double current_rating = ratings[std::make_pair(i, j)];
+			//	auto current_U = U[i];
+			//	//auto current_V_transposed = V_transposed[j];
+			//	//double U_dot_V_transposed = dot_product(current_U, current_V_transposed);
+			//	//double ratings_difference = U_dot_V_transposed - current_rating;
+
+			//	for (int k = 0; k < K; k++) {
+			//		auto current_V_transposed = V_transposed[k];
+			//		double U_dot_V_transposed = dot_product(current_U, current_V_transposed);
+			//		double ratings_difference = U_dot_V_transposed - current_rating;
+			//		double current_V_iteration = V[j][k];
+
+			//		//Using variables for debuggine purposes
+			//		/*ratings_difference_V_product[j][k] = ratings_difference * current_V_iteration;
+			//		cf_gradient_base_U[i][k] = cf_gradient_base_U[i][k] + ratings_difference_V_product[j][k];
+			//		cf_gradient_regularization_U = derived_norm_U;
+			//		U_difference_base[i][k] = -eta * cf_gradient_base_U[i][k];
+			//		U_difference_regularization[i][k] = -eta * cf_gradient_regularization_U[i][k];
+			//		cf_gradient_descent_U[i][k] = U[i][k] - U_difference_base[i][k] - U_difference_regularization[i][k];*/
+
+
+
+			//		U[i][k] = cf_gradient_descent_U[i][k];
+			//	}
+			//}
+		}
+
+		for (int j : movies) {
+			base_gradient_V = 0;
+			int current_movie = j;
+			std::set<int> current_movie_user_set = movies_users[j];
+
+			for (int k = 0; k < K; k++) {
+				for (int i : current_movie_user_set) {
+
+					int current_user = i;
+					double current_rating = ratings[std::make_pair(i, j)];
+					auto current_U = U[i];
+				
+					cf_gradient_base_V[i][k] = (dot_product(U[i], V[j]) - current_rating) * U[i][k];
+				}
+
+				//updates 2 * lambda * U_i each iteration 
+				//derived_norm_V = derived_v_getter(m, K, lambda, V, movies);
+				//cf_gradient_regularization_V = derived_norm_V;
+
+				//cf_gradient_descent_V[j][k] = V[j][k] - eta * (cf_gradient_base_V[j][k] + cf_gradient_regularization_V[j][k]);
+				V[j][k] = V[j][k] - eta * (cf_gradient_base_V[j][k] + (2 * lambda * V[j][k]));
+
+			}
+			//V[j] = cf_gradient_descent_V[j];
 			//std::set<int> current_user_movie_set = users_movies[i];
 
 			//for (int j : current_user_movie_set) {
@@ -381,6 +451,12 @@ int main() {
 		else if (prediction < 1) {
 			prediction = 1;
 		}
+
+		//for debugging purposes
+		auto current_U = U[i];
+		auto current_V = V[j];
+		double U_dot_V = dot_product(current_U, current_V);
+		double ratings_difference = U_dot_V - r;
 		mae += abs(dot_product(U[i], V[j]) - r);
 		mae_random += abs(3 - r);
 	}
