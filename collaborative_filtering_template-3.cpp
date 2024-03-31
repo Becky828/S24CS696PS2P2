@@ -119,9 +119,14 @@ int main() {
 	std::set<int> users;
 	std::set<int> movies;
 
+	//int K = 15; // number of latent dimensions
+	//int m = 2000; // upper bound for number of users
+	//int n = 2000; // upper bound number of movies
+
+	//Abirdged Dataset
 	int K = 15; // number of latent dimensions
-	int m = 2000; // upper bound for number of users
-	int n = 2000; // upper bound number of movies
+	int m = 500; // upper bound for number of users
+	int n = 500; // upper bound number of movies
 
 	double test_set_size = 0.1; // percentage of the data will be used for testing
 	double lambda = 1e-3; // regularization parameter
@@ -262,7 +267,9 @@ int main() {
 					int current_movie = j;
 					double current_rating = ratings[std::make_pair(i, j)];
 					auto current_U = U[i];
-					auto current_V_transposed = V_transposed[j];
+					//auto current_V_transposed = V_transposed[j];
+					auto current_V_transposed = V_transposed[k];
+
 					cf_gradient_base_U[i][k] = cf_gradient_base_U[i][k] + ((dot_product(current_U, current_V_transposed) - current_rating)*U[i][k]);
 				}
 
