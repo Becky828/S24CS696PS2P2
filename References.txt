@@ -33,3 +33,10 @@
 //https://www.geeksforgeeks.org/gradient-descent-in-linear-regression/
 //https://github.com/Pauloguilhermepp/GradientDescent/blob/main/src/GradientDescent/VanillaGradientDescent/VanillaGradientDescent.cpp
 //https://stackoverflow.com/questions/8848575/fastest-way-to-reset-every-value-of-stdvectorint-to-0
+//https://www.cs.cornell.edu/courses/cs4780/2018fa/lectures/lecturenote07.html
+//https://towardsdatascience.com/hyper-parameter-tuning-techniques-in-deep-learning-4dad592c63c8
+//https://datascience.stackexchange.com/questions/33172/using-mean-squared-error-in-gradient-descent
+//https://towardsdatascience.com/hyper-parameter-tuning-techniques-in-deep-learning-4dad592c63c8
+//https://medium.com/swlh/regularization-and-gradient-descent-cheat-sheet-d1be74a4ee53
+//https://towardsdatascience.com/https-medium-com-dashingaditya-rakhecha-understanding-learning-rate-dd5da26bb6de#:~:text=In%20order%20for%20Gradient%20Descent,will%20skip%20the%20optimal%20solution.
+//https://github.com/christianversloot/machine-learning-articles/blob/main/finding-optimal-learning-rates-with-the-learning-rate-range-test.md

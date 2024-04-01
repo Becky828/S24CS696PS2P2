@@ -75,29 +75,114 @@ std::vector<std::vector<double>> derived_v_getter(int n, int K, double lambda, s
 }
 
 
-//Put u dot transposed v here
+//
+void gradient_descent_finder(int n_iterations, double eta, double lambda, double decay, std::set<int> users, std::set<int>  movies, std::map<std::pair<int, int>, 
+	double> ratings, std::map<int, std::set<int>> users_movies, std::map<int, std::set<int>> movies_users, int m, int n, int K, std::vector<std::vector<double>> U, std::vector<std::vector<double>> V) {
 
-//Put ratings difference here
+	//Put gradient descent here
 
-//Put derived u product here
+	double U_dot_V = 0;
+	double V_dot_U = 0;
 
-//Put derived v product here
+	for (int t = 0; t < n_iterations; t++) {
+		eta = eta * decay; // decay the learning rate over time
 
-//Put gradient u here
 
-//Put gradient v here
+		// implement gradient descent here:
+		// you may want to use for (int i : users) and for (int j : movies) 
+		// to iterate over all users and movies instead of for (int i = 0; i < m; i++) and for (int j = 0; j < n; j++)
+		// to avoid iterating over users and movies that are not in the training set
 
-//Put stochastic u gradient here
+		// you may also want to use the dot_product function to calculate the dot product of U[i] and V[j]
+		// and the derived_u_getter and derived_v_getter functions to calculate the sum of the derived U and V values
+		// you can also use the lambda, eta, and decay variables
 
-//Put stochastic v gradient here
+		for (int i : users) {
+			int current_user = i;
+			std::set<int> current_user_movie_set = users_movies[current_user];
+			std::vector<std::vector<double>>cf_gradient_base_U(n, std::vector<double>(K, 0));
 
-//Put u gradient descent here
+			for (int k = 0; k < K; k++) {
 
-//Put v gradient descent here
+				for (int j : current_user_movie_set) {
+					int current_movie = j;
+					U_dot_V = dot_product(U[i], V[j]);
+
+					double current_rating = ratings[std::make_pair(current_user, current_movie)];
+					cf_gradient_base_U[i][k] = cf_gradient_base_U[i][k] + (U_dot_V - current_rating) * V[j][k];
+				}
+
+				//performs the base gradient descent for U
+				U[i][k] = U[i][k] - eta * (cf_gradient_base_U[i][k]);
+
+				//performs the regularization gradient descent for U
+				U[i][k] = U[i][k] - eta * (2 * lambda * U[i][k]);
+			}
+		}
+
+		for (int j : movies) {
+			int current_movie = j;
+			std::vector<std::vector<double>> cf_gradient_base_V(m, std::vector<double>(K, 0));
+			std::set<int> current_movie_user_set = movies_users[j];
+
+			for (int k = 0; k < K; k++) {
+				for (int i : current_movie_user_set) {
+					V_dot_U = dot_product(V[j], U[i]);
+					int current_user = i;
+					double current_rating = ratings[std::make_pair(current_user, current_movie)];
+					cf_gradient_base_V[j][k] = cf_gradient_base_V[j][k] + (V_dot_U - current_rating) * U[i][k];
+				}
+
+				//performs the base gradient descent for V
+				V[j][k] = V[j][k] - eta * (cf_gradient_base_V[j][k]);
+
+				//performs the regularization gradient descent for V
+				V[j][k] = V[j][k] - eta * (2 * lambda * V[j][k]);
+			}
+		}
+
+		std::cout << "Finished iteration " << t << endl;
+	}
+
+	std::cout << "Finish Gradient Descent" << std::endl;
+}
+
 
 //Put stochastic u gradient descent here
 
 //Put stochastic v gradient descent here
+
+
+void mae_finder(std::map<std::pair<int, int>, double> test_set, std::vector<std::vector<double>> U, std::vector<std::vector<double>> V)
+{
+	//Put MAE here
+	
+
+	// calculate the mean absolute error
+	double mae = 0;
+	double mae_random = 0; // mean absolute error if we were to guess 3 for every rating
+
+	for (auto& x : test_set) {
+		int i = x.first.first;
+		int j = x.first.second;
+		double r = x.second;
+		double prediction = dot_product(U[i], V[j]);
+		if (prediction > 5) {
+			prediction = 5;
+		}
+		else if (prediction < 1) {
+			prediction = 1;
+		}
+		mae += abs(dot_product(U[i], V[j]) - r);
+		mae_random += abs(3 - r);
+	}
+
+	mae = static_cast<double>(mae / test_set.size());
+	mae_random = static_cast<double>(mae_random / test_set.size());
+	std::cout << "Mean Absolute Error: " << mae << std::endl;
+	std::cout << "Mean Absolute Error Random Guess: " << mae_random << std::endl;
+}
+
 
 int main() {
 
@@ -131,9 +216,14 @@ int main() {
 
 	double test_set_size = 0.1; // percentage of the data will be used for testing
 	double lambda = 1e-3; // regularization parameter
+	double lambda_10_times_up = lambda * 10;
+	double lambda_10_times_down = lambda / 10;
 	double eta = 1e-4; // learning rate
+	double eta_10_times_up = eta * 10;
+	double eta_10_times_down = eta / 10;
 	double decay = 0.9; // decay rate
 	int n_iterations = 35; // number of iterations for the gradient descent
+	int n_interations_double = 2 * n_iterations;
 
 	if (file.is_open()) {
 		std::getline(file, line); // skip the first line
@@ -218,8 +308,6 @@ int main() {
 	std::vector<std::vector<double>> cf_stochastic_gradient_descent_U(m, std::vector<double>(K, 0));
 	std::vector<std::vector<double>> cf_stochastic_gradient_descent_V(n, std::vector<double>(K, 0));
 
-	double U_dot_V = 0;
-	double V_dot_U = 0;
 
 	// initialize U and V with random values
 	for (int i : users) {
@@ -234,92 +322,57 @@ int main() {
 		}
 	}
 
+	
+	// gradient descent found with given hyper parameters
+	std::cout << "Given Hyperpaarameters" << std::endl;
+	gradient_descent_finder(n_iterations, eta, lambda, decay, users, movies, ratings, users_movies, movies_users, m, n, K, U, V);
 
-	for (int t = 0; t < n_iterations; t++) {
-		eta = eta * decay; // decay the learning rate over time
+	//mae found for the given hyper parameters
+	mae_finder(test_set, U, V);
+
+	//resetting U and V
+	U = copy_U;
+	V = copy_V;
+
+	//doubling the number of iterations appears to reduce the MSE by around 0.01
+	n_iterations = n_interations_double;
+
+	//gradient descent found with the doubled number of iterations
+	std::cout << "Doubled Number of Iterations" << std::endl;
+	gradient_descent_finder(n_iterations, eta, lambda, decay, users, movies, ratings, users_movies, movies_users, m, n, K, U, V);
+
+	//mae found for the doubled number of iterations
+	mae_finder(test_set, U, V);
 
 
-		// implement gradient descent here:
-		// you may want to use for (int i : users) and for (int j : movies) 
-		// to iterate over all users and movies instead of for (int i = 0; i < m; i++) and for (int j = 0; j < n; j++)
-		// to avoid iterating over users and movies that are not in the training set
+	//resetting U and V
+	U = copy_U;
+	V = copy_V;
 
-		// you may also want to use the dot_product function to calculate the dot product of U[i] and V[j]
-		// and the derived_u_getter and derived_v_getter functions to calculate the sum of the derived U and V values
-		// you can also use the lambda, eta, and decay variables
+	//muliplying the eta by 10 appears to reduce the MSE by around  0.2
+	eta = eta_10_times_up;
 
-		for (int i : users) {
-			int current_user = i;
-			std::set<int> current_user_movie_set = users_movies[current_user];
-			std::vector<std::vector<double>>cf_gradient_base_U(n, std::vector<double>(K, 0));
+	//gradient descent found with the doubled number of iterations and eta times 10
+	std::cout << "Doubled Number of Iterations and eta times 10" << std::endl;
+	gradient_descent_finder(n_iterations, eta, lambda, decay, users, movies, ratings, users_movies, movies_users, m, n, K, U, V);
 
-			for (int k = 0; k < K; k++) {
+	//mae found for the doubled number of iterations and eta times 10
+	mae_finder(test_set, U, V);
 
-				for (int j : current_user_movie_set) {
-					int current_movie = j;
-					U_dot_V = dot_product(U[i], V[j]);
+	//resetting U and V
+	U = copy_U;
+	V = copy_V;
 
-					double current_rating = ratings[std::make_pair(current_user, current_movie)];
-					cf_gradient_base_U[i][k] = cf_gradient_base_U[i][k] + (U_dot_V - current_rating) * V[j][k];
-				}
+	//muliplying the lambda by 10 appears to reduce the MSE by around  0.01
+	lambda = lambda_10_times_up;
 
-				//performs the base gradient descent for U
-				U[i][k] = U[i][k] - eta * (cf_gradient_base_U[i][k]);
+	//gradient decent found with the doubled number of iterations, eta times 10, and lambda times 10
+	std::cout << "Doubled Number of Iterations, eta times 10, and lambda times 10" << std::endl;
 
-				//performs the regularization gradient descent for U
-				U[i][k] = U[i][k] - eta * (2 * lambda * U[i][k]);
-			}
-		}
+	gradient_descent_finder(n_iterations, eta, lambda, decay, users, movies, ratings, users_movies, movies_users, m, n, K, U, V);
 
-		for (int j : movies) {
-			int current_movie = j;
-			std::vector<std::vector<double>> cf_gradient_base_V(m, std::vector<double>(K, 0));
-			std::set<int> current_movie_user_set = movies_users[j];
-
-			for (int k = 0; k < K; k++) {
-				for (int i : current_movie_user_set) {
-					V_dot_U = dot_product(V[j], U[i]);
-					int current_user = i;
-					double current_rating = ratings[std::make_pair(current_user, current_movie)];
-					cf_gradient_base_V[j][k] = cf_gradient_base_V[j][k] + (V_dot_U - current_rating) * U[i][k];
-				}
-
-				//performs the base gradient descent for V
-				V[j][k] = V[j][k] - eta * (cf_gradient_base_V[j][k]);
-
-				//performs the regularization gradient descent for V
-				V[j][k] = V[j][k] - eta * (2 * lambda * V[j][k]);
-			}
-		}
-
-		std::cout << "Finished iteration " << t << endl;
-	}
-
-	std::cout << "Finish Gradient Descent" << std::endl;
-
-	// calculate the mean absolute error
-	double mae = 0;
-	double mae_random = 0; // mean absolute error if we were to guess 3 for every rating
-
-	for (auto& x : test_set) {
-		int i = x.first.first;
-		int j = x.first.second;
-		double r = x.second;
-		double prediction = dot_product(U[i], V[j]);
-		if (prediction > 5) {
-			prediction = 5;
-		}
-		else if (prediction < 1) {
-			prediction = 1;
-		}
-		mae += abs(dot_product(U[i], V[j]) - r);
-		mae_random += abs(3 - r);
-	}
-
-	mae = static_cast<double>(mae / test_set.size());
-	mae_random = static_cast<double>(mae_random / test_set.size());
-	std::cout << "Mean Absolute Error: " << mae << std::endl;
-	std::cout << "Mean Absolute Error Random Guess: " << mae_random << std::endl;
+	//mae found for the doubled number of iterations, eta times 10, and lambda times 10
+	mae_finder(test_set, U, V);
 
 	return 0;
 }
