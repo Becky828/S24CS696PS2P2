@@ -108,15 +108,23 @@ std::vector<std::vector<std::vector<double>>> gradient_descent_finder(int n_iter
 					U_dot_V = dot_product(U[i], V[j]);
 
 					double current_rating = ratings[std::make_pair(current_user, current_movie)];
-					cf_gradient_base_U[i][k] = cf_gradient_base_U[i][k] + (U_dot_V - current_rating) * V[j][k];
+					//cf_gradient_base_U[i][k] = cf_gradient_base_U[i][k] + (U_dot_V - current_rating) * V[j][k];
+					cf_gradient_base_U[i][t] = cf_gradient_base_U[i][t] + (U_dot_V - current_rating) * V[j][t];
+
 				}
 
-				//performs the base gradient descent for U
-				U[i][k] = U[i][k] - eta * (cf_gradient_base_U[i][k]);
+				////performs the base gradient descent for U
+				//U[i][k] = U[i][k] - eta * (cf_gradient_base_U[i][k]);
 
-				//performs the regularization gradient descent for U
-				U[i][k] = U[i][k] - eta * (2 * lambda * U[i][k]);
+				////performs the regularization gradient descent for U
+				//U[i][k] = U[i][k] - eta * (2 * lambda * U[i][k]);
 			}
+
+			//performs the base gradient descent for U
+			U[i][t] = U[i][t] - eta * (cf_gradient_base_U[i][t]);
+
+			//performs the regularization gradient descent for U
+			U[i][t] = U[i][t] - eta * (2 * lambda * U[i][t]);
 		}
 
 		for (int j : movies) {
@@ -131,15 +139,21 @@ std::vector<std::vector<std::vector<double>>> gradient_descent_finder(int n_iter
 					int current_user = i;
 					double current_rating = ratings[std::make_pair(current_user, current_movie)];
 					//cf_gradient_base_V[j][k] = cf_gradient_base_V[j][k] + (V_dot_U - current_rating) * U[i][k];
-					cf_gradient_base_V[j][k] = cf_gradient_base_V[j][k] + (U_dot_V - current_rating) * U[i][k];
+					cf_gradient_base_V[j][t] = cf_gradient_base_V[j][t] + (U_dot_V - current_rating) * U[i][t];
 				}
 
-				//performs the base gradient descent for V
-				V[j][k] = V[j][k] - eta * (cf_gradient_base_V[j][k]);
+				////performs the base gradient descent for V
+				//V[j][k] = V[j][k] - eta * (cf_gradient_base_V[j][k]);
 
-				//performs the regularization gradient descent for V
-				V[j][k] = V[j][k] - eta * (2 * lambda * V[j][k]);
+				////performs the regularization gradient descent for V
+				//V[j][k] = V[j][k] - eta * (2 * lambda * V[j][k]);
 			}
+
+			//performs the base gradient descent for V
+			V[j][t] = V[j][t] - eta * (cf_gradient_base_V[j][t]);
+
+			//performs the regularization gradient descent for V
+			V[j][t] = V[j][t] - eta * (2 * lambda * V[j][t]);
 		}
 
 		std::cout << "Finished iteration " << t << endl;
