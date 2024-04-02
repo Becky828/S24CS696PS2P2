@@ -126,10 +126,12 @@ std::vector<std::vector<std::vector<double>>> gradient_descent_finder(int n_iter
 
 			for (int k = 0; k < K; k++) {
 				for (int i : current_movie_user_set) {
-					V_dot_U = dot_product(V[j], U[i]);
+					//V_dot_U = dot_product(V[j], U[i]);
+					U_dot_V = dot_product(U[i], V[j]);
 					int current_user = i;
 					double current_rating = ratings[std::make_pair(current_user, current_movie)];
-					cf_gradient_base_V[j][k] = cf_gradient_base_V[j][k] + (V_dot_U - current_rating) * U[i][k];
+					//cf_gradient_base_V[j][k] = cf_gradient_base_V[j][k] + (V_dot_U - current_rating) * U[i][k];
+					cf_gradient_base_V[j][k] = cf_gradient_base_V[j][k] + (U_dot_V - current_rating) * U[i][k];
 				}
 
 				//performs the base gradient descent for V
@@ -166,8 +168,8 @@ std::vector<std::vector<std::vector<double>>> stochastic_gradient_descent_finder
 
 		//select a random i
 		int current_user = rand() % users.size() + 1;
-
-
+		
+		int current_movie = rand() % movies.size() + 1;
 		//	double current_rating = ratings[std::make_pair(current_user, current_movie)];
 
 
@@ -182,43 +184,48 @@ std::vector<std::vector<std::vector<double>>> stochastic_gradient_descent_finder
 		// you can also use the lambda, eta, and decay variables
 
 		for (int i : users) {
-			int current_user = i;
-			std::set<int> current_user_movie_set = users_movies[current_user];
-			std::vector<std::vector<double>>cf_gradient_base_U(n, std::vector<double>(K, 0));
+			//int current_user = i;
+			std::set<int> current_user_movie_set = users_movies[i];
+			//std::vector<std::vector<double>>cf_gradient_base_U(n, std::vector<double>(K, 0));
 
 			for (int k = 0; k < K; k++) {
-
-				for (int j : current_user_movie_set) {
+				U_dot_V = dot_product(U[i], V[current_movie]);
+				
+				//performs the base gradient descent for U
+				U[i][k] = U[i][k] - eta * (U_dot_V - ratings[std::make_pair(i, current_movie)]) * V[current_movie][k];
+				
+				//performs the regularization gradient descent for U
+				U[i][k] = U[i][k] - eta * (2 * lambda * U[i][k]);
+				/*for (int j : current_user_movie_set) {
 					int current_movie = j;
 					U_dot_V = dot_product(U[i], V[j]);
 
 					double current_rating = ratings[std::make_pair(current_user, current_movie)];
 					cf_gradient_base_U[i][k] = cf_gradient_base_U[i][k] + (U_dot_V - current_rating) * V[j][k];
-				}
+				}*/
 
-				//performs the base gradient descent for U
-				U[i][k] = U[i][k] - eta * (cf_gradient_base_U[i][k]);
-
-				//performs the regularization gradient descent for U
-				U[i][k] = U[i][k] - eta * (2 * lambda * U[i][k]);
+			
 			}
 		}
 
 		for (int j : movies) {
 			int current_movie = j;
-			std::vector<std::vector<double>> cf_gradient_base_V(m, std::vector<double>(K, 0));
+			//std::vector<std::vector<double>> cf_gradient_base_V(m, std::vector<double>(K, 0));
 			std::set<int> current_movie_user_set = movies_users[j];
 
 			for (int k = 0; k < K; k++) {
-				for (int i : current_movie_user_set) {
+				//V_dot_U = dot_product(U[current_user], V[]
+				V[current_user][k] = V[current_user][k] - eta * (V_dot_U - ratings[std::make_pair(current_user, current_movie)]) * U[current_user][k];
+				
+				/*for (int i : current_movie_user_set) {
 					V_dot_U = dot_product(V[j], U[i]);
 					int current_user = i;
 					double current_rating = ratings[std::make_pair(current_user, current_movie)];
 					cf_gradient_base_V[j][k] = cf_gradient_base_V[j][k] + (V_dot_U - current_rating) * U[i][k];
-				}
+				}*/
 
 				//performs the base gradient descent for V
-				V[j][k] = V[j][k] - eta * (cf_gradient_base_V[j][k]);
+				//V[j][k] = V[j][k] - eta * (cf_gradient_base_V[j][k]);
 
 				//performs the regularization gradient descent for V
 				V[j][k] = V[j][k] - eta * (2 * lambda * V[j][k]);
@@ -478,7 +485,6 @@ int main() {
 	//gradient descent found with the doubled number of iterations and eta times 10
 	std::cout << "3 of 5:" << std::endl;
 	std::cout << "Doubled Number of Iterations, eta times 10, and unchanged lambda" << std::endl;
-	std::cout << "This provided the lowest found MAE." << std::endl;
 
 	//gets updated V and U
 	updated_U_V = gradient_descent_finder(n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V, V_dot_U, users_movies, movies_users, m, n, K, U, V);
@@ -511,6 +517,7 @@ int main() {
 	//gradient descent found with the doubled number of iterations, eta times 10, and lambda times 10
 	std::cout << "4 of 5:" << std::endl;
 	std::cout << "Doubled Number of Iterations, eta times 10, and lambda times 10" << std::endl;
+	std::cout << "This provided the lowest found MAE." << std::endl;
 
 	//gets updated V and U
 	updated_U_V = gradient_descent_finder(n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V, V_dot_U, users_movies, movies_users, m, n, K, U, V);
