@@ -97,7 +97,6 @@ std::vector<std::vector<std::vector<double>>> gradient_descent_finder(int n_iter
 		// you can also use the lambda, eta, and decay variables
 
 		for (int i : users) {
-
 			int current_user = i;
 			std::set<int> current_user_movie_set = users_movies[current_user];
 			std::vector<std::vector<double>>cf_gradient_base_U(n, std::vector<double>(K, 0));
@@ -109,47 +108,15 @@ std::vector<std::vector<std::vector<double>>> gradient_descent_finder(int n_iter
 					U_dot_V = dot_product(U[i], V[j]);
 
 					double current_rating = ratings[std::make_pair(current_user, current_movie)];
-
-					//although the MAE is a bit higher than preferred, the code runs without the vector out of range error
 					cf_gradient_base_U[i][k] = cf_gradient_base_U[i][k] + (U_dot_V - current_rating) * V[j][k];
-
-					//Contributes to vector out of range error when t > 14
-					//cf_gradient_base_U[i][t] = cf_gradient_base_U[i][t] + (U_dot_V - current_rating) * V[j][t];
-
 				}
 
-				//although the MAE is a bit higher than preferred, the code runs without compiler error E0349: no operator "*" matches these operands or vector out of range error.
-				// This also results in an MAE that is lower than the Random Guess MAE.
-
 				//performs the base gradient descent for U
-				 
 				U[i][k] = U[i][k] - eta * (cf_gradient_base_U[i][k]);
 
 				//performs the regularization gradient descent for U
 				U[i][k] = U[i][k] - eta * (2 * lambda * U[i][k]);
 			}
-
-			//results in an MAE that is greater than the Random Guess MAE
-			/*for (int a = 0; a < cf_gradient_base_U.size(); a++) {
-				for (int b = 0; b < K; b++)
-				{
-					U[a][b] = U[a][b] + ((-eta * cf_gradient_base_U[a][b]));
-					U[a][b] = U[a][b] + ((-eta * (2 * lambda * U[a][b])));
-				}
-			}*/
-
-			//causes compiler error E0349: no operator "*" matches these operands
-			
-			//U[i] = U[i] - eta * cf_gradient_base_U[i];
-
-
-			//contributes to vector out of range error when t > 14
-			
-			//performs the base gradient descent for U
-			//U[i][t] = U[i][t] - eta * (cf_gradient_base_U[i][t]);
-
-			//performs the regularization gradient descent for U
-			//U[i][t] = U[i][t] - eta * (2 * lambda * U[i][t]);
 		}
 
 		for (int j : movies) {
@@ -158,19 +125,14 @@ std::vector<std::vector<std::vector<double>>> gradient_descent_finder(int n_iter
 			std::set<int> current_movie_user_set = movies_users[j];
 
 			for (int k = 0; k < K; k++) {
-
 				for (int i : current_movie_user_set) {
+					//V_dot_U = dot_product(V[j], U[i]);
 					U_dot_V = dot_product(U[i], V[j]);
 					int current_user = i;
 					double current_rating = ratings[std::make_pair(current_user, current_movie)];
-					cf_gradient_base_V[j][k] = cf_gradient_base_V[j][k] + (V_dot_U - current_rating) * U[i][k];
-
-					//Contributes to vector out of range error when t > 14
-					//	cf_gradient_base_V[j][t] = cf_gradient_base_V[j][t] + (U_dot_V - current_rating) * U[i][t];
+					//cf_gradient_base_V[j][k] = cf_gradient_base_V[j][k] + (V_dot_U - current_rating) * U[i][k];
+					cf_gradient_base_V[j][k] = cf_gradient_base_V[j][k] + (U_dot_V - current_rating) * U[i][k];
 				}
-
-				//although the MAE is a bit higher than preferred, the code runs without compiler error E0349: no operator "*" matches these operands or vector out of range error.
-				// This also results in an MAE that is lower than the Random Guess MAE.
 
 				//performs the base gradient descent for V
 				V[j][k] = V[j][k] - eta * (cf_gradient_base_V[j][k]);
@@ -178,23 +140,6 @@ std::vector<std::vector<std::vector<double>>> gradient_descent_finder(int n_iter
 				//performs the regularization gradient descent for V
 				V[j][k] = V[j][k] - eta * (2 * lambda * V[j][k]);
 			}
-
-
-			//results in an MAE that is greater than the Random Guess MAE
-			/*for (int a = 0; a < cf_gradient_base_V.size(); a++) {
-				for (int b = 0; b < K; b++)
-				{
-					V[a][b] = V[a][b] + ((-eta * cf_gradient_base_V[a][b]));
-					V[a][b] = V[a][b] + ((-eta * (2 * lambda * V[a][b])));
-				}
-			}*/
-			
-			//Contributes to vector out of range error whn t > 14
-			//performs the base gradient descent for V
-			//V[j][t] = V[j][t] - eta * (cf_gradient_base_V[j][t]);
-
-			////performs the regularization gradient descent for V
-			//V[j][t] = V[j][t] - eta * (2 * lambda * V[j][t]);
 		}
 
 		std::cout << "Finished iteration " << t << endl;
