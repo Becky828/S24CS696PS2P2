@@ -332,6 +332,9 @@ int main() {
 		}
 	}
 
+	//initialize the copy of U and V
+	copy_U = U;
+	copy_V = V;
 
 	// gradient descent found with given hyperparameters
 	std::cout << "Given Hyperparameters" << std::endl;
@@ -340,6 +343,9 @@ int main() {
 	//set U and V to the updated U and V
 	U = updated_U_V[0];
 	V = updated_U_V[1];
+
+	//empty the updated_U_V vector
+	updated_U_V.clear();
 
 	//mae found for the given hyper parameters
 	mae_finder(test_set, U, V);
@@ -361,14 +367,17 @@ int main() {
 	U = updated_U_V[0];
 	V = updated_U_V[1];
 
+	//empty the updated_U_V vector
+	updated_U_V.clear();
+
 	//mae found for the doubled number of iterations
 	mae_finder(test_set, U, V);
-
 
 	//resetting U and V
 	U = copy_U;
 	V = copy_V;
 
+	//resettnng U_dot_V and V_dot_U
 	U_dot_V = 0;
 	V_dot_U = 0;
 
@@ -377,18 +386,26 @@ int main() {
 
 	//gradient descent found with the doubled number of iterations and eta times 10
 	std::cout << "Doubled Number of Iterations and eta times 10" << std::endl;
-	
+
 	updated_U_V = gradient_descent_finder(n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V, V_dot_U, users_movies, movies_users, m, n, K, U, V);
 
 	//set U and V to the updated U and V
 	U = updated_U_V[0];
 	V = updated_U_V[1];
+
+	//empty the updated_U_V vector
+	updated_U_V.clear();
+
 	//mae found for the doubled number of iterations and eta times 10
 	mae_finder(test_set, U, V);
 
 	//resetting U and V
 	U = copy_U;
 	V = copy_V;
+
+	//resettnng U_dot_V and V_dot_U
+	U_dot_V = 0;
+	V_dot_U = 0;
 
 	//muliplying the eta by 10 appears to reduce the MSE by around  0.2
 	eta = eta_10_times_up;
@@ -399,9 +416,16 @@ int main() {
 	//gradient decent found with the doubled number of iterations, eta times 10, and lambda times 10
 	std::cout << "Doubled Number of Iterations, eta times 10, and lambda times 10" << std::endl;
 
-	gradient_descent_finder(n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V, V_dot_U, users_movies, movies_users, m, n, K, U, V);
+	updated_U_V = gradient_descent_finder(n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V, V_dot_U, users_movies, movies_users, m, n, K, U, V);
 
-	//mae found for the doubled number of iterations, eta times 10, and lambda times 10
+	//set U and V to the updated U and V
+	U = updated_U_V[0];
+	V = updated_U_V[1];
+
+	//empty the updated_U_V vector
+	updated_U_V.clear();
+
+	//mae found for the doubled number of iterations and eta times 10
 	mae_finder(test_set, U, V);
 
 	return 0;
