@@ -97,6 +97,7 @@ std::vector<std::vector<std::vector<double>>> gradient_descent_finder(int n_iter
 		// you can also use the lambda, eta, and decay variables
 
 		for (int i : users) {
+
 			int current_user = i;
 			std::set<int> current_user_movie_set = users_movies[current_user];
 			std::vector<std::vector<double>>cf_gradient_base_U(n, std::vector<double>(K, 0));
@@ -108,23 +109,53 @@ std::vector<std::vector<std::vector<double>>> gradient_descent_finder(int n_iter
 					U_dot_V = dot_product(U[i], V[j]);
 
 					double current_rating = ratings[std::make_pair(current_user, current_movie)];
-					//cf_gradient_base_U[i][k] = cf_gradient_base_U[i][k] + (U_dot_V - current_rating) * V[j][k];
-					cf_gradient_base_U[i][t] = cf_gradient_base_U[i][t] + (U_dot_V - current_rating) * V[j][t];
+
+					//although the MAE is a bit higher than preferred, the code runs without the vector out of range error
+					cf_gradient_base_U[i][k] = cf_gradient_base_U[i][k] + (U_dot_V - current_rating) * V[j][k];
+
+					//Contributes to vector out of range error whn t > 14
+					//cf_gradient_base_U[i][t] = cf_gradient_base_U[i][t] + (U_dot_V - current_rating) * V[j][t];
 
 				}
 
-				////performs the base gradient descent for U
-				//U[i][k] = U[i][k] - eta * (cf_gradient_base_U[i][k]);
+				//although the MAE is a bit higher than preferred, the code runs without compiler error E0349: no operator "*" matches these operands or vector out of range error 
+				//performs the base gradient descent for U
+	//			U[i][k] = U[i][k] - eta * (cf_gradient_base_U[i][k]);
 
-				////performs the regularization gradient descent for U
-				//U[i][k] = U[i][k] - eta * (2 * lambda * U[i][k]);
+				//performs the regularization gradient descent for U
+		//		U[i][k] = U[i][k] - eta * (2 * lambda * U[i][k]);
 			}
 
-			//performs the base gradient descent for U
-			U[i][t] = U[i][t] - eta * (cf_gradient_base_U[i][t]);
+			std::vector<std::vector<double>>cf_gradient_base_eta_product_U(m, std::vector<double>(K, 0));
 
-			//performs the regularization gradient descent for U
-			U[i][t] = U[i][t] - eta * (2 * lambda * U[i][t]);
+
+			for (int a = 0; a < cf_gradient_base_U.size(); a++) {
+				for (int b = 0; b < K; b++)
+				{
+					//cf_gradient_base_eta_product_U[a][b] = -eta * (cf_gradient_base_U[a][b]);
+					U[a][b] = U[a][b] + ((-eta * cf_gradient_base_U[a][b]));
+					U[a][b] = U[a][b] + ((-eta * (2 * lambda * U[a][b])));
+				}
+			}
+
+			//U[i] = U[i] - cf_gradient_base_eta_product_U;
+
+			/*for (int a = 0; a < U.size(); a++) {
+				for (int b = 0; b < K; b++)
+				{
+					U[a][b] = U[a][b] + cf_gradient_base_eta_product_U[a][b];
+				}
+			}*/
+
+			//causes compiler error E0349: no operator "*" matches these operands
+			//U[i] = U[i] - eta * cf_gradient_base_U[i];
+
+			//contributes to vector out of range error whn t > 14
+			//performs the base gradient descent for U
+			//U[i][t] = U[i][t] - eta * (cf_gradient_base_U[i][t]);
+
+			////performs the regularization gradient descent for U
+			//U[i][t] = U[i][t] - eta * (2 * lambda * U[i][t]);
 		}
 
 		for (int j : movies) {
@@ -139,7 +170,9 @@ std::vector<std::vector<std::vector<double>>> gradient_descent_finder(int n_iter
 					int current_user = i;
 					double current_rating = ratings[std::make_pair(current_user, current_movie)];
 					//cf_gradient_base_V[j][k] = cf_gradient_base_V[j][k] + (V_dot_U - current_rating) * U[i][k];
-					cf_gradient_base_V[j][t] = cf_gradient_base_V[j][t] + (U_dot_V - current_rating) * U[i][t];
+
+					//Contributes to vector out of range error whn t > 14
+					//	cf_gradient_base_V[j][t] = cf_gradient_base_V[j][t] + (U_dot_V - current_rating) * U[i][t];
 				}
 
 				////performs the base gradient descent for V
@@ -149,11 +182,20 @@ std::vector<std::vector<std::vector<double>>> gradient_descent_finder(int n_iter
 				//V[j][k] = V[j][k] - eta * (2 * lambda * V[j][k]);
 			}
 
+			for (int a = 0; a < cf_gradient_base_V.size(); a++) {
+				for (int b = 0; b < K; b++)
+				{
+					//cf_gradient_base_eta_product_U[a][b] = -eta * (cf_gradient_base_U[a][b]);
+					V[a][b] = V[a][b] + ((-eta * cf_gradient_base_V[a][b]));
+					V[a][b] = V[a][b] + ((-eta * (2 * lambda * V[a][b])));
+				}
+			}
+			//Contributes to vector out of range error whn t > 14
 			//performs the base gradient descent for V
-			V[j][t] = V[j][t] - eta * (cf_gradient_base_V[j][t]);
+			//V[j][t] = V[j][t] - eta * (cf_gradient_base_V[j][t]);
 
-			//performs the regularization gradient descent for V
-			V[j][t] = V[j][t] - eta * (2 * lambda * V[j][t]);
+			////performs the regularization gradient descent for V
+			//V[j][t] = V[j][t] - eta * (2 * lambda * V[j][t]);
 		}
 
 		std::cout << "Finished iteration " << t << endl;
@@ -182,7 +224,7 @@ std::vector<std::vector<std::vector<double>>> stochastic_gradient_descent_finder
 
 		//select a random i
 		int current_user = rand() % users.size() + 1;
-		
+
 		int current_movie = rand() % movies.size() + 1;
 		//	double current_rating = ratings[std::make_pair(current_user, current_movie)];
 
@@ -204,10 +246,10 @@ std::vector<std::vector<std::vector<double>>> stochastic_gradient_descent_finder
 
 			for (int k = 0; k < K; k++) {
 				U_dot_V = dot_product(U[i], V[current_movie]);
-				
+
 				//performs the base gradient descent for U
 				U[i][k] = U[i][k] - eta * (U_dot_V - ratings[std::make_pair(i, current_movie)]) * V[current_movie][k];
-				
+
 				//performs the regularization gradient descent for U
 				U[i][k] = U[i][k] - eta * (2 * lambda * U[i][k]);
 				/*for (int j : current_user_movie_set) {
@@ -218,7 +260,7 @@ std::vector<std::vector<std::vector<double>>> stochastic_gradient_descent_finder
 					cf_gradient_base_U[i][k] = cf_gradient_base_U[i][k] + (U_dot_V - current_rating) * V[j][k];
 				}*/
 
-			
+
 			}
 		}
 
@@ -230,7 +272,7 @@ std::vector<std::vector<std::vector<double>>> stochastic_gradient_descent_finder
 			for (int k = 0; k < K; k++) {
 				//V_dot_U = dot_product(U[current_user], V[]
 				V[current_user][k] = V[current_user][k] - eta * (V_dot_U - ratings[std::make_pair(current_user, current_movie)]) * U[current_user][k];
-				
+
 				/*for (int i : current_movie_user_set) {
 					V_dot_U = dot_product(V[j], U[i]);
 					int current_user = i;
