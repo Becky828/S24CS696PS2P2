@@ -130,13 +130,13 @@ std::vector<std::vector<std::vector<double>>> gradient_descent_finder(int n_iter
 			}
 
 			//results in an MAE that is greater than the Random Guess MAE
-			for (int a = 0; a < cf_gradient_base_U.size(); a++) {
+			/*for (int a = 0; a < cf_gradient_base_U.size(); a++) {
 				for (int b = 0; b < K; b++)
 				{
 					U[a][b] = U[a][b] + ((-eta * cf_gradient_base_U[a][b]));
 					U[a][b] = U[a][b] + ((-eta * (2 * lambda * U[a][b])));
 				}
-			}
+			}*/
 
 			//causes compiler error E0349: no operator "*" matches these operands
 			
@@ -158,6 +158,7 @@ std::vector<std::vector<std::vector<double>>> gradient_descent_finder(int n_iter
 			std::set<int> current_movie_user_set = movies_users[j];
 
 			for (int k = 0; k < K; k++) {
+
 				for (int i : current_movie_user_set) {
 					U_dot_V = dot_product(U[i], V[j]);
 					int current_user = i;
@@ -168,22 +169,25 @@ std::vector<std::vector<std::vector<double>>> gradient_descent_finder(int n_iter
 					//	cf_gradient_base_V[j][t] = cf_gradient_base_V[j][t] + (U_dot_V - current_rating) * U[i][t];
 				}
 
-				////performs the base gradient descent for V
-				//V[j][k] = V[j][k] - eta * (cf_gradient_base_V[j][k]);
+				//although the MAE is a bit higher than preferred, the code runs without compiler error E0349: no operator "*" matches these operands or vector out of range error.
+				// This also results in an MAE that is lower than the Random Guess MAE.
 
-				////performs the regularization gradient descent for V
-				//V[j][k] = V[j][k] - eta * (2 * lambda * V[j][k]);
+				//performs the base gradient descent for V
+				V[j][k] = V[j][k] - eta * (cf_gradient_base_V[j][k]);
+
+				//performs the regularization gradient descent for V
+				V[j][k] = V[j][k] - eta * (2 * lambda * V[j][k]);
 			}
 
 
 			//results in an MAE that is greater than the Random Guess MAE
-			for (int a = 0; a < cf_gradient_base_V.size(); a++) {
+			/*for (int a = 0; a < cf_gradient_base_V.size(); a++) {
 				for (int b = 0; b < K; b++)
 				{
 					V[a][b] = V[a][b] + ((-eta * cf_gradient_base_V[a][b]));
 					V[a][b] = V[a][b] + ((-eta * (2 * lambda * V[a][b])));
 				}
-			}
+			}*/
 			
 			//Contributes to vector out of range error whn t > 14
 			//performs the base gradient descent for V
