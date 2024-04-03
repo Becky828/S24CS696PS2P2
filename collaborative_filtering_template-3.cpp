@@ -187,7 +187,7 @@ std::vector<std::vector<std::vector<double>>> gradient_descent_finder(int n_iter
 
 
 //Put stochastic u gradient descent here
-std::vector<std::vector<std::vector<double>>> stochastic_gradient_descent_finder(std::map<std::pair<int, int>, double> test_set, int epochs, int n_iterations, double eta, double lambda, double decay, std::set<int> users, std::set<int>  movies, std::map<std::pair<int, int>,
+std::vector<std::vector<std::vector<double>>> stochastic_gradient_descent_finder(std::map<std::pair<int, int>, double> test_set, int n_iterations, double eta, double lambda, double decay, std::set<int> users, std::set<int>  movies, std::map<std::pair<int, int>,
 	double> ratings, double U_dot_V, double V_dot_U, std::map<int, std::set<int>> users_movies, std::map<int, std::set<int>> movies_users, int m, int n, int K, std::vector<std::vector<double>> U, std::vector<std::vector<double>> V) {
 
 	//Put gradient descent here
@@ -201,6 +201,8 @@ std::vector<std::vector<std::vector<double>>> stochastic_gradient_descent_finder
 		std::vector<std::vector<double>>cf_stochastic_gradient_base_U(n, std::vector<double>(K, 0));
 		std::vector<std::vector<double>>cf_stochastic_gradient_base_V(n, std::vector<double>(K, 0));
 
+
+		//an issue with the stochastic gradient descent is that it is not updating the U and V values correctly after a few iterations
 		//select a random i
 		int i = rand() % users.size() + 1;
 		int current_user = i;
@@ -239,6 +241,7 @@ std::vector<std::vector<std::vector<double>>> stochastic_gradient_descent_finder
 			for (int k = 0; k < K; k++) {
 
 
+				
 				//performs the base gradient descent for U
 				U[a][k] = U[a][k] - eta * (rating_difference * V[j][k]);
 
@@ -262,8 +265,9 @@ std::vector<std::vector<std::vector<double>>> stochastic_gradient_descent_finder
 		}
 
 		std::cout << "Finished iteration " << t << endl;
+		mae_finder(test_set, U, V);
 	}
-
+	
 	std::cout << "Finish Stochastic Gradient Descent" << std::endl;
 
 	//stores the updated U and V
@@ -322,7 +326,7 @@ int main() {
 	double U_dot_V = 0;
 	double V_dot_U = 0;
 
-	int epochs = 4;
+	//int epochs = 4;
 
 	std::vector<std::vector<std::vector<double>>> updated_U_V;
 
@@ -430,14 +434,16 @@ int main() {
 
 
 	//eta = eta_copy;
-	n_iterations = 1000;
+	//n_iterations = 100000;
+	n_iterations = 60;
+
 
 	//n_iterations = 5*m;
-	epochs = 100;
+	//epochs = 100;
 	//lambda = lambda_copy;
 
 	std::cout << "Stochastic Gradient Descent:" << std::endl;
-	updated_U_V = stochastic_gradient_descent_finder(test_set, epochs, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V, V_dot_U, users_movies, movies_users, m, n, K, U, V);
+	updated_U_V = stochastic_gradient_descent_finder(test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V, V_dot_U, users_movies, movies_users, m, n, K, U, V);
 	//set U and V to the updated U and V
 	U = updated_U_V[0];
 	V = updated_U_V[1];
