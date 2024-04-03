@@ -242,16 +242,20 @@ std::vector<std::vector<std::vector<double>>> stochastic_gradient_descent_finder
 		int current_movie = j;
 
 		auto key = std::make_pair(current_user, current_movie);
-
+		bool key_found = false;
 		// loops for as long as key is not found
-		while (ratings.find(key) == ratings.end()) {
-			int j = rand() % current_user_movie_set.size() + 1;
-			current_movie = j;
-			auto key = std::make_pair(current_user, current_movie);
-
+		while (!key_found) {
+			
 			//breaks the loop if the key is found
-			if (ratings.find(key) != ratings.end()) {
-				break;
+			if (ratings.find(key) == ratings.end()) {
+				current_user_movie_set.erase(j);
+				int j = rand() % current_user_movie_set.size() + 1;
+				current_movie = j;
+				auto key = std::make_pair(current_user, current_movie);
+			}
+
+			else {
+				key_found = true;
 			}
 
 		}
