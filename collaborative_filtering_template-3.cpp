@@ -165,13 +165,20 @@ std::vector<std::vector<std::vector<double>>> stochastic_gradient_descent_finder
 	for (int t = 0; t < n_iterations; t++) {
 		eta = eta * decay; // decay the learning rate over time
 
+		//initialize the stochastic gradient base for U and V
+		std::vector<std::vector<double>>cf_stochastic_gradient_base_U(n, std::vector<double>(K, 0));
+		std::vector<std::vector<double>>cf_stochastic_gradient_base_V(n, std::vector<double>(K, 0));
 
 		//select a random i
-		int current_user = rand() % users.size() + 1;
+		int i = rand() % users.size() + 1;
+		int current_user = i;
+		
+		//select a random j
+		int j = rand() % movies.size() + 1;
+		int current_movie = j;
+		double current_rating = ratings[std::make_pair(current_user, current_movie)];
 
-		int current_movie = rand() % movies.size() + 1;
-		//	double current_rating = ratings[std::make_pair(current_user, current_movie)];
-
+		U_dot_V = dot_product(U[i], V[j]);
 
 
 		// implement stochastic gradient descent here:
@@ -183,19 +190,30 @@ std::vector<std::vector<std::vector<double>>> stochastic_gradient_descent_finder
 		// and the derived_u_getter and derived_v_getter functions to calculate the sum of the derived U and V values
 		// you can also use the lambda, eta, and decay variables
 
-		for (int i : users) {
+		for (int a : users) {
+
+
 			//int current_user = i;
-			std::set<int> current_user_movie_set = users_movies[i];
+			//std::set<int> current_user_movie_set = users_movies[i];
 			//std::vector<std::vector<double>>cf_gradient_base_U(n, std::vector<double>(K, 0));
 
-			for (int k = 0; k < K; k++) {
-				U_dot_V = dot_product(U[i], V[current_movie]);
+			for (int b = 0; b < K; b++) {
+				
+				//U_dot_V = dot_product(U[i], V[j]);
+
+				cf_stochastic_gradient_base_U[a][b] = cf_stochastic_gradient_base_U[a][b] + (U_dot_V - current_rating) * V[b][j];
 
 				//performs the base gradient descent for U
-				U[i][k] = U[i][k] - eta * (U_dot_V - ratings[std::make_pair(i, current_movie)]) * V[current_movie][k];
+				U[a][b] = U[a][b] - eta * (cf_stochastic_gradient_base_U[a][b]);
 
 				//performs the regularization gradient descent for U
-				U[i][k] = U[i][k] - eta * (2 * lambda * U[i][k]);
+				U[a][b] = U[a][b] - eta * (2 * lambda * U[a][b]);
+
+				////performs the base gradient descent for U
+				//U[i][k] = U[i][k] - eta * (U_dot_V - ratings[std::make_pair(i, current_movie)]) * V[current_movie][k];
+
+				////performs the regularization gradient descent for U
+				//U[i][k] = U[i][k] - eta * (2 * lambda * U[i][k]);
 				/*for (int j : current_user_movie_set) {
 					int current_movie = j;
 					U_dot_V = dot_product(U[i], V[j]);
@@ -208,14 +226,24 @@ std::vector<std::vector<std::vector<double>>> stochastic_gradient_descent_finder
 			}
 		}
 
-		for (int j : movies) {
-			int current_movie = j;
+		for (int ja : movies) {
+			//int current_movie = j;
 			//std::vector<std::vector<double>> cf_gradient_base_V(m, std::vector<double>(K, 0));
-			std::set<int> current_movie_user_set = movies_users[j];
+			//std::set<int> current_movie_user_set = movies_users[j];
 
-			for (int k = 0; k < K; k++) {
+			for (int b = 0; b < K; b++) {
+
+
+				cf_stochastic_gradient_base_V[ja][b] = cf_stochastic_gradient_base_V[ja][b] + (U_dot_V - current_rating) * U[i][ja];
+
+				//performs the base gradient descent for V
+				V[ja][b] = V[ja][b] - eta * (cf_stochastic_gradient_base_V[ja][b]);
+
+				//performs the regularization gradient descent for V
+				V[ja][b] = V[ja][b] - eta * (2 * lambda * V[ja][b]);
+
 				//V_dot_U = dot_product(U[current_user], V[]
-				V[current_user][k] = V[current_user][k] - eta * (V_dot_U - ratings[std::make_pair(current_user, current_movie)]) * U[current_user][k];
+				//V[current_user][k] = V[current_user][k] - eta * (V_dot_U - ratings[std::make_pair(current_user, current_movie)]) * U[current_user][k];
 
 				/*for (int i : current_movie_user_set) {
 					V_dot_U = dot_product(V[j], U[i]);
@@ -228,7 +256,7 @@ std::vector<std::vector<std::vector<double>>> stochastic_gradient_descent_finder
 				//V[j][k] = V[j][k] - eta * (cf_gradient_base_V[j][k]);
 
 				//performs the regularization gradient descent for V
-				V[j][k] = V[j][k] - eta * (2 * lambda * V[j][k]);
+				//V[j][k] = V[j][k] - eta * (2 * lambda * V[j][k]);
 			}
 		}
 
@@ -308,6 +336,7 @@ int main() {
 
 	double test_set_size = 0.1; // percentage of the data will be used for testing
 	double lambda = 1e-3; // regularization parameter
+	double lambda_copy = lambda;
 	double lambda_10_times_up = lambda * 10;
 	double lambda_10_times_down = lambda / 10;
 	double eta = 1e-4; // learning rate
@@ -424,8 +453,23 @@ int main() {
 	copy_U = U;
 	copy_V = V;
 
+	
+	//eta = eta_copy;
+	//n_iterations = 2*m;
+	//lambda = lambda_copy;
+
+	std::cout << "Stochastic Gradient Descent:" << std::endl;
+	updated_U_V = stochastic_gradient_descent_finder(n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V, V_dot_U, users_movies, movies_users, m, n, K, U, V);
+	//set U and V to the updated U and V
+	U = updated_U_V[0];
+	V = updated_U_V[1];
+	updated_U_V.clear();
+	mae_finder(test_set, U, V);
+	
+	
 	// 1 of 5
 	// gradient descent found with given hyperparameters
+	std::cout << "Gradient Descent:" << std::endl;
 	std::cout << "1 of 5:" << std::endl;
 	std::cout << "Given Hyperparameters" << std::endl;
 	updated_U_V = gradient_descent_finder(n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V, V_dot_U, users_movies, movies_users, m, n, K, U, V);
@@ -564,5 +608,17 @@ int main() {
 	//mae found for the doubled number of iterations and eta times 10
 	mae_finder(test_set, U, V);
 
+
+	//p2b
+	//stochastic gradient descent
+
+	/*eta = eta_copy;
+	n_iterations = n_interations_double;
+	lambda = lambda_copy;
+	
+	updated_U_V = stochastic_gradient_descent_finder(n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V, V_dot_U, users_movies, movies_users, m, n, K, U, V);*/
+
+
 	return 0;
+
 }
