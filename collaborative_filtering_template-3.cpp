@@ -107,6 +107,7 @@ std::vector<std::vector<double>> derived_v_getter(int n, int K, double lambda, s
 }
 
 
+
 //
 std::vector<std::vector<std::vector<double>>> gradient_descent_finder(int n_iterations, double eta, double lambda, double decay, std::set<int> users, std::set<int>  movies, std::map<std::pair<int, int>,
 	double> ratings, double U_dot_V_transposed, double V_dot_U, std::map<int, std::set<int>> users_movies, std::map<int, std::set<int>> movies_users, int m, int n, int K, std::vector<std::vector<double>> U, std::vector<std::vector<double>> V) {
@@ -240,7 +241,24 @@ std::vector<std::vector<std::vector<double>>> stochastic_gradient_descent_finder
 
 		int current_movie = j;
 
-		double current_rating = ratings.at(std::make_pair(current_user, current_movie));
+		auto key = std::make_pair(current_user, current_movie);
+
+		// loops for as long as key is not found
+		while (ratings.find(key) == ratings.end()) {
+			int j = rand() % current_user_movie_set.size() + 1;
+			current_movie = j;
+			auto key = std::make_pair(current_user, current_movie);
+
+			//breaks the loop if the key is found
+			if (ratings.find(key) != ratings.end()) {
+				break;
+			}
+
+		}
+
+		double current_rating = ratings.at(key);
+
+
 //		double current_rating = ratings[std::make_pair(current_user, current_movie)];
 		U_dot_V_transposed = dot_product(U[i], V[j]);
 		double rating_difference = U_dot_V_transposed - current_rating;
