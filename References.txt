@@ -42,3 +42,4 @@
 //https://github.com/christianversloot/machine-learning-articles/blob/main/finding-optimal-learning-rates-with-the-learning-rate-range-test.md
 //https://cplusplus.com/reference/cstdlib/rand/
 //https://www.reddit.com/r/learnmachinelearning/comments/155idlv/stochastic_gradient_descent_rounds_iterations/
+//https://realpython.com/gradient-descent-algorithm-python/
