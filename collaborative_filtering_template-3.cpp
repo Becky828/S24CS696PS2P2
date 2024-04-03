@@ -194,6 +194,12 @@ std::vector<std::vector<std::vector<double>>> stochastic_gradient_descent_finder
 
 	std::vector<std::vector<std::vector<double>>> updated_U_V;
 
+	/*std::set<int> previous_users;
+	std::set<int> previous_movies;*/
+
+	std::set<int> avaialble_users = users;
+	std::set<int> available_movies = movies;
+
 	std::set<int> previous_users;
 	std::set<int> previous_movies;
 
@@ -214,53 +220,124 @@ std::vector<std::vector<std::vector<double>>> stochastic_gradient_descent_finder
 		//select a random i
 		int i = rand() % users.size() + 1;
 		int current_user = i;
+		//int i = rand() % avaialble_users.size() + 1;
+		//int current_user = i;
+		//avaialble_users.erase(i);
 
 		//select a random j
+		//int j = rand() % available_movies.size() + 1;
+		//int current_movie = j;
+		//available_movies.erase(j);
 		int j = rand() % movies.size() + 1;
 		int current_movie = j;
 
-
-		if (!previous_users.empty()) {
-			previous_user = *previous_users.rbegin();
-
-			//finds a new user if the current user is less than the previous user
-			while (current_user < previous_user) {
-				int i = rand() % users.size() + 1;
-				int current_user = i;
-			}
-
-			//stores current user and current movie if the current user is greater than the previous user
-			if (current_user > previous_user) {
-				previous_users.insert(current_user);
-				previous_movies.insert(current_movie);
-			}
-
-			else {
-
-				//finds a new movie if the current movie is less than or equal to the previous movie
-				if (!previous_movies.empty()) {
-					previous_movie = *previous_movies.rbegin();
-					while (current_movie <= previous_movie) {
-						int j = rand() % movies.size() + 1;
-						int current_movie = j;
-					}
-
-					//stores current movie if the current movie is greater than the previous movie
-					previous_movies.insert(current_movie);
-				}
-			}
-		}
-
-		//if the previous users and movies are empty, insert the current user and movie into the previous users and movies
-		if (previous_users.empty()) {
-			previous_users.insert(current_user);
-			previous_movies.insert(current_movie);
-		}
-
 		double current_rating = ratings[std::make_pair(current_user, current_movie)];
-
 		U_dot_V_transposed = dot_product(U[i], V[j]);
 		double rating_difference = U_dot_V_transposed - current_rating;
+		
+
+
+		for (int a : users) {
+			//int current_user = i;
+			//std::set<int> current_user_movie_set = users_movies[current_user];
+			//std::vector<std::vector<double>>cf_gradient_base_U(n, std::vector<double>(K, 0));
+
+			for (int k = 0; k < K; k++) {
+
+				//for (int j : current_user_movie_set) {
+
+
+					//int current_movie = j;
+					//U_dot_V_transposed = dot_product(U[i], V[j]);
+
+					//double current_rating = ratings[std::make_pair(current_user, current_movie)];
+					//cf_gradient_base_U[i][k] = cf_gradient_base_U[i][k] + (U_dot_V_transposed - current_rating) * V[k][j];
+				//}
+
+				//performs the base gradient descent for U
+				//U[i][k] = U[i][k] - eta * (cf_gradient_base_U[i][k]);
+
+				//causes vector out of range error
+				//U[a][k] = U[a][k] - eta * (rating_difference * V[k][j]);
+
+				//performs the base gradient descent for U
+				U[a][k] = U[a][k] - eta * (rating_difference * V[j][k]);
+
+				//performs the regularization gradient descent for U
+				U[a][k] = U[a][k] - eta * (2 * lambda * U[a][k]);
+			}
+		}
+
+		for (int a : movies) {
+			//int current_movie = j;
+			//std::vector<std::vector<double>> cf_gradient_base_V(m, std::vector<double>(K, 0));
+			//std::set<int> current_movie_user_set = movies_users[j];
+
+			for (int k = 0; k < K; k++) {
+				//for (int i : current_movie_user_set) {
+					//V_dot_U = dot_product(V[j], U[i]);
+					//U_dot_V_transposed = dot_product(U[i], V[j]);
+					//int current_user = i;
+					//double current_rating = ratings[std::make_pair(current_user, current_movie)];
+					//cf_gradient_base_V[j][k] = cf_gradient_base_V[j][k] + (V_dot_U - current_rating) * U[i][k];
+					//cf_gradient_base_V[j][k] = cf_gradient_base_V[j][k] + (U_dot_V_transposed - current_rating) * U[i][k];
+				//}
+
+				//performs the base gradient descent for V
+				//V[j][k] = V[j][k] - eta * (cf_gradient_base_V[j][k]);
+
+				//causes vector out of range error
+				//V[a][k] = V[a][k] - eta * (rating_difference*U[i][a]);
+
+				V[a][k] = V[a][k] - eta * (rating_difference * U[i][k]);
+
+				//performs the regularization gradient descent for V
+				V[a][k] = V[a][k] - eta * (2 * lambda * V[a][k]);
+			}
+		}
+
+
+		//if (!previous_users.empty()) {
+		//	previous_user = *previous_users.rbegin();
+
+		//	//finds a new user if the current user is less than the previous user
+		//	while (current_user < previous_user) {
+		//		int i = rand() % users.size() + 1;
+		//		int current_user = i;
+		//	}
+
+		//	//stores current user and current movie if the current user is greater than the previous user
+		//	if (current_user > previous_user) {
+		//		previous_users.insert(current_user);
+		//		previous_movies.insert(current_movie);
+		//	}
+
+		//	else {
+
+		//		//finds a new movie if the current movie is less than or equal to the previous movie
+		//		if (!previous_movies.empty()) {
+		//			previous_movie = *previous_movies.rbegin();
+		//			while (current_movie <= previous_movie) {
+		//				int j = rand() % movies.size() + 1;
+		//				int current_movie = j;
+		//			}
+
+		//			//stores current movie if the current movie is greater than the previous movie
+		//			previous_movies.insert(current_movie);
+		//		}
+		//	}
+		//}
+
+		////if the previous users and movies are empty, insert the current user and movie into the previous users and movies
+		//if (previous_users.empty()) {
+		//	previous_users.insert(current_user);
+		//	previous_movies.insert(current_movie);
+		//}
+
+		//double current_rating = ratings[std::make_pair(current_user, current_movie)];
+
+		//U_dot_V_transposed = dot_product(U[i], V[j]);
+		//double rating_difference = U_dot_V_transposed - current_rating;
 
 		////select random i and j
 		//int i = rand() % users.size() + 1;
@@ -282,34 +359,34 @@ std::vector<std::vector<std::vector<double>>> stochastic_gradient_descent_finder
 		// and the derived_u_getter and derived_v_getter functions to calculate the sum of the derived U and V values
 		// you can also use the lambda, eta, and decay variables
 
-		for (int a : users) {
+		//for (int a : users) {
 
 
-			for (int k = 0; k < K; k++) {
+		//	for (int k = 0; k < K; k++) {
 
 
 
-				//performs the base gradient descent for U
-				U[a][k] = U[a][k] - eta * (rating_difference * V[j][k]);
+		//		//performs the base gradient descent for U
+		//		U[a][k] = U[a][k] - eta * (rating_difference * V[j][k]);
 
-				//performs the regularization gradient descent for U
-				U[a][k] = U[a][k] - eta * (2 * lambda * U[a][k]);
-			}
+		//		//performs the regularization gradient descent for U
+		//		U[a][k] = U[a][k] - eta * (2 * lambda * U[a][k]);
+		//	}
 
-		}
+		//}
 
-		for (int ja : movies) {
+		//for (int ja : movies) {
 
-			for (int k = 0; k < K; k++) {
+		//	for (int k = 0; k < K; k++) {
 
 
-				//performs the base gradient descent for V
-				V[ja][k] = V[ja][k] - eta * (rating_difference * U[i][k]);
+		//		//performs the base gradient descent for V
+		//		V[ja][k] = V[ja][k] - eta * (rating_difference * U[i][k]);
 
-				//performs the regularization gradient descent for V
-				V[ja][k] = V[ja][k] - eta * (2 * lambda * V[j][k]);
-			}
-		}
+		//		//performs the regularization gradient descent for V
+		//		V[ja][k] = V[ja][k] - eta * (2 * lambda * V[j][k]);
+		//	}
+		//}
 
 		std::cout << "Finished iteration " << t << endl;
 		mae_finder(test_set, U, V);
@@ -322,10 +399,6 @@ std::vector<std::vector<std::vector<double>>> stochastic_gradient_descent_finder
 	updated_U_V.push_back(V);
 	return updated_U_V;
 }
-//Put stochastic v gradient descent here
-
-
-
 
 
 int main() {
@@ -482,7 +555,10 @@ int main() {
 
 	//eta = eta_copy;
 	//n_iterations = 100000;
-	n_iterations = 60;
+	//n_iterations = 60;
+	//n_iterations = 70;
+	n_iterations = 300;
+
 
 
 	//n_iterations = 5*m;
