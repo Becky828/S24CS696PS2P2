@@ -229,9 +229,10 @@ std::vector<std::vector<std::vector<double>>> stochastic_gradient_descent_finder
 				int current_user = i;
 			}
 
-			//stores current user if the current user is greater than the previous user
+			//stores current user and current movie if the current user is greater than the previous user
 			if (current_user > previous_user) {
 				previous_users.insert(current_user);
+				previous_movies.insert(current_movie);
 			}
 
 			else {
