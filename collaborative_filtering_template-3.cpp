@@ -138,8 +138,8 @@ std::vector<std::vector<std::vector<double>>> gradient_descent_finder(int n_iter
 				for (int j : current_user_movie_set) {
 					int current_movie = j;
 					U_dot_V_transposed = dot_product(U[i], V[j]);
-
-					double current_rating = ratings[std::make_pair(current_user, current_movie)];
+					double current_rating = ratings.at(std::make_pair(current_user, current_movie));
+					//double current_rating = ratings[std::make_pair(current_user, current_movie)];
 					cf_gradient_base_U[i][k] = cf_gradient_base_U[i][k] + (U_dot_V_transposed - current_rating) * V[j][k];
 				}
 
@@ -161,7 +161,8 @@ std::vector<std::vector<std::vector<double>>> gradient_descent_finder(int n_iter
 					//V_dot_U = dot_product(V[j], U[i]);
 					U_dot_V_transposed = dot_product(U[i], V[j]);
 					int current_user = i;
-					double current_rating = ratings[std::make_pair(current_user, current_movie)];
+					double current_rating = ratings.at(std::make_pair(current_user, current_movie));
+					//double current_rating = ratings[std::make_pair(current_user, current_movie)];
 					//cf_gradient_base_V[j][k] = cf_gradient_base_V[j][k] + (V_dot_U - current_rating) * U[i][k];
 					cf_gradient_base_V[j][k] = cf_gradient_base_V[j][k] + (U_dot_V_transposed - current_rating) * U[i][k];
 				}
@@ -228,10 +229,19 @@ std::vector<std::vector<std::vector<double>>> stochastic_gradient_descent_finder
 		//int j = rand() % available_movies.size() + 1;
 		//int current_movie = j;
 		//available_movies.erase(j);
-		int j = rand() % movies.size() + 1;
+		/*int j = rand() % movies.size() + 1;
+		int current_movie = j;*/
+
+
+		std::set<int> current_user_movie_set = users_movies[current_user];
+
+		//select a random j from the user's movie set
+		int j = rand() % current_user_movie_set.size() + 1;
+
 		int current_movie = j;
 
-		double current_rating = ratings[std::make_pair(current_user, current_movie)];
+		double current_rating = ratings.at(std::make_pair(current_user, current_movie));
+//		double current_rating = ratings[std::make_pair(current_user, current_movie)];
 		U_dot_V_transposed = dot_product(U[i], V[j]);
 		double rating_difference = U_dot_V_transposed - current_rating;
 		
