@@ -55,3 +55,4 @@
 //https://www.javatpoint.com/post/cpp-map-at-function
 //https://www.geeksforgeeks.org/check-key-present-cpp-map-unordered_map/
 //https://stackoverflow.com/questions/15425442/retrieve-random-key-element-for-stdmap-in-c#:~:text=std%3A%3Amap%20iterators%20are,m%3B%20auto%20it%20%3D%20m.
+//https://medium.com/@sahilcarterr/mathematics-behind-simple-linear-regression-using-gradient-descent-a09595bf701d
