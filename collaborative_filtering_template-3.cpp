@@ -220,8 +220,8 @@ std::vector<std::vector<std::vector<double>>> stochastic_gradient_descent_finder
 		//an issue with the stochastic gradient descent is that it is not updating the U and V values correctly after a few iterations
 
 		//select a random i
-		int i = rand() % users.size() + 1;
-		int current_user = i;
+		//int i = rand() % users.size() + 1;
+		//int current_user = i;
 		//int i = rand() % avaialble_users.size() + 1;
 		//int current_user = i;
 		//avaialble_users.erase(i);
@@ -234,40 +234,62 @@ std::vector<std::vector<std::vector<double>>> stochastic_gradient_descent_finder
 		int current_movie = j;*/
 
 
-		std::set<int> current_user_movie_set = users_movies[current_user];
+//		std::set<int> current_user_movie_set = users_movies[current_user];
+//
+//		//select a random j from the user's movie set
+//		int j = rand() % current_user_movie_set.size() + 1;
+//
+//		int current_movie = j;
+//
+//		auto key = std::make_pair(current_user, current_movie);
+//		bool key_found = false;
+//		// loops for as long as key is not found
+//		while (!key_found) {
+//			
+//			//breaks the loop if the key is found
+//			if (ratings.find(key) == ratings.end()) {
+//				current_user_movie_set.erase(j);
+//				int j = rand() % current_user_movie_set.size() + 1;
+//				current_movie = j;
+//				auto key = std::make_pair(current_user, current_movie);
+//			}
+//
+//			else {
+//				key_found = true;
+//			}
+//
+//		}
+//
+//		double current_rating = ratings.at(key);
+//
+//
+////		double current_rating = ratings[std::make_pair(current_user, current_movie)];
+//		U_dot_V_transposed = dot_product(U[i], V[j]);
+//		double rating_difference = U_dot_V_transposed - current_rating;
+		
+		//randomly iterate to a rating
+		auto it = ratings.begin();
+		std::advance(it, rand() % ratings.size());
 
-		//select a random j from the user's movie set
-		int j = rand() % current_user_movie_set.size() + 1;
+		//store the key of the randomly selected rating
+		auto random_key = it->first;
 
+		//store the randomly selected user
+		int i = random_key.first;
+		int current_user = i;
+
+		//store the randomly selected movie
+		int j = random_key.second;
 		int current_movie = j;
 
-		auto key = std::make_pair(current_user, current_movie);
-		bool key_found = false;
-		// loops for as long as key is not found
-		while (!key_found) {
-			
-			//breaks the loop if the key is found
-			if (ratings.find(key) == ratings.end()) {
-				current_user_movie_set.erase(j);
-				int j = rand() % current_user_movie_set.size() + 1;
-				current_movie = j;
-				auto key = std::make_pair(current_user, current_movie);
-			}
+		//store the randomly selected rating value
+		double current_rating = it->second;
 
-			else {
-				key_found = true;
-			}
-
-		}
-
-		double current_rating = ratings.at(key);
-
-
-//		double current_rating = ratings[std::make_pair(current_user, current_movie)];
+		//take the dot product of U and V transposed
 		U_dot_V_transposed = dot_product(U[i], V[j]);
-		double rating_difference = U_dot_V_transposed - current_rating;
-		
 
+		//find the rating difference
+		double rating_difference = U_dot_V_transposed - current_rating;
 
 		for (int a : users) {
 			//int current_user = i;
