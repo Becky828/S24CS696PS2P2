@@ -218,7 +218,7 @@ std::vector<std::vector<std::vector<double>>> stochastic_gradient_descent_finder
 		std::vector<std::vector<double>>cf_stochastic_gradient_base_V(n, std::vector<double>(K, 0));
 
 		//an issue with the stochastic gradient descent is that it is not updating the U and V values correctly after a few iterations
-		
+
 		//randomly iterate to a rating
 		auto it = ratings.begin();
 		std::advance(it, rand() % ratings.size());
@@ -238,35 +238,59 @@ std::vector<std::vector<std::vector<double>>> stochastic_gradient_descent_finder
 		double current_rating = it->second;
 
 		//take the dot product of U and V transposed
-		U_dot_V_transposed = dot_product(U[i], V[j]);
+		//U_dot_V_transposed = dot_product(U[i], V[j]);
 
 		//find the rating difference
-		double rating_difference = U_dot_V_transposed - current_rating;
+		//double rating_difference = U_dot_V_transposed - current_rating;
 
 		for (int a : users) {
-		
+
 			for (int k = 0; k < K; k++) {
 
+				//finds the dot product of U and V transposed
+				U_dot_V_transposed = dot_product(U[a], V[j]);
+
+				//finds the current rating
+				//double current_rating = ratings.at(std::make_pair(a, j));
+
+				//finds the rating difference
+				double rating_difference = U_dot_V_transposed - current_rating;
+
+				//finds the base gradient for U
+				cf_stochastic_gradient_base_U[a][k] = (rating_difference * V[j][k]);
+
 				//performs the base gradient descent for U
-				U[a][k] = U[a][k] - eta * (rating_difference * V[j][k]);
+				U[a][k] = U[a][k] - eta * cf_stochastic_gradient_base_U[a][k];
 
 				//performs the regularization gradient descent for U
 				U[a][k] = U[a][k] - eta * (2 * lambda * U[a][k]);
 			}
+
+			//U[a] = U[a] - eta * cf_stochastic_gradient_base_U;
 		}
 
 		for (int a : movies) {
-			
-			for (int k = 0; k < K; k++) {
-				
 
-				//performs the base gradient descent for baseV
-				V[a][k] = V[a][k] - eta * (rating_difference * U[i][k]);
+			for (int k = 0; k < K; k++) {
+
+				//finds the dot product of U and V transposed
+				U_dot_V_transposed = dot_product(U[i], V[a]);
+
+				//finds the current rating
+				//double current_rating = ratings.at(std::make_pair(i, j));
+
+				//finds the rating difference
+				double rating_difference = U_dot_V_transposed - current_rating;
+
+				//finds the base gradient for V
+				cf_stochastic_gradient_base_V[a][k] = (rating_difference * U[i][k]);
+				//performs the base gradient descent for V
+				V[a][k] = V[a][k] - eta * (cf_stochastic_gradient_base_V[a][k]);
 
 				//performs the regularization gradient descent for V
 				V[a][k] = V[a][k] - eta * (2 * lambda * V[a][k]);
 			}
-		}	
+		}
 
 		std::cout << "Finished iteration " << t << endl;
 		mae_finder(test_set, U, V);
@@ -437,9 +461,12 @@ int main() {
 	//n_iterations = 100000;
 	//n_iterations = 60;
 	//n_iterations = 70;
-	n_iterations =1000;
-	//eta =eta/10;
-	//lambda = lambda_10_times_up;
+	n_iterations = m;
+	//eta = eta * (1000 + 57.4);
+	//eta = eta * 900;
+	eta = eta * 9000;
+
+	lambda = lambda / 90000;
 
 
 	//n_iterations = m;

@@ -56,3 +56,4 @@
 //https://www.geeksforgeeks.org/check-key-present-cpp-map-unordered_map/
 //https://stackoverflow.com/questions/15425442/retrieve-random-key-element-for-stdmap-in-c#:~:text=std%3A%3Amap%20iterators%20are,m%3B%20auto%20it%20%3D%20m.
 //https://medium.com/@sahilcarterr/mathematics-behind-simple-linear-regression-using-gradient-descent-a09595bf701d
+//https://stats.stackexchange.com/questions/74518/in-stochastic-gradient-descent-is-there-only-one-update-to-theta-for-each-it
