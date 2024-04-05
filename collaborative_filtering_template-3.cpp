@@ -71,7 +71,7 @@ void mae_finder(std::map<std::pair<int, int>, double> test_set, std::vector<std:
 std::vector<std::vector<std::vector<double>>> gradient_descent_finder(int n_iterations, double eta, double lambda, double decay, std::set<int> users, std::set<int>  movies, std::map<std::pair<int, int>,
 	double> ratings, double U_dot_V_transposed, double V_dot_U, std::map<int, std::set<int>> users_movies, std::map<int, std::set<int>> movies_users, int m, int n, int K, std::vector<std::vector<double>> U, std::vector<std::vector<double>> V) {
 
-	//initialize the updated U and V
+	//initializes the updated U and V
 	std::vector<std::vector<std::vector<double>>> updated_U_V;
 
 	//performs 0 to n_iterations of gradient descent incrementing by 1
@@ -88,7 +88,7 @@ std::vector<std::vector<std::vector<double>>> gradient_descent_finder(int n_iter
 		// you can also use the lambda, eta, and decay variables
 
 
-		//iterate through the set of users
+		//iterates through the set of users
 		for (int i : users) {
 
 			//stores the current user
@@ -205,11 +205,11 @@ std::vector<std::vector<std::vector<double>>> stochastic_gradient_descent_finder
 	for (int t = 0; t < n_iterations; t++) {
 		eta = eta * decay; // decay the learning rate over time
 
-		//initialize the stochastic gradient base for U and V
+		//initializes the stochastic gradient base for U and V
 		std::vector<std::vector<double>>cf_stochastic_gradient_base_U(n, std::vector<double>(K, 0));
 		std::vector<std::vector<double>>cf_stochastic_gradient_base_V(n, std::vector<double>(K, 0));
 
-		//randomly iterate to a rating
+		//randomly iterates to a rating
 		auto it = ratings.begin();
 		int random = mt() % ratings.size();
 		std::advance(it, random);
@@ -297,7 +297,7 @@ std::vector<std::vector<std::vector<double>>> stochastic_gradient_descent_finder
 std::vector<std::vector<std::vector<double>>> mini_batch_gradient_descent_finder(int batch_size, std::map<std::pair<int, int>, double> test_set, int n_iterations, double eta, double lambda, double decay, std::set<int> users, std::set<int>  movies, std::map<std::pair<int, int>,
 	double> ratings, double U_dot_V_transposed, double V_dot_U, std::map<int, std::set<int>> users_movies, std::map<int, std::set<int>> movies_users, int m, int n, int K, std::vector<std::vector<double>> U, std::vector<std::vector<double>> V) {
 
-	//initialize the updated U and V
+	//initializes the updated U and V
 	std::vector<std::vector<std::vector<double>>> updated_U_V;
 
 
@@ -319,41 +319,43 @@ std::vector<std::vector<std::vector<double>>> mini_batch_gradient_descent_finder
 	for (int t = 0; t < n_iterations; t++) {
 		eta = eta * decay; // decay the learning rate over time
 
-		//initialize the stochastic gradient base for U and V
-		std::vector<std::vector<double>>cf_stochastic_gradient_base_U(n, std::vector<double>(K, 0));
-		std::vector<std::vector<double>>cf_stochastic_gradient_base_V(n, std::vector<double>(K, 0));
+		//initializes the stochastic gradient base for U and V
+		std::vector<std::vector<double>>cf_mini_batch_gradient_base_U(n, std::vector<double>(K, 0));
+		std::vector<std::vector<double>>cf_mini_batch_gradient_base_V(n, std::vector<double>(K, 0));
 
-		//randomly iterate to a rating
+		//randomly iterates to a rating
 		auto it = ratings.begin();
 		int random = mt() % ratings.size();
 		std::advance(it, random);
 
-		//store the key of the randomly selected rating
+		//stores the key of the randomly selected rating
 		auto random_key = it->first;
 
-		//store the randomly selected user
+		//stores the randomly selected user
 		int i = random_key.first;
 		int current_user = i;
 
-		//store the randomly selected movie
+		//stores the randomly selected movie
 		int j = random_key.second;
 		int current_movie = j;
 
-		//store the randomly selected rating value
+		//stores the randomly selected rating value
 		double current_rating = it->second;
 
+		//iterates through the set of users by an increment of 1
 		for (int i : users) {
 			int current_user = i;
 			std::set<int> current_user_movie_set = users_movies[current_user];
 			std::vector<std::vector<double>>cf_gradient_base_U(n, std::vector<double>(K, 0));
 
+			//iterates through all the columns of U by an increment of 1
 			for (int k = 0; k < K; k++) {
 
+				//performs the summation of the base gradient for a subset of samples relating to U
 				for (int j : current_user_movie_set) {
 					int current_movie = j;
 					U_dot_V_transposed = dot_product(U[i], V[j]);
 					double current_rating = ratings.at(std::make_pair(current_user, current_movie));
-					//double current_rating = ratings[std::make_pair(current_user, current_movie)];
 					cf_gradient_base_U[i][k] = cf_gradient_base_U[i][k] + (U_dot_V_transposed - current_rating) * V[j][k];
 				}
 
@@ -365,12 +367,16 @@ std::vector<std::vector<std::vector<double>>> mini_batch_gradient_descent_finder
 			}
 		}
 
+		//iterates through the set of movies by an increment of 1
 		for (int j : movies) {
 			int current_movie = j;
 			std::vector<std::vector<double>> cf_gradient_base_V(m, std::vector<double>(K, 0));
 			std::set<int> current_movie_user_set = movies_users[j];
 
+			//iterates through all the columns of V by an increment of 1
 			for (int k = 0; k < K; k++) {
+
+				//performs the summation of the base gradient for a subset of samples relating to V
 				for (int i : current_movie_user_set) {
 					U_dot_V_transposed = dot_product(U[i], V[j]);
 					int current_user = i;
@@ -388,15 +394,21 @@ std::vector<std::vector<std::vector<double>>> mini_batch_gradient_descent_finder
 			}
 		}
 
+		//prints the current iteration
 		std::cout << "Finished iteration " << t << endl;
+
+		//finds the current mean absolute error
 		mae_finder(test_set, U, V);
 	}
 
-	std::cout << "Finish Stochastic Gradient Descent" << std::endl;
+	//prints that the mini-batch gradient descent is finished
+	std::cout << "Finish Mini_Batch Gradient Descent" << std::endl;
 
 	//stores the updated U and V
 	updated_U_V.push_back(U);
 	updated_U_V.push_back(V);
+
+	//returns the updated U and V
 	return updated_U_V;
 }
 
