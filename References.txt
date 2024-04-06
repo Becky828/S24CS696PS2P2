@@ -59,3 +59,4 @@
 //https://stats.stackexchange.com/questions/74518/in-stochastic-gradient-descent-is-there-only-one-update-to-theta-for-each-it
 //https://codeforces.com/blog/entry/61587
 //https://www.geeksforgeeks.org/stdmt19937-class-in-cpp/
+//https://towardsdatascience.com/batch-mini-batch-stochastic-gradient-descent-7a62ecba642a
