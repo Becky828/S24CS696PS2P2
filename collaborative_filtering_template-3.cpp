@@ -627,8 +627,9 @@ int main() {
 	//eta = eta * 9000;
 
 	//lambda = lambda / 90000;
-	eta = 900 * eta;
-	lambda = lambda / 90;
+	eta = 1000 * eta;
+	//lambda = lambda / 90;
+	lambda = lambda_10_times_up;
 	n_iterations = 5 * n_iterations;
 	//n_iterations = m;
 	//epochs = 100;
@@ -659,6 +660,7 @@ int main() {
 	V_dot_U = 0;
 	//eta = eta_copy;
 	//lambda = lambda_copy;
+	//eta = eta_10_times_up;
 	batch_size = 200;
 	n_iterations = 6 * n_iterations_copy;
 	std::cout << "Mini-Batch Gradient Descent:" << std::endl;
