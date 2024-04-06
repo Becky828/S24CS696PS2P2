@@ -67,130 +67,9 @@ void mae_finder(std::map<std::pair<int, int>, double> test_set, std::vector<std:
 	std::cout << "Mean Absolute Error Random Guess: " << mae_random << std::endl;
 }
 
-//function which performs gradient descent
-std::vector<std::vector<std::vector<double>>> gradient_descent_finder(int n_iterations, double eta, double lambda, double decay, std::set<int> users, std::set<int>  movies, std::map<std::pair<int, int>,
-	double> ratings, double U_dot_V_transposed, double V_dot_U, std::map<int, std::set<int>> users_movies, std::map<int, std::set<int>> movies_users, int m, int n, int K, std::vector<std::vector<double>> U, std::vector<std::vector<double>> V) {
 
-	//initializes the updated U and V
-	std::vector<std::vector<std::vector<double>>> updated_U_V;
-
-	//performs 0 to n_iterations of gradient descent incrementing by 1
-	for (int t = 0; t < n_iterations; t++) {
-		eta = eta * decay; // decay the learning rate over time
-
-		// implement gradient descent here:
-		// you may want to use for (int i : users) and for (int j : movies) 
-		// to iterate over all users and movies instead of for (int i = 0; i < m; i++) and for (int j = 0; j < n; j++)
-		// to avoid iterating over users and movies that are not in the training set
-
-		// you may also want to use the dot_product function to calculate the dot product of U[i] and V[j]
-		// and the derived_u_getter and derived_v_getter functions to calculate the sum of the derived U and V values
-		// you can also use the lambda, eta, and decay variables
-
-
-		//iterates through the set of users
-		for (int i : users) {
-
-			//stores the current user
-			int current_user = i;
-
-			//stores the current user's movie set
-			std::set<int> current_user_movie_set = users_movies[current_user];
-
-			//initializes the base gradient for U. This ensures that the base gradient for U is set to 0 for each user
-			std::vector<std::vector<double>>cf_gradient_base_U(n, std::vector<double>(K, 0));
-
-			//iterates through all the columns of U by an increment of 1
-			for (int k = 0; k < K; k++) {
-
-				//performs the summation of the base gradient for all samples relating to U
-				for (int j : current_user_movie_set) {
-					int current_movie = j;
-
-					//finds the dot product of U and V transposed
-					U_dot_V_transposed = dot_product(U[i], V[j]);
-
-					//finds the current rating
-					double current_rating = ratings.at(std::make_pair(current_user, current_movie));
-
-					//finds the current rating difference
-					double rating_difference = U_dot_V_transposed - current_rating;
-
-					//updates the base gradient for U 
-					// by adding the product of the difference between the dot product of U and V transposed and the current rating 
-					// and the current element of V 
-					// to the current element of the base gradient for U
-					cf_gradient_base_U[i][k] = cf_gradient_base_U[i][k] + (rating_difference)*V[j][k];
-				}
-
-				//performs the base gradient descent for U
-				U[i][k] = U[i][k] - eta * (cf_gradient_base_U[i][k]);
-
-				//performs the regularization gradient descent for U
-				U[i][k] = U[i][k] - eta * (2 * lambda * U[i][k]);
-			}
-		}
-
-		//iterates through the set of movies by an increment of 1
-		for (int j : movies) {
-
-			//stores the current movie
-			int current_movie = j;
-
-			//stores the current movie's user set
-			std::set<int> current_movie_user_set = movies_users[j];
-
-			//initializes the base gradient for U. This ensures that the base gradient for U is set to 0 for each movie
-			std::vector<std::vector<double>> cf_gradient_base_V(m, std::vector<double>(K, 0));
-
-			//iterates through all the columns of V by an increment of 1
-			for (int k = 0; k < K; k++) {
-				for (int i : current_movie_user_set) {
-
-					//finds the dot product of U and V transposed
-					U_dot_V_transposed = dot_product(U[i], V[j]);
-
-					//stores the current user
-					int current_user = i;
-
-					//finds the current rating
-					double current_rating = ratings.at(std::make_pair(current_user, current_movie));
-
-					//finds the current rating difference
-					double rating_difference = U_dot_V_transposed - current_rating;
-
-					//updates the base gradient for V 
-					// by adding the product of the difference between the dot product of U and V transposed and the current rating 
-					// and the current element of U
-					// to the current element of the base gradient for V
-					cf_gradient_base_V[j][k] = cf_gradient_base_V[j][k] + (rating_difference)*U[i][k];
-				}
-
-				//performs the base gradient descent for V
-				V[j][k] = V[j][k] - eta * (cf_gradient_base_V[j][k]);
-
-				//performs the regularization gradient descent for V
-				V[j][k] = V[j][k] - eta * (2 * lambda * V[j][k]);
-			}
-		}
-
-		//prints the current iteration
-		std::cout << "Finished iteration " << t << endl;
-	}
-
-	//prints that the gradient descent is finished
-	std::cout << "Finish Gradient Descent" << std::endl;
-
-	//stores the updated U and V
-	updated_U_V.push_back(U);
-	updated_U_V.push_back(V);
-
-	//returns the updated U and V
-	return updated_U_V;
-}
-
-//function which performs stochastic gradient descent
-std::vector<std::vector<std::vector<double>>> stochastic_gradient_descent_finder(std::map<std::pair<int, int>, double> test_set, int n_iterations, double eta, double lambda, double decay, std::set<int> users, std::set<int>  movies, std::map<std::pair<int, int>,
+//function which performs collaborative filtering stochastic gradient descent
+std::vector<std::vector<std::vector<double>>> cf_stochastic_gradient_descent_finder(std::map<std::pair<int, int>, double> test_set, int n_iterations, double eta, double lambda, double decay, std::set<int> users, std::set<int>  movies, std::map<std::pair<int, int>,
 	double> ratings, double U_dot_V_transposed, double V_dot_U, std::map<int, std::set<int>> users_movies, std::map<int, std::set<int>> movies_users, int m, int n, int K, std::vector<std::vector<double>> U, std::vector<std::vector<double>> V) {
 
 	//initializes the updated U and V
@@ -200,7 +79,7 @@ std::vector<std::vector<std::vector<double>>> stochastic_gradient_descent_finder
 	// object for finding random numbers 
 	std::mt19937 mt(time(nullptr));
 
-	//performs 0 to n_iterations of stochastic gradient descent incrementing by 1
+	//performs 0 to n_iterations of collaboarative filtering stochastic gradient descent incrementing by 1
 	for (int t = 0; t < n_iterations; t++) {
 		eta = eta * decay; // decay the learning rate over time
 
@@ -236,7 +115,6 @@ std::vector<std::vector<std::vector<double>>> stochastic_gradient_descent_finder
 				//finds the dot product of U and V transposed
 				U_dot_V_transposed = dot_product(U[a], V[j]);
 				//U_dot_V_transposed = dot_product(U[a], V[j]);
-
 
 				//finds the rating difference
 				double rating_difference = U_dot_V_transposed - current_rating;
@@ -283,7 +161,7 @@ std::vector<std::vector<std::vector<double>>> stochastic_gradient_descent_finder
 	}
 
 	//prints that the stochastic gradient descent is finished
-	std::cout << "Finish Stochastic Gradient Descent" << std::endl;
+	std::cout << "Finished Collaboarative Filtering Stochastic Gradient Descent" << std::endl;
 
 	//stores the updated U and V
 	updated_U_V.push_back(U);
@@ -293,8 +171,132 @@ std::vector<std::vector<std::vector<double>>> stochastic_gradient_descent_finder
 	return updated_U_V;
 }
 
-//function which performs mini-batch gradient descent
-std::vector<std::vector<std::vector<double>>> mini_batch_gradient_descent_finder(int batch_size, std::map<std::pair<int, int>, double> test_set, int n_iterations, double eta, double lambda, double decay, std::set<int> users, std::set<int>  movies, std::map<std::pair<int, int>,
+
+
+//function which performs collaborative filtering batch gradient descent
+std::vector<std::vector<std::vector<double>>> cf_batch_gradient_descent_finder(int n_iterations, double eta, double lambda, double decay, std::set<int> users, std::set<int>  movies, std::map<std::pair<int, int>,
+	double> ratings, double U_dot_V_transposed, double V_dot_U, std::map<int, std::set<int>> users_movies, std::map<int, std::set<int>> movies_users, int m, int n, int K, std::vector<std::vector<double>> U, std::vector<std::vector<double>> V) {
+
+	//initializes the updated U and V
+	std::vector<std::vector<std::vector<double>>> updated_U_V;
+
+	//performs 0 to n_iterations of collaborative filtering gradient descent incrementing by 1
+	for (int t = 0; t < n_iterations; t++) {
+		eta = eta * decay; // decay the learning rate over time
+
+		// implement gradient descent here:
+		// you may want to use for (int i : users) and for (int j : movies) 
+		// to iterate over all users and movies instead of for (int i = 0; i < m; i++) and for (int j = 0; j < n; j++)
+		// to avoid iterating over users and movies that are not in the training set
+
+		// you may also want to use the dot_product function to calculate the dot product of U[i] and V[j]
+		// and the derived_u_getter and derived_v_getter functions to calculate the sum of the derived U and V values
+		// you can also use the lambda, eta, and decay variables
+
+
+		//iterates through the set of users
+		for (int i : users) {
+
+			//stores the current user
+			int current_user = i;
+
+			//stores the current user's movie set
+			std::set<int> current_user_movie_set = users_movies[current_user];
+
+			//initializes the base gradient for U. This ensures that the base gradient for U is set to 0 for each user
+			std::vector<std::vector<double>>cf_batch_gradient_base_U(n, std::vector<double>(K, 0));
+
+			//iterates through all the columns of U by an increment of 1
+			for (int k = 0; k < K; k++) {
+
+				//performs the summation of the base gradient for all samples relating to U
+				for (int j : current_user_movie_set) {
+					int current_movie = j;
+
+					//finds the dot product of U and V transposed
+					U_dot_V_transposed = dot_product(U[i], V[j]);
+
+					//finds the current rating
+					double current_rating = ratings.at(std::make_pair(current_user, current_movie));
+
+					//finds the current rating difference
+					double rating_difference = U_dot_V_transposed - current_rating;
+
+					//updates the base gradient for U 
+					// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+					// and the current element of V 
+					// to the current element of the base gradient for U
+					cf_batch_gradient_base_U[i][k] = cf_batch_gradient_base_U[i][k] + (rating_difference)*V[j][k];
+				}
+
+				//performs the base gradient descent for U
+				U[i][k] = U[i][k] - eta * (cf_batch_gradient_base_U[i][k]);
+
+				//performs the regularization gradient descent for U
+				U[i][k] = U[i][k] - eta * (2 * lambda * U[i][k]);
+			}
+		}
+
+		//iterates through the set of movies by an increment of 1
+		for (int j : movies) {
+
+			//stores the current movie
+			int current_movie = j;
+
+			//stores the current movie's user set
+			std::set<int> current_movie_user_set = movies_users[j];
+
+			//initializes the base gradient for U. This ensures that the base gradient for U is set to 0 for each movie
+			std::vector<std::vector<double>> cf_batch_gradient_base_V(m, std::vector<double>(K, 0));
+
+			//iterates through all the columns of V by an increment of 1
+			for (int k = 0; k < K; k++) {
+				for (int i : current_movie_user_set) {
+
+					//finds the dot product of U and V transposed
+					U_dot_V_transposed = dot_product(U[i], V[j]);
+
+					//stores the current user
+					int current_user = i;
+
+					//finds the current rating
+					double current_rating = ratings.at(std::make_pair(current_user, current_movie));
+
+					//finds the current rating difference
+					double rating_difference = U_dot_V_transposed - current_rating;
+
+					//updates the base gradient for V 
+					// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+					// and the current element of U
+					// to the current element of the base gradient for V
+					cf_batch_gradient_base_V[j][k] = cf_batch_gradient_base_V[j][k] + (rating_difference)*U[i][k];
+				}
+
+				//performs the base gradient descent for V
+				V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_V[j][k]);
+
+				//performs the regularization gradient descent for V
+				V[j][k] = V[j][k] - eta * (2 * lambda * V[j][k]);
+			}
+		}
+
+		//prints the current iteration
+		std::cout << "Finished iteration " << t << endl;
+	}
+
+	//prints that the gradient descent is finished
+	std::cout << "Finished Collaboarative Filtering Batch Gradient Descent" << std::endl;
+
+	//stores the updated U and V
+	updated_U_V.push_back(U);
+	updated_U_V.push_back(V);
+
+	//returns the updated U and V
+	return updated_U_V;
+}
+
+//function which performs collborative filtering  mini-batch gradient descent
+std::vector<std::vector<std::vector<double>>> cf_mini_batch_gradient_descent_finder(int batch_size, std::map<std::pair<int, int>, double> test_set, int n_iterations, double eta, double lambda, double decay, std::set<int> users, std::set<int>  movies, std::map<std::pair<int, int>,
 	double> ratings, double U_dot_V_transposed, double V_dot_U, std::map<int, std::set<int>> users_movies, std::map<int, std::set<int>> movies_users, int m, int n, int K, std::vector<std::vector<double>> U, std::vector<std::vector<double>> V) {
 
 
@@ -365,24 +367,56 @@ std::vector<std::vector<std::vector<double>>> mini_batch_gradient_descent_finder
 				for (auto it : ratings_batch) {
 					//int j = it.first.second;
 					int i = it.first.first;
-					int j = it.first.second;
 
+					//stores the current user
 					int current_user = i;
-					int current_movie = j;
-					//U_dot_V_transposed = dot_product(U[i], V[j]);
-					U_dot_V_transposed = dot_product(U[a], V[j]);
 
-					double current_rating = it.second;
-					//double current_rating = ratings.at(std::make_pair(current_user, current_movie));
-					double rating_difference = U_dot_V_transposed - current_rating;
-					cf_mini_batch_gradient_base_U[a][k] = cf_mini_batch_gradient_base_U[a][k] + (rating_difference*V[j][k]);
+					//stores the current user's movie set
+					std::set<int> current_user_movie_set = users_movies[current_user];
+
+					//performs the summation of the base gradient for all samples relating to U
+					for (int j : current_user_movie_set) {
+
+						int current_movie = j;
+
+						//finds the dot product of U and V transposed
+						U_dot_V_transposed = dot_product(U[i], V[j]);
+
+						//finds the current rating
+						double current_rating = ratings.at(std::make_pair(current_user, current_movie));
+
+						//finds the current rating difference
+						double rating_difference = U_dot_V_transposed - current_rating;
+
+						//updates the base gradient for U 
+						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+						// and the current element of V 
+						// to the current element of the base gradient for U
+						cf_mini_batch_gradient_base_U[i][k] = cf_mini_batch_gradient_base_U[i][k] + (rating_difference)*V[j][k];
+					}
 
 					//performs the base gradient descent for U
-					U[a][k] = U[a][k] - eta * (cf_mini_batch_gradient_base_U[a][k] / batch_size);
+					U[i][k] = U[i][k] - eta * (cf_mini_batch_gradient_base_U[i][k]);
 
 					//performs the regularization gradient descent for U
-					U[a][k] = U[a][k] - eta * (2 * lambda * U[a][k]);
+					U[i][k] = U[i][k] - eta * (2 * lambda * U[i][k]);
 				}
+					//int current_movie = j;
+					////U_dot_V_transposed = dot_product(U[i], V[j]);
+					//U_dot_V_transposed = dot_product(U[a], V[j]);
+
+					//double current_rating = it.second;
+					////double current_rating = ratings.at(std::make_pair(current_user, current_movie));
+					//double rating_difference = U_dot_V_transposed - current_rating;
+					//cf_mini_batch_gradient_base_U[a][k] = cf_mini_batch_gradient_base_U[a][k] + (rating_difference * V[j][k]);
+
+					////performs the base gradient descent for U
+					////U[a][k] = U[a][k] - eta * (cf_mini_batch_gradient_base_U[a][k] / batch_size);
+					//U[a][k] = U[a][k] - eta * (cf_mini_batch_gradient_base_U[a][k]);
+
+					////performs the regularization gradient descent for U
+					//U[a][k] = U[a][k] - eta * (2 * lambda * U[a][k]);
+				//}
 
 				//for (auto it : ratings_batch) {
 
@@ -426,7 +460,8 @@ std::vector<std::vector<std::vector<double>>> mini_batch_gradient_descent_finder
 					cf_mini_batch_gradient_base_V[a][k] = cf_mini_batch_gradient_base_V[a][k] + (rating_difference * U[i][k]);
 
 					//performs the base gradient descent for V
-					V[a][k] = V[a][k] - eta * (cf_mini_batch_gradient_base_V[a][k] / batch_size);
+					//V[a][k] = V[a][k] - eta * (cf_mini_batch_gradient_base_V[a][k] / batch_size);
+					V[a][k] = V[a][k] - eta * (cf_mini_batch_gradient_base_V[a][k]);
 
 					//performs the regularization gradient descent for V
 					V[a][k] = V[a][k] - eta * (2 * lambda * V[a][k]);
@@ -554,9 +589,9 @@ int main() {
 
 	std::cout << "Finish Reading File" << std::endl;
 
-//	batch_size = ratings.size() * 0.010;
+	//	batch_size = ratings.size() * 0.010;
 
-	// initialize U and V for the collaborative filtering
+		// initialize U and V for the collaborative filtering
 	std::vector<std::vector<double>> U(m, std::vector<double>(K, 0));
 	std::vector<std::vector<double>> V(n, std::vector<double>(K, 0));
 
@@ -636,7 +671,7 @@ int main() {
 	//lambda = lambda_copy;
 
 	std::cout << "Stochastic Gradient Descent:" << std::endl;
-	updated_U_V = stochastic_gradient_descent_finder(test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
+	updated_U_V = cf_stochastic_gradient_descent_finder(test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
 	//set U and V to the updated U and V
 	U = updated_U_V[0];
 	V = updated_U_V[1];
@@ -658,13 +693,13 @@ int main() {
 	//resetting U_dot_V_transposed and V_dot_U
 	U_dot_V_transposed = 0;
 	V_dot_U = 0;
-	//eta = eta_copy;
-	//lambda = lambda_copy;
+	eta = eta_copy;
+	lambda = lambda_copy;
 	//eta = eta_10_times_up;
 	batch_size = 200;
 	n_iterations = 6 * n_iterations_copy;
 	std::cout << "Mini-Batch Gradient Descent:" << std::endl;
-	updated_U_V = mini_batch_gradient_descent_finder(batch_size, test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
+	updated_U_V = cf_mini_batch_gradient_descent_finder(batch_size, test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
 	//set U and V to the updated U and V
 	U = updated_U_V[0];
 	V = updated_U_V[1];
@@ -695,7 +730,7 @@ int main() {
 	std::cout << "Gradient Descent:" << std::endl;
 	std::cout << "1 of 5:" << std::endl;
 	std::cout << "Given Hyperparameters" << std::endl;
-	updated_U_V = gradient_descent_finder(n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
+	updated_U_V = cf_batch_gradient_descent_finder(n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
 
 	//set U and V to the updated U and V
 	U = updated_U_V[0];
@@ -725,7 +760,7 @@ int main() {
 	//gradient descent found with the doubled number of iterations
 	std::cout << "2 of 5:" << std::endl;
 	std::cout << "Doubled Number of Iterations" << std::endl;
-	updated_U_V = gradient_descent_finder(n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
+	updated_U_V = cf_batch_gradient_descent_finder(n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
 
 	//set U and V to the updated U and V
 	U = updated_U_V[0];
@@ -754,7 +789,7 @@ int main() {
 	std::cout << "Doubled Number of Iterations, eta times 10, and unchanged lambda" << std::endl;
 
 	//gets updated V and U
-	updated_U_V = gradient_descent_finder(n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
+	updated_U_V = cf_batch_gradient_descent_finder(n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
 
 	//set U and V to the updated U and V
 	U = updated_U_V[0];
@@ -787,7 +822,7 @@ int main() {
 	std::cout << "This provided the lowest found MAE." << std::endl;
 
 	//gets updated V and U
-	updated_U_V = gradient_descent_finder(n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
+	updated_U_V = cf_batch_gradient_descent_finder(n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
 
 	//set U and V to the updated U and V
 	U = updated_U_V[0];
@@ -819,7 +854,7 @@ int main() {
 	std::cout << "Doubled Number of Iterations, eta times 10, and lambda divided by 10" << std::endl;
 
 	//gets updated V and U
-	updated_U_V = gradient_descent_finder(n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
+	updated_U_V = cf_batch_gradient_descent_finder(n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
 
 	//set U and V to the updated U and V
 	U = updated_U_V[0];
