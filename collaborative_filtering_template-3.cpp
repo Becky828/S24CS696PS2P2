@@ -503,8 +503,8 @@ int main() {
 	double eta_10_times_down = eta / 10;
 	double decay = 0.9; // decay rate
 	int n_iterations = 35; // number of iterations for the gradient descent
-	int n_interations_copy = n_iterations;
-	int n_interations_double = 2 * n_iterations;
+	int n_iterations_copy = n_iterations;
+	int n_iterations_double = 2 * n_iterations;
 	double U_dot_V_transposed = 0;
 	double V_dot_U = 0;
 
@@ -554,7 +554,7 @@ int main() {
 
 	std::cout << "Finish Reading File" << std::endl;
 
-	batch_size = ratings.size() * 0.010;
+//	batch_size = ratings.size() * 0.010;
 
 	// initialize U and V for the collaborative filtering
 	std::vector<std::vector<double>> U(m, std::vector<double>(K, 0));
@@ -659,7 +659,8 @@ int main() {
 	V_dot_U = 0;
 	//eta = eta_copy;
 	//lambda = lambda_copy;
-	batch_size = 100;
+	batch_size = 200;
+	n_iterations = 6 * n_iterations_copy;
 	std::cout << "Mini-Batch Gradient Descent:" << std::endl;
 	updated_U_V = mini_batch_gradient_descent_finder(batch_size, test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
 	//set U and V to the updated U and V
@@ -683,7 +684,7 @@ int main() {
 	U_dot_V_transposed = 0;
 	V_dot_U = 0;
 
-	n_iterations = n_interations_copy;
+	n_iterations = n_iterations_copy;
 	eta = eta_copy;
 	lambda = lambda_copy;
 
@@ -713,7 +714,7 @@ int main() {
 	V_dot_U = 0;
 
 	//doubling the number of iterations appears to reduce the MAE by around 0.01
-	n_iterations = n_interations_double;
+	n_iterations = n_iterations_double;
 
 	//resets the eta to the original value
 	eta = eta_copy;
