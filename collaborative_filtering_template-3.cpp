@@ -396,13 +396,14 @@ std::vector<std::vector<std::vector<double>>> cf_mini_batch_gradient_descent_fin
 							cf_mini_batch_gradient_base_U[i][k] = cf_mini_batch_gradient_base_U[i][k] + (rating_difference)*V[j][k];
 						}
 					}
-
-					//performs the base gradient descent for U
-					U[i][k] = U[i][k] - eta * (cf_mini_batch_gradient_base_U[i][k]);
-
-					//performs the regularization gradient descent for U
-					U[i][k] = U[i][k] - eta * (2 * lambda * U[i][k]);
+				
 				}
+
+				//performs the base gradient descent for U
+				U[a][k] = U[a][k] - eta * (cf_mini_batch_gradient_base_U[a][k]);
+
+				//performs the regularization gradient descent for U
+				U[a][k] = U[a][k] - eta * (2 * lambda * U[a][k]);
 			}
 		}
 
@@ -481,13 +482,13 @@ std::vector<std::vector<std::vector<double>>> cf_mini_batch_gradient_descent_fin
 						}
 					}
 
-					//performs the base gradient descent for V
-					V[j][k] = V[j][k] - eta * (cf_mini_batch_gradient_base_V[j][k]);
-
-					//performs the regularization gradient descent for V
-					V[j][k] = V[j][k] - eta * (2 * lambda * V[j][k]);
-
 				}
+
+				//performs the base gradient descent for V
+				V[a][k] = V[a][k] - eta * (cf_mini_batch_gradient_base_V[a][k]);
+
+				//performs the regularization gradient descent for V
+				V[a][k] = V[a][k] - eta * (2 * lambda * V[a][k]);
 
 			}
 		}		
