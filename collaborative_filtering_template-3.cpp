@@ -494,10 +494,11 @@ std::vector<std::vector<std::vector<double>>> cf_mini_batch_gradient_descent_fin
 
 			//prints the current iteration
 			std::cout << "Finished iteration " << t << endl;
+			mae_finder(test_set, U, V);
 		}
 
 		//prints that the gradient descent is finished
-		std::cout << "Finished Collaboarative Filtering Batch Gradient Descent" << std::endl;
+		std::cout << "Finished Collaboarative Filtering Mini-Batch Gradient Descent" << std::endl;
 
 		//stores the updated U and V
 		updated_U_V.push_back(U);
