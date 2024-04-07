@@ -212,6 +212,10 @@ std::vector<std::vector<std::vector<double>>> cf_batch_gradient_descent_finder(i
 	//initializes the updated U and V
 	std::vector<std::vector<std::vector<double>>> updated_U_V;
 
+	
+	//The following code is based on the collaborative filtering batch gradient descent algorithm as inferred from slide 35 of the recommendation systems notes
+
+
 	//performs 0 to n_iterations of collaborative filtering gradient descent incrementing by 1
 	for (int t = 0; t < n_iterations; t++) {
 		eta = eta * decay; // decay the learning rate over time
@@ -265,6 +269,7 @@ std::vector<std::vector<std::vector<double>>> cf_batch_gradient_descent_finder(i
 				}
 
 				//performs the base gradient descent for U
+				//as inferred from slide 35 of recommendation systems notes
 				U[i][k] = U[i][k] - eta * (cf_batch_gradient_base_U[i][k]);
 
 				//performs the regularization gradient descent for U
@@ -348,6 +353,10 @@ std::vector<std::vector<std::vector<double>>> cf_mini_batch_gradient_descent_fin
 	std::mt19937 mt(time(nullptr));
 
 
+	//The following code is based on the collaborative filtering mini-batch gradient descent algorithm as inferred from slide 35 and 38 of the recommendation systems notes
+	//slide 23 of the stochastic gradient descent notes
+
+
 	//performs 0 to n_iterations of mini-batch gradient descent incrementing by 1
 	for (int t = 0; t < n_iterations; t++) {
 		eta = eta * decay; // decay the learning rate over time
@@ -390,6 +399,7 @@ std::vector<std::vector<std::vector<double>>> cf_mini_batch_gradient_descent_fin
 					int current_movie = j;
 
 					//finds the dot product of U and V transposed, wherein a is the current user and j is the current movie that was randomly selected
+					//as inferred from the system recommendation and stochastic gradient descent notes
 					U_dot_V_transposed = dot_product(U[a], V[j]);
 
 					//stores the current rating
