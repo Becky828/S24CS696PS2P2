@@ -354,7 +354,7 @@ std::vector<std::vector<std::vector<double>>> cf_mini_batch_gradient_descent_fin
 		//stores the randomly selected rating value
 		//double current_rating = it->second;
 
-		//iterates through the set of users by an increment of 1
+		//iterates through the set of users by an increment of 1. This provides the index required for iterating through the rows of U
 		for (int a : users) {
 			//int current_user = i;
 			//std::set<int> current_user_movie_set = users_movies[current_user];
@@ -437,7 +437,7 @@ std::vector<std::vector<std::vector<double>>> cf_mini_batch_gradient_descent_fin
 	//}
 //}
 
-//iterates through the set of movies by an increment of 1
+//iterates through the set of movies by an increment of 1. This provides the index required for iterating through the rows of V
 		for (int a : movies) {
 			//int current_movie = j;
 			std::vector<std::vector<double>>cf_mini_batch_gradient_base_V(n, std::vector<double>(K, 0));
