@@ -60,3 +60,10 @@
 //https://codeforces.com/blog/entry/61587
 //https://www.geeksforgeeks.org/stdmt19937-class-in-cpp/
 //https://towardsdatascience.com/batch-mini-batch-stochastic-gradient-descent-7a62ecba642a
+//https://stackoverflow.com/questions/7488155/can-i-set-a-breakpoint-when-variable-is-getting-a-specific-value-in-net
+//https://www.geeksforgeeks.org/convert-string-to-int-in-cpp/
+//https://www.kaggle.com/datasets/syedjaferk/book-crossing-dataset?resource=download
+//https://towardsdatascience.com/batch-mini-batch-stochastic-gradient-descent-7a62ecba642a
+//https://stackoverflow.com/questions/10732074/stl-map-allows-duplicate-pairs
+//https://www.w3schools.com/cpp/cpp_exceptions.asp
+//https://www.geeksforgeeks.org/measure-execution-time-function-cpp/
