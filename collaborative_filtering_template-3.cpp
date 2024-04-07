@@ -179,7 +179,6 @@ std::vector<std::vector<std::vector<double>>> cf_batch_gradient_descent_finder(i
 
 	//initializes the updated U and V
 	std::vector<std::vector<std::vector<double>>> updated_U_V;
-
 	//performs 0 to n_iterations of collaborative filtering gradient descent incrementing by 1
 	for (int t = 0; t < n_iterations; t++) {
 		eta = eta * decay; // decay the learning rate over time
