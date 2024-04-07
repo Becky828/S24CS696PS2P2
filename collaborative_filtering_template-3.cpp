@@ -223,7 +223,8 @@ std::vector<std::vector<std::vector<double>>> cf_batch_gradient_descent_finder(i
 					int current_movie = j;
 
 					//finds the dot product of U and V transposed, wherein i is the current user and j is the current movie in the current user's movie set
-					U_dot_V_transposed = dot_product(U[i], V[j]);
+					//U_dot_V_transposed = dot_product(U[i], V[j]);
+					U_dot_V_transposed = dot_product(U[i], V[k]);
 
 					//finds the current rating
 					double current_rating = ratings.at(std::make_pair(current_user, current_movie));
