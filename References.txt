@@ -12,11 +12,13 @@
 //I have GitHub Copilot enabled in Visual Studio 2022. I have been using GitHub Copilot since Fall 2023. 
 //GitHub Copilot helps me with comments, and writing redundant code or similar code to what I have written before.
 //I use the occasional suggestion from Github Copilot in the very rare times that it makes sense with that I am writing.
+//I quite often edit the suggestions from GitHub Copilot that I do not outright ignore.
+//For me, GitHub Copilot is like using the "home" key on my keyboard. It is a tool to reduce the grind a bit and give my irritable wrists a break. It is not a brain break"
 //
 //I forgot to include this infomation in my ps1 p5 reference list. I thought that it was one of the carry over references 
 //for default cmake project, but just learned today that it wasn't. I apologize for that.
 //
-// I am using Github Copilot as a basic study aid. I am not using it to write my code for me. I am using Github Copilot within the guidelines
+// I am using Github Copilot as a basic study aid. I am not using it to write my code for me. I am using Github Copilot within the guidelines.
 // of the academic integrity policy San Diego State University. Hence, grading for ps1 p5, ps2 p2, and any future problems is clearly
 // an evaluation of my understanding of the material and my ability to write code.
 //
