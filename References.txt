@@ -1,3 +1,26 @@
+//GitHub Copilot Disclaimer
+//
+//Please be advised:
+//
+//https://docs.github.com/en/copilot/configuring-github-copilot/configuring-github-copilot-settings-on-githubcom
+//"Your personal settings for GitHub Copilot include an option to either allow or block code completion suggestions that match publicly available code. 
+// If you choose to block suggestions matching public code, GitHub Copilot checks code completion suggestions with their surrounding code of about 150 characters 
+// against public code on GitHub. If there is a match, or a near match, the suggestion is not shown to you."
+//
+//My public settings for GitHub Copilot are set to block suggestions matching public code. That has been my setting since I started using GitHub Copilot.
+//That will continue to be my setting for GitHub Copilot at least while I finish grad school and any future academics.
+//I have GitHub Copilot enabled in Visual Studio 2022. I have been using GitHub Copilot since Fall 2023. 
+//GitHub Copilot helps me with comments, and writing redundant code or similar code to what I have written before.
+//I use the occasional suggestion from Github Copilot in the very rare times that it makes sense with that I am writing.
+//
+//I forgot to include this infomation in my ps1 p5 reference list. I thought that it was one of the carry over references 
+//for default cmake project, but just learned today that it wasn't. I apologize for that.
+//
+// I am using Github Copilot as a basic study aid. I am not using it to write my code for me. I am using Github Copilot within the guidelines
+// of the academic integrity policy San Diego State University. Hence, grading for ps1 p5, ps2 p2, and any future problems is clearly
+// an evaluation of my understanding of the material and my ability to write code.
+//
+
 //https://stackoverflow.com/questions/63925255/googletest-compile-with-mt-staticrelease-errors
 //https://github.com/google/googletest
 //https://sentry.io/answers/revert-a-git-repository-to-a-previous-commit/
