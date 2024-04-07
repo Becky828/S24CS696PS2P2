@@ -174,7 +174,7 @@ std::vector<std::vector<std::vector<double>>> cf_stochastic_gradient_descent_fin
 
 
 //function which performs collaborative filtering batch gradient descent
-std::vector<std::vector<std::vector<double>>> cf_batch_gradient_descent_finder(int n_iterations, double eta, double lambda, double decay, std::set<int> users, std::set<int>  movies, std::map<std::pair<int, int>,
+std::vector<std::vector<std::vector<double>>> cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, int>, double> test_set, double eta, double lambda, double decay, std::set<int> users, std::set<int>  movies, std::map<std::pair<int, int>,
 	double> ratings, double U_dot_V_transposed, double V_dot_U, std::map<int, std::set<int>> users_movies, std::map<int, std::set<int>> movies_users, int m, int n, int K, std::vector<std::vector<double>> U, std::vector<std::vector<double>> V) {
 
 	//initializes the updated U and V
@@ -281,7 +281,9 @@ std::vector<std::vector<std::vector<double>>> cf_batch_gradient_descent_finder(i
 
 		//prints the current iteration
 		std::cout << "Finished iteration " << t << endl;
-	}
+		mae_finder(test_set, U, V);
+
+}
 
 	//prints that the gradient descent is finished
 	std::cout << "Finished Collaboarative Filtering Batch Gradient Descent" << std::endl;
@@ -590,7 +592,7 @@ int main() {
 	std::cout << "\n" << "\n" << "Collaborative Filetering Batch Gradient Descent:" << std::endl;
 	std::cout << "\n" << "1 of 5:" << std::endl;
 	std::cout << "Given Hyperparameters" << std::endl;
-	updated_U_V = cf_batch_gradient_descent_finder(n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
+	updated_U_V = cf_batch_gradient_descent_finder(n_iterations, test_set, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
 
 	//set U and V to the updated U and V
 	U = updated_U_V[0];
@@ -600,7 +602,7 @@ int main() {
 	updated_U_V.clear();
 
 	//mae found for the given hyper parameters
-	mae_finder(test_set, U, V);
+	//mae_finder(test_set, U, V);
 
 	//resetting U and V
 	U = copy_U;
@@ -620,7 +622,7 @@ int main() {
 	//gradient descent found with the doubled number of iterations
 	std::cout << "\n" << "2 of 5:" << std::endl;
 	std::cout << "Doubled Number of Iterations" << std::endl;
-	updated_U_V = cf_batch_gradient_descent_finder(n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
+	updated_U_V = cf_batch_gradient_descent_finder(n_iterations, test_set, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
 
 	//set U and V to the updated U and V
 	U = updated_U_V[0];
@@ -630,7 +632,7 @@ int main() {
 	updated_U_V.clear();
 
 	//mae found for the doubled number of iterations
-	mae_finder(test_set, U, V);
+	//mae_finder(test_set, U, V);
 
 	//resetting U and V
 	U = copy_U;
@@ -649,7 +651,7 @@ int main() {
 	std::cout << "Doubled Number of Iterations, eta times 10, and unchanged lambda" << std::endl;
 
 	//gets updated V and U
-	updated_U_V = cf_batch_gradient_descent_finder(n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
+	updated_U_V = cf_batch_gradient_descent_finder(n_iterations, test_set, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
 
 	//set U and V to the updated U and V
 	U = updated_U_V[0];
@@ -659,7 +661,7 @@ int main() {
 	updated_U_V.clear();
 
 	//mae found for the doubled number of iterations and eta times 10
-	mae_finder(test_set, U, V);
+	//mae_finder(test_set, U, V);
 
 	//resetting U and V
 	U = copy_U;
@@ -682,7 +684,7 @@ int main() {
 	std::cout << "This provided the lowest found MAE." << std::endl;
 
 	//gets updated V and U
-	updated_U_V = cf_batch_gradient_descent_finder(n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
+	updated_U_V = cf_batch_gradient_descent_finder(n_iterations, test_set, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
 
 	//set U and V to the updated U and V
 	U = updated_U_V[0];
@@ -692,7 +694,7 @@ int main() {
 	updated_U_V.clear();
 
 	//mae found for the doubled number of iterations and eta times 10
-	mae_finder(test_set, U, V);
+	//mae_finder(test_set, U, V);
 
 	//resetting U and V
 	U = copy_U;
@@ -714,7 +716,7 @@ int main() {
 	std::cout << "Doubled Number of Iterations, eta times 10, and lambda divided by 10" << std::endl;
 
 	//gets updated V and U
-	updated_U_V = cf_batch_gradient_descent_finder(n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
+	updated_U_V = cf_batch_gradient_descent_finder(n_iterations, test_set, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
 
 	//set U and V to the updated U and V
 	U = updated_U_V[0];
@@ -724,7 +726,7 @@ int main() {
 	updated_U_V.clear();
 
 	//mae found for the doubled number of iterations and eta times 10
-	mae_finder(test_set, U, V);
+	//mae_finder(test_set, U, V);
 
 
 	//p2b-i
