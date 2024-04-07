@@ -358,13 +358,15 @@ std::vector<std::vector<std::vector<double>>> cf_mini_batch_gradient_descent_fin
 
 					//updates the base gradient for U
 					cf_mini_batch_gradient_base_U[a][k] = cf_mini_batch_gradient_base_U[a][k] + (rating_difference * V[j][k]);
-
-					//performs the base gradient descent for U
-					U[a][k] = U[a][k] - eta * (cf_mini_batch_gradient_base_U[a][k] / batch_size);
-
-					//performs the regularization gradient descent for U
-					U[a][k] = U[a][k] - eta * (2 * lambda * U[a][k]);
 				}
+
+				//performs the base gradient descent for U
+				U[a][k] = U[a][k] - eta * (cf_mini_batch_gradient_base_U[a][k] / batch_size);
+				//U[a][k] = U[a][k] - eta * (cf_mini_batch_gradient_base_U[a][k] );
+
+				//performs the regularization gradient descent for U
+				U[a][k] = U[a][k] - eta * (2 * lambda * U[a][k]);
+
 			}
 		}
 			
@@ -398,12 +400,14 @@ std::vector<std::vector<std::vector<double>>> cf_mini_batch_gradient_descent_fin
 						//updates the base gradient for V
 						cf_mini_batch_gradient_base_V[a][k] = cf_mini_batch_gradient_base_V[a][k] + (rating_difference * U[i][k]);
 
-						//performs the base gradient descent for V
-						V[a][k] = V[a][k] - eta * (cf_mini_batch_gradient_base_V[a][k] / batch_size);
-
-						//performs the regularization gradient descent for V
-						V[a][k] = V[a][k] - eta * (2 * lambda * V[a][k]);
 					}
+
+					//performs the base gradient descent for V
+					V[a][k] = V[a][k] - eta * (cf_mini_batch_gradient_base_V[a][k] / batch_size);
+					//V[a][k] = V[a][k] - eta * (cf_mini_batch_gradient_base_V[a][k]);
+
+					//performs the regularization gradient descent for V
+					V[a][k] = V[a][k] - eta * (2 * lambda * V[a][k]);
 				}
 			}
 
@@ -577,84 +581,14 @@ int main() {
 	copy_U = U;
 	copy_V = V;
 
-
-	//eta = eta_copy;
-	//n_iterations = 100000;
-	//n_iterations = 60;
-	//n_iterations = 70;
-	//n_iterations = m;
-	////eta = eta * (1000 + 57.4);
-	////eta = eta * 900;
-	//eta = eta * 9000;
-
-	//lambda = lambda / 90000;
-	eta = 1000 * eta;
-	//lambda = lambda / 90;
-	lambda = lambda_10_times_up;
-	n_iterations = 5 * n_iterations;
-	//n_iterations = m;
-	//epochs = 100;
-	//lambda = lambda_copy;
-
-	std::cout << "\n" << "\n" << "Stochastic Gradient Descent:" << std::endl;
-	updated_U_V = cf_stochastic_gradient_descent_finder(test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
-	//set U and V to the updated U and V
-	U = updated_U_V[0];
-	V = updated_U_V[1];
-	updated_U_V.clear();
-	mae_finder(test_set, U, V);
-
-
-	//empty the updated_U_V vector
-	updated_U_V.clear();
-
-	//mae found for the given hyper parameters
-	mae_finder(test_set, U, V);
-
-	//resetting U and V
-	U = copy_U;
-	V = copy_V;
-
-	//n_iterations = m;
-	//resetting U_dot_V_transposed and V_dot_U
-	U_dot_V_transposed = 0;
-	V_dot_U = 0;
-	eta = eta_copy;
-	lambda = lambda_copy;
-	//eta = eta_10_times_up;
-	batch_size = 200;
-	n_iterations = 6 * n_iterations_copy;
-	std::cout << "\n" << "\n" << "Mini-Batch Gradient Descent:" << std::endl;
-	updated_U_V = cf_mini_batch_gradient_descent_finder(batch_size, test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
-	//set U and V to the updated U and V
-	U = updated_U_V[0];
-	V = updated_U_V[1];
-	updated_U_V.clear();
-	mae_finder(test_set, U, V);
-
-
-	//empty the updated_U_V vector
-	updated_U_V.clear();
-
-	//mae found for the given hyper parameters
-	mae_finder(test_set, U, V);
-
-	//resetting U and V
-	U = copy_U;
-	V = copy_V;
-
-	//resetting U_dot_V_transposed and V_dot_U
-	U_dot_V_transposed = 0;
-	V_dot_U = 0;
-
-	n_iterations = n_iterations_copy;
-	eta = eta_copy;
-	lambda = lambda_copy;
+	//p2a 
+	// Collaborative Filtering Batch Gradient Descent
+	
 
 	// 1 of 5
 	// gradient descent found with given hyperparameters
-	std::cout << "Gradient Descent:" << std::endl;
-	std::cout << "1 of 5:" << std::endl;
+	std::cout << "\n" << "\n" << "Collaborative Filetering Batch Gradient Descent:" << std::endl;
+	std::cout << "\n" << "1 of 5:" << std::endl;
 	std::cout << "Given Hyperparameters" << std::endl;
 	updated_U_V = cf_batch_gradient_descent_finder(n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
 
@@ -684,7 +618,7 @@ int main() {
 
 	// 2 of 5
 	//gradient descent found with the doubled number of iterations
-	std::cout << "2 of 5:" << std::endl;
+	std::cout << "\n" << "2 of 5:" << std::endl;
 	std::cout << "Doubled Number of Iterations" << std::endl;
 	updated_U_V = cf_batch_gradient_descent_finder(n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
 
@@ -711,7 +645,7 @@ int main() {
 
 	// 3 of 5
 	//gradient descent found with the doubled number of iterations and eta times 10
-	std::cout << "3 of 5:" << std::endl;
+	std::cout << "\n" << "3 of 5:" << std::endl;
 	std::cout << "Doubled Number of Iterations, eta times 10, and unchanged lambda" << std::endl;
 
 	//gets updated V and U
@@ -743,7 +677,7 @@ int main() {
 
 	//4 of 5
 	//gradient descent found with the doubled number of iterations, eta times 10, and lambda times 10
-	std::cout << "4 of 5:" << std::endl;
+	std::cout << "\n" << "4 of 5:" << std::endl;
 	std::cout << "Doubled Number of Iterations, eta times 10, and lambda times 10" << std::endl;
 	std::cout << "This provided the lowest found MAE." << std::endl;
 
@@ -776,7 +710,7 @@ int main() {
 
 	//5 of 5
 	//gradient descent found with the doubled number of iterations, eta times 10, and lambda times 10
-	std::cout << "5 of 5:" << std::endl;
+	std::cout << "\n" << "5 of 5:" << std::endl;
 	std::cout << "Doubled Number of Iterations, eta times 10, and lambda divided by 10" << std::endl;
 
 	//gets updated V and U
@@ -793,14 +727,86 @@ int main() {
 	mae_finder(test_set, U, V);
 
 
-	//p2b
-	//stochastic gradient descent
+	//p2b-i
+	//Collaborative Filtering Stochastic Gradient Descent
 
-	/*eta = eta_copy;
-	n_iterations = n_interations_double;
-	lambda = lambda_copy;
+	//eta = eta_copy;
+	//n_iterations = 100000;
+	//n_iterations = 60;
+	//n_iterations = 70;
+	//n_iterations = m;
+	////eta = eta * (1000 + 57.4);
+	////eta = eta * 900;
+	//eta = eta * 9000;
 
-	updated_U_V = stochastic_gradient_descent_finder(n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);*/
+	//lambda = lambda / 90000;
+	eta = 1000 * eta;
+	//lambda = lambda / 90;
+	lambda = lambda_10_times_up;
+	n_iterations = 5 * n_iterations;
+	//n_iterations = m;
+	//epochs = 100;
+	//lambda = lambda_copy;
+
+	std::cout << "\n" << "\n" << "Collaborative Filtering Stochastic Gradient Descent:" << std::endl;
+	updated_U_V = cf_stochastic_gradient_descent_finder(test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
+	//set U and V to the updated U and V
+	U = updated_U_V[0];
+	V = updated_U_V[1];
+	updated_U_V.clear();
+	//mae_finder(test_set, U, V);
+
+
+	//empty the updated_U_V vector
+//	updated_U_V.clear();
+
+	//mae found for the given hyper parameters
+	//mae_finder(test_set, U, V);
+
+	//p2-ii
+	//Collaborative Filtering Stochastic Gradient Descent
+
+	//resetting U and V
+	U = copy_U;
+	V = copy_V;
+
+	//n_iterations = m;
+	//resetting U_dot_V_transposed and V_dot_U
+	U_dot_V_transposed = 0;
+	V_dot_U = 0;
+	//eta = eta_copy;
+	//lambda = lambda_copy;
+	//eta = eta_10_times_up*100;
+	batch_size = ratings.size() * 0.01;
+	n_iterations = 6 * n_iterations_copy;
+	std::cout << "\n" << "\n" << "Collaborative Filtering Mini-Batch Gradient Descent:" << std::endl;
+	updated_U_V = cf_mini_batch_gradient_descent_finder(batch_size, test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
+	
+	//
+	////set U and V to the updated U and V
+	//U = updated_U_V[0];
+	//V = updated_U_V[1];
+	//updated_U_V.clear();
+	////mae_finder(test_set, U, V);
+
+
+	////empty the updated_U_V vector
+	//updated_U_V.clear();
+
+	////mae found for the given hyper parameters
+	////mae_finder(test_set, U, V);
+
+	////resetting U and V
+	//U = copy_U;
+	//V = copy_V;
+
+	////resetting U_dot_V_transposed and V_dot_U
+	//U_dot_V_transposed = 0;
+	//V_dot_U = 0;
+
+	//n_iterations = n_iterations_copy;
+	//eta = eta_copy;
+	//lambda = lambda_copy;
 
 
 	return 0;
