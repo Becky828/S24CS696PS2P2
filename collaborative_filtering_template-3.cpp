@@ -73,6 +73,25 @@ void mae_finder(std::map<std::pair<int, int>, double> test_set, std::vector<std:
 
 //Custom Functions
 
+//function which finds the transpose of V
+std::vector<std::vector<double>>  v_transposer(int K, std::vector<std::vector<double>> V, std::set<int> movies, int n) {
+	//std::vector<std::vector<double>>  v_transposer(int K, std::vector<double>& v1, std::set<int> movies, int n) {
+
+		//int n = V.size();
+		//std::vector<std::vector<double>> V_transposed(n, std::vector<double>(K, 0));
+		//    vector<vector<int> > trans_vec(b[0].size(), vector<int>());
+
+	std::vector<std::vector<double>> V_transposed(V[0].size(), std::vector<double>(n, 0));
+	for (int j : movies) {
+		for (int k = 0; k < K; k++) {
+			V_transposed[k][j] = V[j][k];
+		}
+
+	}
+
+	return V_transposed;
+}
+
 
 //Collaborative Filtering Stochastic Gradient Descent
 
@@ -185,6 +204,11 @@ std::vector<std::vector<std::vector<double>>> cf_stochastic_gradient_descent_fin
 std::vector<std::vector<std::vector<double>>> cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, int>, double> test_set, double eta, double lambda, double decay, std::set<int> users, std::set<int>  movies, std::map<std::pair<int, int>,
 	double> ratings, double U_dot_V_transposed, double V_dot_U, std::map<int, std::set<int>> users_movies, std::map<int, std::set<int>> movies_users, int m, int n, int K, std::vector<std::vector<double>> U, std::vector<std::vector<double>> V) {
 
+	//initializes V transposed
+	std::vector<std::vector<double>> V_transposed(n, std::vector<double>(K, 0));
+
+	V_transposed = v_transposer(K, V, movies, n);
+
 	//initializes the updated U and V
 	std::vector<std::vector<std::vector<double>>> updated_U_V;
 
@@ -225,6 +249,7 @@ std::vector<std::vector<std::vector<double>>> cf_batch_gradient_descent_finder(i
 					//finds the dot product of U and V transposed, wherein i is the current user and j is the current movie in the current user's movie set
 					//U_dot_V_transposed = dot_product(U[i], V[j]);
 					U_dot_V_transposed = dot_product(U[i], V[k]);
+					//U_dot_V_transposed = dot_product(U[i], V_transposed[k]);
 
 					//finds the current rating
 					double current_rating = ratings.at(std::make_pair(current_user, current_movie));
@@ -264,7 +289,9 @@ std::vector<std::vector<std::vector<double>>> cf_batch_gradient_descent_finder(i
 				for (int i : current_movie_user_set) {
 
 					//finds the dot product of U and V transposed, wherin i is the current user and j is the current movie in the current user's movie set
-					U_dot_V_transposed = dot_product(U[i], V[j]);
+					//U_dot_V_transposed = dot_product(U[i], V[j]);
+					U_dot_V_transposed = dot_product(U[i], V[k]);
+					//U_dot_V_transposed = dot_product(U[i], V_transposed[k]);
 
 					//stores the current user
 					int current_user = i;
