@@ -724,7 +724,7 @@ int main() {
 	eta = 1000 * eta_copy;
 	//lambda = lambda / 90;
 	lambda = lambda_10_times_up;
-	n_iterations = 6 * n_iterations;
+	n_iterations = 6 * n_iterations_copy;
 	//n_iterations = m;
 	//epochs = 100;
 	//lambda = lambda_copy;
@@ -750,7 +750,7 @@ int main() {
 	eta = 1000 * eta_copy;
 	//lambda = lambda / 90;
 	lambda = lambda_10_times_up;
-	n_iterations = 5 * n_iterations;
+	//n_iterations = 5 * n_iterations;
 	//n_iterations = m;
 	//epochs = 100;
 	//lambda = lambda_copy;
@@ -775,7 +775,7 @@ int main() {
 	eta = 1000 * eta_copy;
 	//lambda = lambda / 90;
 	lambda = lambda_10_times_up;
-	n_iterations = 5 * n_iterations;
+	//n_iterations = 5 * n_iterations;
 	//n_iterations = m;
 	//epochs = 100;
 	//lambda = lambda_copy;
@@ -800,7 +800,7 @@ int main() {
 	eta = 1000 * eta_copy;
 	//lambda = lambda / 90;
 	lambda = lambda_10_times_up;
-	n_iterations = 5 * n_iterations;
+	//n_iterations = 5 * n_iterations;
 	//n_iterations = m;
 	//epochs = 100;
 	//lambda = lambda_copy;
@@ -826,7 +826,7 @@ int main() {
 	eta = 1000 * eta_copy;
 	//lambda = lambda / 90;
 	lambda = lambda_10_times_up;
-	n_iterations = 5 * n_iterations;
+	//n_iterations = 5 * n_iterations;
 	//n_iterations = m;
 	//epochs = 100;
 	//lambda = lambda_copy;
