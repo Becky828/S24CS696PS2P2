@@ -518,12 +518,62 @@ int main() {
 	//std::ifstream file("ratings.csv");
 
 	std::string line;
+
+	//initializes the ratings for main
 	std::map<std::pair<int, int>, double> ratings;
+
+	//initializes the ratings for bonus hyperparameter fine tuning
+	std::map<std::pair<int, int>, double> ratings_bonus_twenty_percent;
+	std::map<std::pair<int, int>, double> ratings_bonus_thirty_percent;
+	std::map<std::pair<int, int>, double> ratings_bonus_forty_percent;
+	std::map<std::pair<int, int>, double> ratings_bonus;
+
+
+	//initializes the test set for main
 	std::map<std::pair<int, int>, double> test_set;
+
+	//initializes the test set for bonus hyperparameter fine tuning
+	std::map<std::pair<int, int>, double> test_set_bonus_twenty_percent;
+	std::map<std::pair<int, int>, double> test_set_bonus_thirty_percent;
+	std::map<std::pair<int, int>, double> test_set_bonus_forty_percent;
+	std::map<std::pair<int, int>, double> test_set_bonus;
+
+	//initializes the users_movies for main
 	std::map<int, std::set<int>> users_movies;
+
+	//initializes the users_movies for bonus hyperparameter fine tuning
+	std::map<int, std::set<int>> users_movies_bonus_twenty_percent;
+	std::map<int, std::set<int>> users_movies_bonus_thirty_percent;
+	std::map<int, std::set<int>> users_movies_bonus_forty_percent;
+	std::map<int, std::set<int>> users_movies_bonus;
+
+	//initializes the movies_users for main
 	std::map<int, std::set<int>> movies_users;
+
+	//initializes the movies_users for bonus hyperparameter fine tuning
+	std::map<int, std::set<int>> movies_users_bonus_twenty_percent;
+	std::map<int, std::set<int>> movies_users_bonus_thirty_percent;
+	std::map<int, std::set<int>> movies_users_bonus_forty_percent;
+	std::map<int, std::set<int>> movies_users_bonus;
+
+	//initializes the users for main
 	std::set<int> users;
+
+	//initializes the users for bonus hyperparameter fine tuning
+	std::set<int> users_bonus_twenty_percent;
+	std::set<int> users_bonus_thirty_percent;
+	std::set<int> users_bonus_forty_percent;
+	std::set<int> users_bonus;
+
+	//initializes the movies for main
 	std::set<int> movies;
+
+	//initializes the movies for bonus hyperparameter fine tuning
+	std::set<int> movies_bonus_twenty_percent;
+	std::set<int> movies_bonus_thirty_percent;
+	std::set<int> movies_bonus_forty_percent;
+	std::set<int> movies_bonus;
+
 
 	//Full Dataset
 	int K = 15; // number of latent dimensions
@@ -536,6 +586,7 @@ int main() {
 	//int n = 500; // upper bound number of movies
 
 	double test_set_size = 0.1; // percentage of the data will be used for testing
+	double test_set_size_bonus = 0.1; // percentage of the data will be used for testing
 	double twenty_percent = 0.2; // percentage of the data will be used for first level fine tuning the hyperparameters
 	double thirty_percent = 0.3; // percentage of the data will be used for second level fine tuning the hyperparameters
 	double forty_percent = 0.4; // percentage of the data will be used for third level fine tuning the hyperparameters
@@ -558,6 +609,8 @@ int main() {
 
 	std::vector<std::vector<std::vector<double>>> updated_U_V;
 
+
+	// read the userids, movieids, and ratings from the file for the main part
 	if (file.is_open()) {
 		std::getline(file, line); // skip the first line
 
@@ -598,6 +651,109 @@ int main() {
 	}
 
 	std::cout << "Finish Reading File" << std::endl;
+
+
+	// read the userids, movieids, and ratings from the file for the bonus part
+	std::ifstream file_bonus("ratings.csv");
+
+	if (file_bonus.is_open()) {
+		std::getline(file_bonus, line); // skip the first line
+
+		while (std::getline(file_bonus, line)) {
+
+			std::istringstream iss(line);
+			std::string token;
+			// read user, movie, and rating
+			std::getline(iss, token, ',');
+			int user = std::stol(token);
+			std::getline(iss, token, ',');
+			int movie = std::stol(token);
+			std::getline(iss, token, ',');
+			double rating = std::stod(token);
+
+			//for first level hyperparameter fine tuning
+			if (toss_coin(1 - twenty_percent)) {
+				if (toss_coin(1 - test_set_size)) {
+					// if the coin toss is true, add the rating to the training set
+					ratings_bonus_twenty_percent[std::make_pair(user, movie)] = rating;
+					//double current_rating_a = ratings[std::make_pair(user, movie)];
+					users_movies_bonus_twenty_percent[user].insert(movie); // add movie to user's list of movies
+					movies_users_bonus_twenty_percent[movie].insert(user); // add user to movie's list of users
+				}
+				else {
+					// if the coin toss is false, add the rating to the test set
+					test_set_bonus_twenty_percent[std::make_pair(user, movie)] = rating;
+				}
+
+				// keep track of users and movies that have been added
+				// the Ids might be larger than the number of users and movies
+				users_bonus_twenty_percent.insert(user);
+				movies_bonus_twenty_percent.insert(movie);
+			}
+
+			//for second level hyperparameter fine tuning
+			if (toss_coin(1 - thirty_percent)) {
+				if (toss_coin(1 - test_set_size)) {
+					// if the coin toss is true, add the rating to the training set
+					ratings_bonus_thirty_percent[std::make_pair(user, movie)] = rating;
+					//double current_rating_a = ratings[std::make_pair(user, movie)];
+					users_movies_bonus_thirty_percent[user].insert(movie); // add movie to user's list of movies
+					movies_users_bonus_thirty_percent[movie].insert(user); // add user to movie's list of users
+				}
+				else {
+					// if the coin toss is false, add the rating to the test set
+					test_set_bonus_thirty_percent[std::make_pair(user, movie)] = rating;
+				}
+
+				// keep track of users and movies that have been added
+				// the Ids might be larger than the number of users and movies
+				users_bonus_thirty_percent.insert(user);
+				movies_bonus_thirty_percent.insert(movie);
+			}
+
+			//for third level hyperparameter fine tuning
+			if (toss_coin(1 - forty_percent)) {
+				if (toss_coin(1 - test_set_size)) {
+					// if the coin toss is true, add the rating to the training set
+					ratings_bonus_forty_percent[std::make_pair(user, movie)] = rating;
+					//double current_rating_a = ratings[std::make_pair(user, movie)];
+					users_movies_bonus_forty_percent[user].insert(movie); // add movie to user's list of movies
+					movies_users_bonus_forty_percent[movie].insert(user); // add user to movie's list of users
+				}
+				else {
+					// if the coin toss is false, add the rating to the test set
+					test_set_bonus_forty_percent[std::make_pair(user, movie)] = rating;
+				}
+
+				// keep track of users and movies that have been added
+				// the Ids might be larger than the number of users and movies
+				users_bonus_forty_percent.insert(user);
+				movies_bonus_forty_percent.insert(movie);
+			}
+
+			//for the final hyperparameter fine tuning
+			if (toss_coin(1 - test_set_size_bonus)) {
+				// if the coin toss is true, add the rating to the training set
+				ratings_bonus[std::make_pair(user, movie)] = rating;
+				//double current_rating_a = ratings[std::make_pair(user, movie)];
+				users_movies_bonus[user].insert(movie); // add movie to user's list of movies
+				movies_users_bonus[movie].insert(user); // add user to movie's list of users
+			}
+			else {
+				// if the coin toss is false, add the rating to the test set
+				test_set_bonus[std::make_pair(user, movie)] = rating;
+			}
+		}
+		file_bonus.close();
+	}
+	else {
+		std::cout << "Unable to open file" << std::endl;
+	}
+
+	std::cout << "Finish Reading File" << std::endl;
+
+
+	
 
 	//	batch_size = ratings.size() * 0.010;
 
@@ -1030,50 +1186,50 @@ int main() {
 	//for second part of p2
 
 	//first level hyperparameter fine tuning
-	std::ifstream file_bonus("ratings.csv");
+	//std::ifstream file_bonus("ratings.csv");
 
-	if (file.is_open()) {
-		std::getline(file_bonus, line); // skip the first line
+	//if (file_bonus.is_open()) {
+	//	std::getline(file_bonus, line); // skip the first line
 
-		while (std::getline(file_bonus, line)) {
+	//	while (std::getline(file_bonus, line)) {
 
-			std::istringstream iss(line);
-			std::string token;
-			// read user, movie, and rating
-			std::getline(iss, token, ',');
-			int user = std::stol(token);
-			std::getline(iss, token, ',');
-			int movie = std::stol(token);
-			std::getline(iss, token, ',');
-			double rating = std::stod(token);
+	//		std::istringstream iss(line);
+	//		std::string token;
+	//		// read user, movie, and rating
+	//		std::getline(iss, token, ',');
+	//		int user = std::stol(token);
+	//		std::getline(iss, token, ',');
+	//		int movie = std::stol(token);
+	//		std::getline(iss, token, ',');
+	//		double rating = std::stod(token);
 
 
-			if (toss_coin(1 - twenty_percent)) {
-				if (toss_coin(1 - test_set_size)) {
-					// if the coin toss is true, add the rating to the training set
-					ratings[std::make_pair(user, movie)] = rating;
-					//double current_rating_a = ratings[std::make_pair(user, movie)];
-					users_movies[user].insert(movie); // add movie to user's list of movies
-					movies_users[movie].insert(user); // add user to movie's list of users
-				}
-				else {
-					// if the coin toss is false, add the rating to the test set
-					test_set[std::make_pair(user, movie)] = rating;
-				}
+	//		if (toss_coin(1 - twenty_percent)) {
+	//			if (toss_coin(1 - test_set_size)) {
+	//				// if the coin toss is true, add the rating to the training set
+	//				ratings[std::make_pair(user, movie)] = rating;
+	//				//double current_rating_a = ratings[std::make_pair(user, movie)];
+	//				users_movies[user].insert(movie); // add movie to user's list of movies
+	//				movies_users[movie].insert(user); // add user to movie's list of users
+	//			}
+	//			else {
+	//				// if the coin toss is false, add the rating to the test set
+	//				test_set[std::make_pair(user, movie)] = rating;
+	//			}
 
-				// keep track of users and movies that have been added
-				// the Ids might be larger than the number of users and movies
-				users.insert(user);
-				movies.insert(movie);
-			}
-		}
-		file_bonus.close();
-	}
-	else {
-		std::cout << "Unable to open file" << std::endl;
-	}
+	//			// keep track of users and movies that have been added
+	//			// the Ids might be larger than the number of users and movies
+	//			users.insert(user);
+	//			movies.insert(movie);
+	//		}
+	//	}
+	//	file_bonus.close();
+	//}
+	//else {
+	//	std::cout << "Unable to open file" << std::endl;
+	//}
 
-	std::cout << "Finish Reading File" << std::endl;
+	//std::cout << "Finish Reading File" << std::endl;
 
 	//	batch_size = ratings.size() * 0.010;
 
