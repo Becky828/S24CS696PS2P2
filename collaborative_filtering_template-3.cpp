@@ -577,9 +577,25 @@ int main() {
 
 	//Full Dataset
 	int K = 15; // number of latent dimensions
+	int K_bonus_twenty_percent = 15; // number of latent dimensions
+	int K_bonus_thirty_percent = 15; // number of latent dimensions
+	int K_bonus_forty_percent = 15; // number of latent dimensions
+	int K_bonus = 15; // number of latent dimensions
 	int m = 2000; // upper bound for number of users
+	int m_bonus_twenty_percent = 2000; // upper bound for number of users
+	int m_bonus_thirty_percent = 2000; // upper bound for number of users
+	int m_bonus_forty_percent = 2000; // upper bound for number of users
+	int m_bonus = 2000; // upper bound for number of users
 	int n = 2000; // upper bound number of movies
-	int batch_size = 0;
+	int n_bonus_twenty_percent = 2000; // upper bound number of movies
+	int n_bonus_thirty_percent = 2000; // upper bound number of movies
+	int n_bonus_forty_percent = 2000; // upper bound number of movies
+	int n_bonus = 2000; // upper bound number of movies
+	int batch_size = 0; // batch size
+	int batch_size_bonus_twenty_percent = 0; // batch size
+	int batch_size_bonus_thirty_percent = 0; // batch size
+	int batch_size_bonus_forty_percent = 0; // batch size
+	int batch_size_bonus = 0; // batch size
 	//Abirdged Dataset
 	//int K = 15; // number of latent dimensions
 	//int m = 500; // upper bound for number of users
@@ -750,10 +766,8 @@ int main() {
 		std::cout << "Unable to open file" << std::endl;
 	}
 
-	std::cout << "Finish Reading File" << std::endl;
+	std::cout << "Finish Reading Bonus File" << std::endl;
 
-
-	
 
 	//	batch_size = ratings.size() * 0.010;
 
@@ -803,6 +817,40 @@ int main() {
 	//initialize the copy of U and V
 	copy_U = U;
 	copy_V = V;
+
+
+	// initializes bonus U and V for first level fine tuning of collaborative filtering
+	std::vector<std::vector<double>> U_bonus_twenty_percent(m_bonus_twenty_percent, std::vector<double>(K_bonus_twenty_percent, 0));
+	std::vector<std::vector<double>> V_bonus_twenty_percent(n_bonus_twenty_percent, std::vector<double>(K_bonus_twenty_percent, 0));
+
+
+	// initializes bonus copies of U and V for U and V reset for first level fine tuning of collaborative filtering
+	std::vector<std::vector<double>> copy_U_bonus_twenty_percent(m_bonus_twenty_percent, std::vector<double>(K_bonus_twenty_percent, 0));
+	std::vector<std::vector<double>> copy_V_bonus_twenty_percent(n_bonus_twenty_percent, std::vector<double>(K_bonus_twenty_percent, 0));
+
+	//initializes bonus U and V for second level fine tuning of the collaborative filtering
+	std::vector<std::vector<double>> U_bonus_thirty_percent(m_bonus_thirty_percent, std::vector<double>(K_bonus_thirty_percent, 0));
+	std::vector<std::vector<double>> V_bonus_thirty_percent(n_bonus_thirty_percent, std::vector<double>(K_bonus_thirty_percent, 0));
+
+	// initializes bonus copies of U and V for U and V reset for second level fine tuning of collaborative filtering
+	std::vector<std::vector<double>> copy_U_bonus_thirty_percent(m_bonus_thirty_percent, std::vector<double>(K_bonus_thirty_percent, 0));
+	std::vector<std::vector<double>> copy_V_bonus_thirty_percent(n_bonus_thirty_percent, std::vector<double>(K_bonus_thirty_percent, 0));
+
+	//initializes bonus U and V for third level fine tuning of the collaborative filtering
+	std::vector<std::vector<double>> U_bonus_forty_percent(m_bonus_forty_percent, std::vector<double>(K_bonus_forty_percent, 0));
+	std::vector<std::vector<double>> V_bonus_forty_percent(n_bonus_forty_percent, std::vector<double>(K_bonus_forty_percent, 0));
+
+	// initializes bonus copies of U and V for U and V reset for third level fine tuning of collaborative filtering
+	std::vector<std::vector<double>> copy_U_bonus_forty_percent(m_bonus_forty_percent, std::vector<double>(K_bonus_forty_percent, 0));
+	std::vector<std::vector<double>> copy_V_bonus_forty_percent(n_bonus_forty_percent, std::vector<double>(K_bonus_forty_percent, 0));
+
+	// initializes bonus  U and V for final level fine tuning  the collaborative filtering
+	std::vector<std::vector<double>> U_bonus(m_bonus, std::vector<double>(K_bonus, 0));
+	std::vector<std::vector<double>> V_bonus(n_bonus, std::vector<double>(K_bonus, 0));
+
+	// initializes bonus copies of U and V for U and V reset for final level fine tuning of collaborative filtering
+	std::vector<std::vector<double>> copy_U_bonus(m_bonus, std::vector<double>(K_bonus, 0));
+	std::vector<std::vector<double>> copy_V_bonus(n_bonus, std::vector<double>(K_bonus, 0));
 
 
 	////for debugging purposes
@@ -1233,13 +1281,7 @@ int main() {
 
 	//	batch_size = ratings.size() * 0.010;
 
-	// initialize U and V for the collaborative filtering
-	std::vector<std::vector<double>> U_bonus(m, std::vector<double>(K, 0));
-	std::vector<std::vector<double>> V_bonus(n, std::vector<double>(K, 0));
-
-	// initialize copiesa of U and V for U and V reset
-	std::vector<std::vector<double>> copy_U_bonus(m, std::vector<double>(K, 0));
-	std::vector<std::vector<double>> copy_V_bonus(n, std::vector<double>(K, 0));
+	
 
 	//returns 0 to indicate that the program has ran without errors
 	return 0;
