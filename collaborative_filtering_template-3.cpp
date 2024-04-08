@@ -759,6 +759,11 @@ int main() {
 				// if the coin toss is false, add the rating to the test set
 				test_set_bonus[std::make_pair(user, movie)] = rating;
 			}
+
+			// keep track of users and movies that have been added
+				// the Ids might be larger than the number of users and movies
+			users_bonus.insert(user);
+			movies_bonus.insert(movie);
 		}
 		file_bonus.close();
 	}
