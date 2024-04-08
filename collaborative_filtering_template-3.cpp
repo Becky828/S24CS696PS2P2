@@ -259,8 +259,8 @@ std::vector<std::vector<std::vector<double>>> cf_batch_gradient_descent_finder(i
 					int current_movie = j;
 
 					//finds the dot product of U and V transposed, wherein i is the current user and j is the current movie in the current user's movie set
-					//U_dot_V_transposed = dot_product(U[i], V[j]);
-					U_dot_V_transposed = dot_product(U[i], V[k]);
+					U_dot_V_transposed = dot_product(U[i], V[j]);
+					//U_dot_V_transposed = dot_product(U[i], V[k]);
 					//U_dot_V_transposed = dot_product(U[i], V_transposed[k]);
 
 					//finds the current rating
@@ -465,7 +465,6 @@ std::vector<std::vector<std::vector<double>>> cf_mini_batch_gradient_descent_fin
 					//finds the dot product of U and V transposed, wherein i is the current user that was randomly selected and a is the current movie
 					U_dot_V_transposed = dot_product(U[i], V[a]);
 
-
 					//finds the current rating
 					double current_rating = it.second;
 
@@ -647,67 +646,67 @@ int main() {
 	copy_V = V;
 
 
-//for debugging purposes
-// 
-// 
-// 
-
-//resetting U and V
-	U = copy_U;
-	V = copy_V;
-
-	//setting the eta to 1000 times the original value
-	eta = 1000 * eta_copy;
-	//lambda = lambda / 90;
-	lambda = lambda_10_times_up;
-	n_iterations = 6 * n_iterations_copy;
-	//n_iterations = m;
-	//epochs = 100;
-	//lambda = lambda_copy;
-
-	std::cout << "\n" << "\n" << "Collaborative Filtering Stochastic Gradient Descent:" << std::endl;
-	std::cout << "\nRuns five times with the same hyperparameters to demonstrate the effects of randomness produced by mt19937" << std::endl;
-	std::cout << "\n" << "1 of 5:" << std::endl;
-	updated_U_V = cf_stochastic_gradient_descent_finder(test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
-	std::cout << "1 of 5." << std::endl;
-
-	//set U and V to the updated U and V
-	U = updated_U_V[0];
-	V = updated_U_V[1];
-
-	//empty the updated_U_V vector
-	updated_U_V.clear();
-//resetting U and V
-	U = copy_U;
-	V = copy_V;
-
-	n_iterations = 6 * n_iterations_copy;
-	//eta = eta_copy;
-	//lambda = lambda_copy;
-	//eta = eta_10_times_up*100;
-	eta = eta_copy * 1000;
-	batch_size = ratings.size() * 0.01;
-	std::cout << "\n" << "\n" << "Collaborative Filtering Mini-Batch Gradient Descent:" << std::endl;
-	std::cout << "Using the Same Hyperparameters as Collaborative Filtering Stochastic Gradient Descent \nto Analyze Similarity of the Two Methods" << std::endl;
-	std::cout << "\nRuns two times with the same hyperparameters to demonstrate the effects of randomness produced by mt19937" << std::endl;
-	std::cout << "\n" << "1 of 2:" << std::endl;
-	updated_U_V = cf_mini_batch_gradient_descent_finder(batch_size, test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
-	std::cout << "1 of 2." << std::endl;
-
-	//resetting U and V
-	U = copy_U;
-	V = copy_V;
-
-	//eta = eta_copy;
-	//lambda = lambda_copy;
-	//eta = eta_10_times_up*100;
-	eta = eta_copy * 1000;
-
-	std::cout << "\n" << "2 of 2:" << std::endl;
-	updated_U_V = cf_mini_batch_gradient_descent_finder(batch_size, test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
-	std::cout << "2 of 2." << std::endl;
-
-	std::cout << "\n" << "\n" << "End of PS2 p2 Main Part:" << std::endl;
+////for debugging purposes
+//// 
+//// 
+//// 
+//
+////resetting U and V
+//	U = copy_U;
+//	V = copy_V;
+//
+//	//setting the eta to 1000 times the original value
+//	eta = 1000 * eta_copy;
+//	//lambda = lambda / 90;
+//	lambda = lambda_10_times_up;
+//	n_iterations = 6 * n_iterations_copy;
+//	//n_iterations = m;
+//	//epochs = 100;
+//	//lambda = lambda_copy;
+//
+//	std::cout << "\n" << "\n" << "Collaborative Filtering Stochastic Gradient Descent:" << std::endl;
+//	std::cout << "\nRuns five times with the same hyperparameters to demonstrate the effects of randomness produced by mt19937" << std::endl;
+//	std::cout << "\n" << "1 of 5:" << std::endl;
+//	updated_U_V = cf_stochastic_gradient_descent_finder(test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
+//	std::cout << "1 of 5." << std::endl;
+//
+//	//set U and V to the updated U and V
+//	U = updated_U_V[0];
+//	V = updated_U_V[1];
+//
+//	//empty the updated_U_V vector
+//	updated_U_V.clear();
+////resetting U and V
+//	U = copy_U;
+//	V = copy_V;
+//
+//	n_iterations = 6 * n_iterations_copy;
+//	//eta = eta_copy;
+//	//lambda = lambda_copy;
+//	//eta = eta_10_times_up*100;
+//	eta = eta_copy * 1000;
+//	batch_size = ratings.size() * 0.01;
+//	std::cout << "\n" << "\n" << "Collaborative Filtering Mini-Batch Gradient Descent:" << std::endl;
+//	std::cout << "Using the Same Hyperparameters as Collaborative Filtering Stochastic Gradient Descent \nto Analyze Similarity of the Two Methods" << std::endl;
+//	std::cout << "\nRuns two times with the same hyperparameters to demonstrate the effects of randomness produced by mt19937" << std::endl;
+//	std::cout << "\n" << "1 of 2:" << std::endl;
+//	updated_U_V = cf_mini_batch_gradient_descent_finder(batch_size, test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
+//	std::cout << "1 of 2." << std::endl;
+//
+//	//resetting U and V
+//	U = copy_U;
+//	V = copy_V;
+//
+//	//eta = eta_copy;
+//	//lambda = lambda_copy;
+//	//eta = eta_10_times_up*100;
+//	eta = eta_copy * 1000;
+//
+//	std::cout << "\n" << "2 of 2:" << std::endl;
+//	updated_U_V = cf_mini_batch_gradient_descent_finder(batch_size, test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
+//	std::cout << "2 of 2." << std::endl;
+//
+//	std::cout << "\n" << "\n" << "End of PS2 p2 Main Part:" << std::endl;
 
 
 
