@@ -581,16 +581,16 @@ int main() {
 	int K_bonus_thirty_percent = 15; // number of latent dimensions
 	int K_bonus_forty_percent = 15; // number of latent dimensions
 	int K_bonus = 15; // number of latent dimensions
-	int m = 2000; // upper bound for number of users
-	int m_bonus_twenty_percent = 2000; // upper bound for number of users
-	int m_bonus_thirty_percent = 2000; // upper bound for number of users
-	int m_bonus_forty_percent = 2000; // upper bound for number of users
-	int m_bonus = 2000; // upper bound for number of users
-	int n = 2000; // upper bound number of movies
-	int n_bonus_twenty_percent = 2000; // upper bound number of movies
-	int n_bonus_thirty_percent = 2000; // upper bound number of movies
-	int n_bonus_forty_percent = 2000; // upper bound number of movies
-	int n_bonus = 2000; // upper bound number of movies
+	int m = 70000; // upper bound for number of users
+	int m_bonus_twenty_percent = 70000; // upper bound for number of users
+	int m_bonus_thirty_percent = 70000; // upper bound for number of users
+	int m_bonus_forty_percent = 70000; // upper bound for number of users
+	int m_bonus = 70000; // upper bound for number of users
+	int n = 70000; // upper bound number of movies
+	int n_bonus_twenty_percent = 70000; // upper bound number of movies
+	int n_bonus_thirty_percent = 70000; // upper bound number of movies
+	int n_bonus_forty_percent = 70000; // upper bound number of movies
+	int n_bonus = 70000; // upper bound number of movies
 	int batch_size = 0; // batch size
 	int batch_size_bonus_twenty_percent = 0; // batch size
 	int batch_size_bonus_thirty_percent = 0; // batch size
@@ -828,10 +828,27 @@ int main() {
 	std::vector<std::vector<double>> U_bonus_twenty_percent(m_bonus_twenty_percent, std::vector<double>(K_bonus_twenty_percent, 0));
 	std::vector<std::vector<double>> V_bonus_twenty_percent(n_bonus_twenty_percent, std::vector<double>(K_bonus_twenty_percent, 0));
 
-
 	// initializes bonus copies of U and V for U and V reset for first level fine tuning of collaborative filtering
 	std::vector<std::vector<double>> copy_U_bonus_twenty_percent(m_bonus_twenty_percent, std::vector<double>(K_bonus_twenty_percent, 0));
 	std::vector<std::vector<double>> copy_V_bonus_twenty_percent(n_bonus_twenty_percent, std::vector<double>(K_bonus_twenty_percent, 0));
+
+	// initialize U and V with random values
+	for (int i : users_bonus_twenty_percent) {
+		for (int k = 0; k < K_bonus_twenty_percent; k++) {
+			U_bonus_twenty_percent[i][k] = generate_uniform_random_number();
+		}
+	}
+
+	for (int j : movies_bonus_twenty_percent) {
+		for (int k = 0; k < K; k++) {
+			V_bonus_twenty_percent[j][k] = generate_uniform_random_number();
+		}
+	}
+
+	//initializes the copy of U and V
+	copy_U_bonus_twenty_percent = U_bonus_twenty_percent;
+	copy_V_bonus_twenty_percent = V_bonus_twenty_percent;
+
 
 	//initializes bonus U and V for second level fine tuning of the collaborative filtering
 	std::vector<std::vector<double>> U_bonus_thirty_percent(m_bonus_thirty_percent, std::vector<double>(K_bonus_thirty_percent, 0));
@@ -841,6 +858,24 @@ int main() {
 	std::vector<std::vector<double>> copy_U_bonus_thirty_percent(m_bonus_thirty_percent, std::vector<double>(K_bonus_thirty_percent, 0));
 	std::vector<std::vector<double>> copy_V_bonus_thirty_percent(n_bonus_thirty_percent, std::vector<double>(K_bonus_thirty_percent, 0));
 
+
+	// initializes U and V with random values
+	for (int i : users_bonus_thirty_percent) {
+		for (int k = 0; k < K_bonus_thirty_percent; k++) {
+			U_bonus_thirty_percent[i][k] = generate_uniform_random_number();
+		}
+	}
+
+	for (int j : movies_bonus_thirty_percent) {
+		for (int k = 0; k < K_bonus_thirty_percent; k++) {
+			V_bonus_thirty_percent[j][k] = generate_uniform_random_number();
+		}
+	}
+
+	//initializes the copy of U and V
+	copy_U_bonus_thirty_percent = U_bonus_thirty_percent;
+	copy_V_bonus_thirty_percent = V_bonus_thirty_percent;
+
 	//initializes bonus U and V for third level fine tuning of the collaborative filtering
 	std::vector<std::vector<double>> U_bonus_forty_percent(m_bonus_forty_percent, std::vector<double>(K_bonus_forty_percent, 0));
 	std::vector<std::vector<double>> V_bonus_forty_percent(n_bonus_forty_percent, std::vector<double>(K_bonus_forty_percent, 0));
@@ -849,6 +884,23 @@ int main() {
 	std::vector<std::vector<double>> copy_U_bonus_forty_percent(m_bonus_forty_percent, std::vector<double>(K_bonus_forty_percent, 0));
 	std::vector<std::vector<double>> copy_V_bonus_forty_percent(n_bonus_forty_percent, std::vector<double>(K_bonus_forty_percent, 0));
 
+	//initializes U and V with random variables
+	for (int i : users_bonus_forty_percent) {
+		for (int k = 0; k < K_bonus_forty_percent; k++) {
+			U_bonus_forty_percent[i][k] = generate_uniform_random_number();
+		}
+	}
+
+	for (int j : movies_bonus_forty_percent) {
+		for (int k = 0; k < K_bonus_forty_percent; k++) {
+			V_bonus_forty_percent[j][k] = generate_uniform_random_number();
+		}
+	}
+	
+	//initializes the copy of U and V
+	copy_U_bonus_forty_percent = U_bonus_forty_percent;
+	copy_V_bonus_forty_percent = V_bonus_forty_percent;
+
 	// initializes bonus  U and V for final level fine tuning  the collaborative filtering
 	std::vector<std::vector<double>> U_bonus(m_bonus, std::vector<double>(K_bonus, 0));
 	std::vector<std::vector<double>> V_bonus(n_bonus, std::vector<double>(K_bonus, 0));
@@ -856,6 +908,23 @@ int main() {
 	// initializes bonus copies of U and V for U and V reset for final level fine tuning of collaborative filtering
 	std::vector<std::vector<double>> copy_U_bonus(m_bonus, std::vector<double>(K_bonus, 0));
 	std::vector<std::vector<double>> copy_V_bonus(n_bonus, std::vector<double>(K_bonus, 0));
+
+	// initialize U and V with random values
+	for (int i : users_bonus) {
+		for (int k = 0; k < K_bonus; k++) {
+			U_bonus[i][k] = generate_uniform_random_number();
+		}
+	}
+
+	for (int j : movies_bonus) {
+		for (int k = 0; k < K_bonus; k++) {
+			V_bonus[j][k] = generate_uniform_random_number();
+		}
+	}
+
+	//initializes the copy of U and V
+	copy_U_bonus = U_bonus;
+	copy_V_bonus = V_bonus;
 
 
 	////for debugging purposes
