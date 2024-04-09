@@ -578,6 +578,8 @@ int main() {
 
 	std::vector<std::vector<std::vector<double>>> updated_U_V;
 
+	
+
 
 	// read the userids, movieids, and ratings from the file for the main part
 	if (file.is_open()) {
@@ -632,6 +634,112 @@ int main() {
 	// initialize copiesa of U and V for U and V reset
 	std::vector<std::vector<double>> copy_U(m, std::vector<double>(K, 0));
 	std::vector<std::vector<double>> copy_V(n, std::vector<double>(K, 0));
+
+
+
+	//for debugging
+	//p2 bonus
+	//Collaborative Filtering Batch Gradient Descent on 0.25 of the Bonus Data
+
+	std::cout << "\n" << "\n" << "Bonus" << std::endl;
+
+	m = 7000; // upper bound for number of users
+	n = 300000; // upper bound number of movies
+
+	//reinitializes the U and V for the bonus
+	U.assign(m, std::vector<double>(K, 0));
+	V.assign(n, std::vector<double>(K, 0));
+
+
+	//resets n_iterations
+	n_iterations = n_iterations_double;
+
+	//resets the eta to 10 times the original value
+	eta = eta_10_times_up;
+
+	//muliplying the lambda by 10 appears to slightly increase the MAE
+	lambda = lambda_10_times_up;
+
+
+	//first level hyperparameter fine tuning
+	std::ifstream file_bonus_debug("ratings.csv");
+
+	if (file_bonus_debug.is_open()) {
+		std::getline(file_bonus_debug, line); // skip the first line
+
+		while (std::getline(file_bonus_debug, line)) {
+
+			std::istringstream iss(line);
+			std::string token;
+			// read user, movie, and rating
+			std::getline(iss, token, ',');
+			int user = std::stol(token);
+			std::getline(iss, token, ',');
+			int movie = std::stol(token);
+			std::getline(iss, token, ',');
+			double rating = std::stod(token);
+
+			if (toss_coin(twenty_percent)) {
+				if (toss_coin(1 - test_set_size)) {
+					// if the coin toss is true, add the rating to the training set
+					ratings[std::make_pair(user, movie)] = rating;
+					//double current_rating_a = ratings[std::make_pair(user, movie)];
+					users_movies[user].insert(movie); // add movie to user's list of movies
+					movies_users[movie].insert(user); // add user to movie's list of users
+				}
+				else {
+					// if the coin toss is false, add the rating to the test set
+					test_set[std::make_pair(user, movie)] = rating;
+				}
+
+				// keep track of users and movies that have been added
+				// the Ids might be larger than the number of users and movies
+				users.insert(user);
+				movies.insert(movie);
+			}
+		}
+		//file_bonus.close();
+
+		//flushes the file_bonus
+		file_bonus_debug.clear();
+	}
+	else {
+		std::cout << "Unable to open file" << std::endl;
+	}
+
+	std::cout << "Finish Bonus File Read 1 of 4" << std::endl;
+
+	//	batch_size = ratings.size() * 0.010;
+
+	// initialize U and V with random values
+	for (int i : users) {
+		for (int k = 0; k < K; k++) {
+			U[i][k] = generate_uniform_random_number();
+		}
+	}
+
+	for (int j : movies) {
+		for (int k = 0; k < K; k++) {
+			V[j][k] = generate_uniform_random_number();
+		}
+	}
+
+	//1 of 4 
+	//collaborative filtering batch gradient descent first level of hyperparameter fine tuning for batch gradient descent
+	std::cout << "\n" << "1 of 4:" << std::endl;
+	std::cout << "Doubled Number of Iterations, eta times 10, and lambda times 10" << std::endl;
+
+	//gets updated V and U
+	updated_U_V = cf_batch_gradient_descent_finder(n_iterations, test_set, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
+	std::cout << "1 of 4." << std::endl;
+
+	//set U and V to the updated U and V
+	U = updated_U_V[0];
+	V = updated_U_V[1];
+
+	//empty the updated_U_V vector
+	updated_U_V.clear();
+
 
 	////initialize the partial derivatives for U and V
 	//std::vector<std::vector<double>> derived_norm_U(m, std::vector<double>(K, 0));
