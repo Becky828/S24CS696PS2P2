@@ -92,3 +92,5 @@
 //https://stackoverflow.com/questions/10732074/stl-map-allows-duplicate-pairs
 //https://www.w3schools.com/cpp/cpp_exceptions.asp
 //https://www.geeksforgeeks.org/measure-execution-time-function-cpp/
+//https://stackoverflow.com/questions/16393583/how-to-read-same-file-twice-in-a-row
+//https://stackoverflow.com/questions/8848575/fastest-way-to-reset-every-value-of-stdvectorint-to-0
