@@ -145,7 +145,9 @@ std::vector<std::vector<std::vector<double>>> cf_stochastic_gradient_descent_fin
 			for (int k = 0; k < K; k++) {
 
 				//finds the dot product of U and V transposed, wherein a is the current user and j is the current movie that was randomly selected
-				U_dot_V_transposed = dot_product(U[a], V[k]);
+				//U_dot_V_transposed = dot_product(U[a], V[k]);
+				U_dot_V_transposed = dot_product(U[a], V[j]);
+
 				//U_dot_V_transposed = dot_product(U[a], V_transposed[k]);
 
 				//finds the rating difference
@@ -990,67 +992,67 @@ int main() {
 	//	std::cout << "\n" << "\n" << "End of PS2 p2 Main Part:" << std::endl;
 
 
-	//p2 bonus
+	////p2 bonus
 
-	//set U and V to the updated U and V
-	U = updated_U_V[0];
-	V = updated_U_V[1];
+	////set U and V to the updated U and V
+	//U = updated_U_V[0];
+	//V = updated_U_V[1];
 
-	//empty the updated_U_V vector
-	updated_U_V.clear();
+	////empty the updated_U_V vector
+	//updated_U_V.clear();
 
-	//resetting U and V
-	U = copy_U;
-	V = copy_V;
+	////resetting U and V
+	//U = copy_U;
+	//V = copy_V;
 
-	//doubling the number of iterations appears to reduce the MAE by around 0.01
-	n_iterations = n_iterations_copy;
+	////doubling the number of iterations appears to reduce the MAE by around 0.01
+	//n_iterations = n_iterations_copy;
 
-	//resets the eta to the original value
-	eta = eta_copy;
+	////resets the eta to the original value
+	//eta = eta_copy;
 
-	
+	//
 
 
-	//empty the updated_U_V vector
-	updated_U_V.clear();
+	////empty the updated_U_V vector
+	//updated_U_V.clear();
 
-	//resetting U and V
-	U = copy_U;
-	V = copy_V;
+	////resetting U and V
+	//U = copy_U;
+	//V = copy_V;
 
-	//setting number of iterations appears to reduce the MAE by around 0.01
-	n_iterations = n_iterations_copy;
+	////setting number of iterations appears to reduce the MAE by around 0.01
+	//n_iterations = n_iterations_copy;
 
-	//resets the eta to the original value
-	eta = eta_copy;
+	////resets the eta to the original value
+	//eta = eta_copy;
 
-	// 1 of 4
-	// bonus - collaborative filtering first level of hyperparameter fine tuning for batch gradient descent
-	std::cout << "\n" << "\n" << "Bonus - Collaborative Filetering Batch Gradient Descent:" << std::endl;
-	std::cout << "\n" << "1 of 4: First Level " << std::endl;
-	std::cout << "20% of the dataset" << std::endl;
-	updated_U_V = cf_batch_gradient_descent_finder(n_iterations, test_set_bonus_twenty_percent, eta, lambda, decay, users_bonus_twenty_percent, 
-	movies_bonus_twenty_percent, ratings_bonus_twenty_percent, U_dot_V_transposed, V_dot_U, users_movies_bonus_twenty_percent, 
-	movies_users_bonus_twenty_percent, m_bonus_twenty_percent, n_bonus_twenty_percent, K_bonus_twenty_percent, U_bonus_twenty_percent, V_bonus_twenty_percent);
-	std::cout << "1 of 4." << std::endl;
+	//// 1 of 4
+	//// bonus - collaborative filtering first level of hyperparameter fine tuning for batch gradient descent
+	//std::cout << "\n" << "\n" << "Bonus - Collaborative Filetering Batch Gradient Descent:" << std::endl;
+	//std::cout << "\n" << "1 of 4: First Level " << std::endl;
+	//std::cout << "20% of the dataset" << std::endl;
+	//updated_U_V = cf_batch_gradient_descent_finder(n_iterations, test_set_bonus_twenty_percent, eta, lambda, decay, users_bonus_twenty_percent, 
+	//movies_bonus_twenty_percent, ratings_bonus_twenty_percent, U_dot_V_transposed, V_dot_U, users_movies_bonus_twenty_percent, 
+	//movies_users_bonus_twenty_percent, m_bonus_twenty_percent, n_bonus_twenty_percent, K_bonus_twenty_percent, U_bonus_twenty_percent, V_bonus_twenty_percent);
+	//std::cout << "1 of 4." << std::endl;
 
-	//set U and V to the updated U and V
-	U = updated_U_V[0];
-	V = updated_U_V[1];
+	////set U and V to the updated U and V
+	//U = updated_U_V[0];
+	//V = updated_U_V[1];
 
-	//empty the updated_U_V vector
-	updated_U_V.clear();
+	////empty the updated_U_V vector
+	//updated_U_V.clear();
 
-	//resetting U and V
-	U = copy_U;
-	V = copy_V;
+	////resetting U and V
+	//U = copy_U;
+	//V = copy_V;
 
-	//setting number of iterations appears to reduce the MAE by around 0.01
-	n_iterations = n_iterations_copy;
+	////setting number of iterations appears to reduce the MAE by around 0.01
+	//n_iterations = n_iterations_copy;
 
-	//resets the eta to the original value
-	eta = eta_copy;
+	////resets the eta to the original value
+	//eta = eta_copy;
 
 
 
