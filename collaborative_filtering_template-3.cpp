@@ -115,10 +115,6 @@ std::vector<std::vector<std::vector<double>>> cf_stochastic_gradient_descent_fin
 	for (int t = 0; t < n_iterations; t++) {
 		eta = eta * decay; // decay the learning rate over time
 
-		//initializes the stochastic gradient base for U and V
-		std::vector<std::vector<double>>cf_stochastic_gradient_base_U(n, std::vector<double>(K, 0));
-		std::vector<std::vector<double>>cf_stochastic_gradient_base_V(n, std::vector<double>(K, 0));
-
 		//randomly iterates to a rating
 		auto it = ratings.begin();
 		int random = mt() % ratings.size();
@@ -140,6 +136,10 @@ std::vector<std::vector<std::vector<double>>> cf_stochastic_gradient_descent_fin
 
 		//iterates through the set of users by an increment of 1. This provides the index required for iterating through the rows of U.
 		for (int a : users) {
+
+			//initializes the base gradient for U. This ensures that the base gradient for U is set to 0 for each user
+			std::vector<std::vector<double>>cf_stochastic_gradient_base_U(m, std::vector<double>(K, 0));
+
 
 			//iterates through the columns of U by an increment of 1
 			for (int k = 0; k < K; k++) {
@@ -166,6 +166,10 @@ std::vector<std::vector<std::vector<double>>> cf_stochastic_gradient_descent_fin
 
 		//iterates through the set of movies by an increment of 1. This provides the index required for iterating through the columns of V.
 		for (int a : movies) {
+
+			//initializes the base gradient for V. This ensures that the base gradient for V is set to 0 for each movie
+			std::vector<std::vector<double>>cf_stochastic_gradient_base_V(n, std::vector<double>(K, 0));
+
 
 			//iterates through the columns of V by an increment of 1
 			for (int k = 0; k < K; k++) {
@@ -251,7 +255,7 @@ std::vector<std::vector<std::vector<double>>> cf_batch_gradient_descent_finder(i
 			std::set<int> current_user_movie_set = users_movies[current_user];
 
 			//initializes the base gradient for U. This ensures that the base gradient for U is set to 0 for each user
-			std::vector<std::vector<double>>cf_batch_gradient_base_U(n, std::vector<double>(K, 0));
+			std::vector<std::vector<double>>cf_batch_gradient_base_U(m, std::vector<double>(K, 0));
 
 			//iterates through all the columns of U by an increment of 1
 			for (int k = 0; k < K; k++) {
@@ -297,7 +301,7 @@ std::vector<std::vector<std::vector<double>>> cf_batch_gradient_descent_finder(i
 			std::set<int> current_movie_user_set = movies_users[j];
 
 			//initializes the base gradient for U. This ensures that the base gradient for U is set to 0 for each movie
-			std::vector<std::vector<double>> cf_batch_gradient_base_V(m, std::vector<double>(K, 0));
+			std::vector<std::vector<double>> cf_batch_gradient_base_V(n, std::vector<double>(K, 0));
 
 			//iterates through all the columns of V by an increment of 1
 			for (int k = 0; k < K; k++) {
@@ -399,7 +403,7 @@ std::vector<std::vector<std::vector<double>>> cf_mini_batch_gradient_descent_fin
 		for (int a : users) {
 
 			//initializes the base gradient for U. This ensures that the base gradient for U is set to 0 for each user
-			std::vector<std::vector<double>>cf_mini_batch_gradient_base_U(n, std::vector<double>(K, 0));
+			std::vector<std::vector<double>>cf_mini_batch_gradient_base_U(m, std::vector<double>(K, 0));
 
 			//iterates through all the columns of U by an increment of 1
 			for (int k = 0; k < K; k++) {
