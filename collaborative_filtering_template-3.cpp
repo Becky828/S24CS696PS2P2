@@ -418,8 +418,8 @@ std::vector<std::vector<std::vector<double>>> cf_mini_batch_gradient_descent_fin
 
 					//finds the dot product of U and V transposed, wherein a is the current user and j is the current movie that was randomly selected
 					//as inferred from the system recommendation and stochastic gradient descent notes
-					//U_dot_V_transposed = dot_product(U[a], V[j]);
-					U_dot_V_transposed = dot_product(U[a], V[k]);
+					U_dot_V_transposed = dot_product(U[a], V[j]);
+					//U_dot_V_transposed = dot_product(U[a], V[k]);
 
 					//stores the current rating
 					double current_rating = it.second;
