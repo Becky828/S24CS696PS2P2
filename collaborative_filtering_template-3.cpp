@@ -652,6 +652,25 @@ int main() {
 	U.assign(m, std::vector<double>(K, 0));
 	V.assign(n, std::vector<double>(K, 0));
 
+	//empties the ratings
+	ratings.clear();
+
+	//empties the test set
+	test_set.clear();
+
+	//empties the users_movies
+	users_movies.clear();
+
+	//empties the movies_users
+	movies_users.clear();
+
+	//empties the users
+	users.clear();
+
+	//empties the movies
+	movies.clear();
+
+
 
 	//resets n_iterations
 	n_iterations = n_iterations_double;
@@ -1254,6 +1273,23 @@ int main() {
 	U.assign(m, std::vector<double>(K, 0));
 	V.assign(n, std::vector<double>(K, 0));
 
+	//empties the ratings
+	ratings.clear();
+
+	//empties the test set
+	test_set.clear();
+
+	//empties the users_movies
+	users_movies.clear();
+
+	//empties the movies_users
+	movies_users.clear();
+
+	//empties the users
+	users.clear();
+
+	//empties the movies
+	movies.clear();
 
 	//resets n_iterations
 	n_iterations = n_iterations_double;
@@ -1354,6 +1390,23 @@ int main() {
 	U.assign(m, std::vector<double>(K, 0));
 	V.assign(n, std::vector<double>(K, 0));
 
+	//empties the ratings
+	ratings.clear();
+
+	//empties the test set
+	test_set.clear();
+
+	//empties the users_movies
+	users_movies.clear();
+
+	//empties the movies_users
+	movies_users.clear();
+
+	//empties the users
+	users.clear();
+
+	//empties the movies
+	movies.clear();
 
 	//resets n_iterations
 	n_iterations = n_iterations_double;
@@ -1452,6 +1505,23 @@ int main() {
 	U.assign(m, std::vector<double>(K, 0));
 	V.assign(n, std::vector<double>(K, 0));
 
+	//empties the ratings
+	ratings.clear();
+
+	//empties the test set
+	test_set.clear();
+
+	//empties the users_movies
+	users_movies.clear();
+
+	//empties the movies_users
+	movies_users.clear();
+
+	//empties the users
+	users.clear();
+
+	//empties the movies
+	movies.clear();
 
 	//resets n_iterations
 	n_iterations = n_iterations_double;
@@ -1547,6 +1617,23 @@ int main() {
 	U.assign(m, std::vector<double>(K, 0));
 	V.assign(n, std::vector<double>(K, 0));
 
+	//empties the ratings
+	ratings.clear();
+
+	//empties the test set
+	test_set.clear();
+
+	//empties the users_movies
+	users_movies.clear();
+
+	//empties the movies_users
+	movies_users.clear();
+
+	//empties the users
+	users.clear();
+
+	//empties the movies
+	movies.clear();
 
 	//resets n_iterations
 	n_iterations = n_iterations_double;

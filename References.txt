@@ -94,3 +94,4 @@
 //https://www.geeksforgeeks.org/measure-execution-time-function-cpp/
 //https://stackoverflow.com/questions/16393583/how-to-read-same-file-twice-in-a-row
 //https://stackoverflow.com/questions/8848575/fastest-way-to-reset-every-value-of-stdvectorint-to-0
+//https://www.javatpoint.com/cpp-set-clear-function#:~:text=C%2B%2B%20set%20clear()%20function%20is%20used%20to%20remove%20all,converts%20its%20size%20to%200.
