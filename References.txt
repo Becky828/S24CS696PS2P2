@@ -95,3 +95,4 @@
 //https://stackoverflow.com/questions/16393583/how-to-read-same-file-twice-in-a-row
 //https://stackoverflow.com/questions/8848575/fastest-way-to-reset-every-value-of-stdvectorint-to-0
 //https://www.javatpoint.com/cpp-set-clear-function#:~:text=C%2B%2B%20set%20clear()%20function%20is%20used%20to%20remove%20all,converts%20its%20size%20to%200.
+//https://www.google.com/search?q=visual+studio+uncomment+shortcut&rlz=1C1VDKB_enUS979US979&oq=visual+community+uncommen&gs_lcrp=EgZjaHJvbWUqCAgBEAAYFhgeMgYIABBFGDkyCAgBEAAYFhgeMggIAhAAGBYYHjIICAMQABgWGB4yCAgEEAAYFhgeMggIBRAAGBYYHjIICAYQABgWGB4yCAgHEAAYFhgeMggICBAAGBYYHjINCAkQABiGAxiABBiKBdIBCTEzMzkyajBqN6gCALACAA&sourceid=chrome&ie=UTF-8
