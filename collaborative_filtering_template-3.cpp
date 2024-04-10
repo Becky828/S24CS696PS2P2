@@ -644,7 +644,9 @@ int main() {
 	std::cout << "\n" << "\n" << "Bonus" << std::endl;
 
 	m = 7000; // upper bound for number of users
-	n = 300000; // upper bound number of movies
+	//n = 300000; // upper bound number of movies
+	n = 280000; // upper bound number of movies
+
 
 	//reinitializes the U and V for the bonus
 	U.assign(m, std::vector<double>(K, 0));
