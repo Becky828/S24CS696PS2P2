@@ -1,11 +1,11 @@
 # ninja log v5
 45	3403	7334178554638684	tests/CMakeFiles/my_test.dir/my_test.cpp.obj	ae03f97f22b28c33
-9	1971	7344268500812310	CMakeFiles/CMakeS24CS696_PS2_p2.dir/collaborative_filtering_template-3.cpp.obj	8ab845bf13ab9fa
+38	3492	7344276189113199	CMakeFiles/CMakeS24CS696_PS2_p2.dir/collaborative_filtering_template-3.cpp.obj	8ab845bf13ab9fa
 3409	9462	7334178615038656	external/googletest/googlemock/CMakeFiles/gmock_main.dir/src/gmock_main.cc.obj	6d2486ad124d2c1c
 65	6473	7334178585272609	external/googletest/googlemock/CMakeFiles/gmock.dir/src/gmock-all.cc.obj	b2faefb8b3176c7a
 73	9979	7334178620253904	external/googletest/googlemock/CMakeFiles/gmock_main.dir/__/googletest/src/gtest-all.cc.obj	9d78e809ffd8434c
 82	6611	7334178586622537	external/googletest/googlemock/CMakeFiles/gmock_main.dir/src/gmock-all.cc.obj	32c787564156548f
-1972	2346	7344268503872285	CMakeS24CS696_PS2_p2.exe	401128420dca4602
+3494	4241	7344276195153188	CMakeS24CS696_PS2_p2.exe	401128420dca4602
 57	9897	7334178619453876	external/googletest/googlemock/CMakeFiles/gmock.dir/__/googletest/src/gtest-all.cc.obj	cedf03dd4a249e12
 9897	10112	7334178621483881	lib/gmock.lib	fbc3e5afdd1ea766
 6474	13974	7334178660386262	external/googletest/googletest/CMakeFiles/gtest.dir/src/gtest-all.cc.obj	4ddd146c77d68a32
@@ -16,5 +16,5 @@
 14173	15070	7334178671419543	tests/my_test.exe	1dbcdf0e06b1358f
 14173	15070	7334178671419543	tests/my_test[1]_tests.cmake	1dbcdf0e06b1358f
 14173	15070	7334178671419543	C:/Users/Owner/source/repos/S24CS696hw/S24CS696PS2P2/out/build/x64-debug/tests/my_test[1]_tests.cmake	1dbcdf0e06b1358f
-38	3492	7344276189113199	CMakeFiles/CMakeS24CS696_PS2_p2.dir/collaborative_filtering_template-3.cpp.obj	8ab845bf13ab9fa
-3494	4241	7344276195153188	CMakeS24CS696_PS2_p2.exe	401128420dca4602
+25	2045	7344303732905003	CMakeFiles/CMakeS24CS696_PS2_p2.dir/collaborative_filtering_template-3.cpp.obj	8ab845bf13ab9fa
+2046	2411	7344303735904313	CMakeS24CS696_PS2_p2.exe	401128420dca4602
