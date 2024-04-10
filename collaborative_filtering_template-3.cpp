@@ -749,21 +749,21 @@ int main() {
 
 
 
-	//1 of 4 
-	//collaborative filtering batch gradient descent first level of hyperparameter fine tuning for batch gradient descent
-	std::cout << "\n" << "1 of 4:" << std::endl;
-	std::cout << "Doubled Number of Iterations, eta times 10, and lambda times 10" << std::endl;
+	////1 of 4 
+	////collaborative filtering batch gradient descent first level of hyperparameter fine tuning for batch gradient descent
+	//std::cout << "\n" << "1 of 4:" << std::endl;
+	//std::cout << "Doubled Number of Iterations, eta times 10, and lambda times 10" << std::endl;
 
-	//gets updated V and U
-	updated_U_V = cf_batch_gradient_descent_finder(n_iterations, test_set, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
-	std::cout << "1 of 4." << std::endl;
+	////gets updated V and U
+	//updated_U_V = cf_batch_gradient_descent_finder(n_iterations, test_set, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
+	//std::cout << "1 of 4." << std::endl;
 
-	//set U and V to the updated U and V
-	U = updated_U_V[0];
-	V = updated_U_V[1];
+	////set U and V to the updated U and V
+	//U = updated_U_V[0];
+	//V = updated_U_V[1];
 
-	//empty the updated_U_V vector
-	updated_U_V.clear();
+	////empty the updated_U_V vector
+	//updated_U_V.clear();
 
 
 	////initialize the partial derivatives for U and V
@@ -1013,6 +1013,7 @@ int main() {
 
 	//empty the updated_U_V vector
 	updated_U_V.clear();
+
 
 	//resetting U and V
 	U = copy_U;
