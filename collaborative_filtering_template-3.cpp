@@ -95,7 +95,7 @@ std::vector<std::vector<double>>  v_transposer(int K, std::vector<std::vector<do
 //Collaborative Filtering Stochastic Gradient Descent
 
 //function which performs collaborative filtering stochastic gradient descent
-std::vector<std::vector<std::vector<double>>> cf_stochastic_gradient_descent_finder(std::map<std::pair<int, int>, double> test_set, int n_iterations, double eta, double lambda, double decay, std::set<int> users, std::set<int>  movies, std::map<std::pair<int, int>,
+void cf_stochastic_gradient_descent_finder(std::map<std::pair<int, int>, double> test_set, int n_iterations, double eta, double lambda, double decay, std::set<int> users, std::set<int>  movies, std::map<std::pair<int, int>,
 	double> ratings, double U_dot_V_transposed, std::map<int, std::set<int>> users_movies, std::map<int, std::set<int>> movies_users, int m, int n, int K, std::vector<std::vector<double>> U, std::vector<std::vector<double>> V) {
 
 	//initializes the updated U and V
@@ -203,9 +203,7 @@ std::vector<std::vector<std::vector<double>>> cf_stochastic_gradient_descent_fin
 	//prints that the collaborative filtering stochastic gradient descent is finished
 	std::cout << "Finished Collaborative Filtering Stochastic Gradient Descent" << std::endl;
 
-	//stores the updated U and V
-	updated_U_V.push_back(U);
-	updated_U_V.push_back(V);
+	
 
 }
 
@@ -898,7 +896,7 @@ int main() {
 	std::cout << "\n" << "\n" << "Collaborative Filtering Stochastic Gradient Descent:" << std::endl;
 	std::cout << "\nRuns five times with the same hyperparameters to demonstrate the effects of randomness produced by mt19937" << std::endl;
 	std::cout << "\n" << "1 of 5:" << std::endl;
-	updated_U_V = cf_stochastic_gradient_descent_finder(test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
+	cf_stochastic_gradient_descent_finder(test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
 	std::cout << "1 of 5." << std::endl;
 
 	//set U and V to the updated U and V
@@ -922,7 +920,7 @@ int main() {
 	//lambda = lambda_copy;
 
 	std::cout << "\n" << "2 of 5:" << std::endl;
-	updated_U_V = cf_stochastic_gradient_descent_finder(test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
+	cf_stochastic_gradient_descent_finder(test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
 	std::cout << "2 of 5." << std::endl;
 
 	//set U and V to the updated U and V
@@ -947,15 +945,9 @@ int main() {
 	//lambda = lambda_copy;
 
 	std::cout << "\n" << "3 of 5:" << std::endl;
-	updated_U_V = cf_stochastic_gradient_descent_finder(test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
+	cf_stochastic_gradient_descent_finder(test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
 	std::cout << "3 of 5." << std::endl;
 
-	//set U and V to the updated U and V
-	U = updated_U_V[0];
-	V = updated_U_V[1];
-
-	//empty the updated_U_V vector
-	updated_U_V.clear();
 
 	//resetting U and V
 	U = copy_U;
@@ -971,17 +963,10 @@ int main() {
 	//lambda = lambda_copy;
 
 	std::cout << "\n" << "4 of 5:" << std::endl;
-	updated_U_V = cf_stochastic_gradient_descent_finder(test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
+	cf_stochastic_gradient_descent_finder(test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
 	std::cout << "4 of 5." << std::endl;
 
-	//set U and V to the updated U and V
-	U = updated_U_V[0];
-	V = updated_U_V[1];
-
-
-	//empty the updated_U_V vector
-	updated_U_V.clear();
-
+	
 
 	//resetting U and V
 	U = copy_U;
@@ -997,7 +982,7 @@ int main() {
 	//lambda = lambda_copy;
 
 	std::cout << "\n" << "5 of 5:" << std::endl;
-	updated_U_V = cf_stochastic_gradient_descent_finder(test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
+	cf_stochastic_gradient_descent_finder(test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
 	std::cout << "5 of 5." << std::endl;
 
 	//set U and V to the updated U and V
