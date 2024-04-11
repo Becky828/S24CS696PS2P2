@@ -251,7 +251,7 @@ std::vector<std::vector<std::vector<double>>> cf_batch_gradient_descent_finder(i
 			//stores the current user
 			int current_user = i;
 
-			//stores the current user's movie set
+			//stores the current user's movie set3
 			std::set<int> current_user_movie_set = users_movies[current_user];
 
 			//initializes the base gradient for U. This ensures that the base gradient for U is set to 0 for each user

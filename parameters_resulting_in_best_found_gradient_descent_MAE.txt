@@ -24,7 +24,7 @@ lambda:
 
 	Whereas,
 	dividing the lambda (regularization parameter), increase
-	the MAE by around by around 0.000002.
+	the MAE by around 0.000002, which is insignificant.
 
 From these results:
 
