@@ -96,7 +96,7 @@ std::vector<std::vector<double>>  v_transposer(int K, std::vector<std::vector<do
 
 //function which performs collaborative filtering stochastic gradient descent
 std::vector<std::vector<std::vector<double>>> cf_stochastic_gradient_descent_finder(std::map<std::pair<int, int>, double> test_set, int n_iterations, double eta, double lambda, double decay, std::set<int> users, std::set<int>  movies, std::map<std::pair<int, int>,
-	double> ratings, double U_dot_V_transposed, double V_dot_U, std::map<int, std::set<int>> users_movies, std::map<int, std::set<int>> movies_users, int m, int n, int K, std::vector<std::vector<double>> U, std::vector<std::vector<double>> V) {
+	double> ratings, double U_dot_V_transposed, std::map<int, std::set<int>> users_movies, std::map<int, std::set<int>> movies_users, int m, int n, int K, std::vector<std::vector<double>> U, std::vector<std::vector<double>> V) {
 
 	//initializes the updated U and V
 	std::vector<std::vector<std::vector<double>>> updated_U_V;
@@ -207,25 +207,19 @@ std::vector<std::vector<std::vector<double>>> cf_stochastic_gradient_descent_fin
 	updated_U_V.push_back(U);
 	updated_U_V.push_back(V);
 
-	//returns the updated U and V
-	return updated_U_V;
 }
 
 
 //Collaborative Filtering Batch Gradient Descent
 
 //function which performs collaborative filtering batch gradient descent
-std::vector<std::vector<std::vector<double>>> cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, int>, double> test_set, double eta, double lambda, double decay, std::set<int> users, std::set<int>  movies, std::map<std::pair<int, int>,
-	double> ratings, double U_dot_V_transposed, double V_dot_U, std::map<int, std::set<int>> users_movies, std::map<int, std::set<int>> movies_users, int m, int n, int K, std::vector<std::vector<double>> U, std::vector<std::vector<double>> V) {
+void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, int>, double> test_set, double eta, double lambda, double decay, std::set<int> users, std::set<int>  movies, std::map<std::pair<int, int>,
+	double> ratings, double U_dot_V_transposed, std::map<int, std::set<int>> users_movies, std::map<int, std::set<int>> movies_users, int m, int n, int K, std::vector<std::vector<double>> U, std::vector<std::vector<double>> V) {
 
 	//initializes V transposed
 	std::vector<std::vector<double>> V_transposed(n, std::vector<double>(K, 0));
 
 	V_transposed = v_transposer(K, V, movies, n);
-
-	//initializes the updated U and V
-	std::vector<std::vector<std::vector<double>>> updated_U_V;
-
 
 	//The following code is based on the collaborative filtering batch gradient descent algorithm as inferred from slide 35 of the recommendation systems notes
 
@@ -252,7 +246,6 @@ std::vector<std::vector<std::vector<double>>> cf_batch_gradient_descent_finder(i
 			int current_user = i;
 
 			//stores the current user's movie set3
-			std::set<int> current_user_movie_set = users_movies[current_user];
 
 			//initializes the base gradient for U. This ensures that the base gradient for U is set to 0 for each user
 			std::vector<std::vector<double>>cf_batch_gradient_base_U(m, std::vector<double>(K, 0));
@@ -261,14 +254,12 @@ std::vector<std::vector<std::vector<double>>> cf_batch_gradient_descent_finder(i
 			for (int k = 0; k < K; k++) {
 
 				//performs the summation of the base gradient for all samples relating to U.
-				for (int j : current_user_movie_set) {
+				for (int j : users_movies[current_user]) {
 					int current_movie = j;
 
 					//finds the dot product of U and V transposed, wherein i is the current user and j is the current movie in the current user's movie set
 					U_dot_V_transposed = dot_product(U[i], V[j]);
-					//U_dot_V_transposed = dot_product(U[i], V[k]);
-					//U_dot_V_transposed = dot_product(U[i], V_transposed[k]);
-
+					
 					//finds the current rating
 					double current_rating = ratings.at(std::make_pair(current_user, current_movie));
 
@@ -297,20 +288,16 @@ std::vector<std::vector<std::vector<double>>> cf_batch_gradient_descent_finder(i
 			//stores the current movie
 			int current_movie = j;
 
-			//stores the current movie's user set
-			std::set<int> current_movie_user_set = movies_users[j];
 
 			//initializes the base gradient for U. This ensures that the base gradient for U is set to 0 for each movie
 			std::vector<std::vector<double>> cf_batch_gradient_base_V(n, std::vector<double>(K, 0));
 
 			//iterates through all the columns of V by an increment of 1
 			for (int k = 0; k < K; k++) {
-				for (int i : current_movie_user_set) {
+				for (int i : movies_users[j]) {
 
 					//finds the dot product of U and V transposed, wherin i is the current user and j is the current movie in the current user's movie set
 					U_dot_V_transposed = dot_product(U[i], V[j]);
-					//U_dot_V_transposed = dot_product(U[i], V[k]);
-					//U_dot_V_transposed = dot_product(U[i], V_transposed[k]);
 
 					//stores the current user
 					int current_user = i;
@@ -343,21 +330,14 @@ std::vector<std::vector<std::vector<double>>> cf_batch_gradient_descent_finder(i
 
 	//prints that the collaborative filtering batch gradient descent is finished
 	std::cout << "Finished Collaborative Filtering Batch Gradient Descent" << std::endl;
-
-	//stores the updated U and V
-	updated_U_V.push_back(U);
-	updated_U_V.push_back(V);
-
-	//returns the updated U and V
-	return updated_U_V;
 }
 
 
 //Collaborative Filtering Mini-Batch Gradient Descent
 
 //function which performs collborative filtering  mini-batch gradient descent
-std::vector<std::vector<std::vector<double>>> cf_mini_batch_gradient_descent_finder(int batch_size, std::map<std::pair<int, int>, double> test_set, int n_iterations, double eta, double lambda, double decay, std::set<int> users, std::set<int>  movies, std::map<std::pair<int, int>,
-	double> ratings, double U_dot_V_transposed, double V_dot_U, std::map<int, std::set<int>> users_movies, std::map<int, std::set<int>> movies_users, int m, int n, int K, std::vector<std::vector<double>> U, std::vector<std::vector<double>> V) {
+void cf_mini_batch_gradient_descent_finder(int batch_size, std::map<std::pair<int, int>, double> test_set, int n_iterations, double eta, double lambda, double decay, std::set<int> users, std::set<int>  movies, std::map<std::pair<int, int>,
+	double> ratings, double U_dot_V_transposed, std::map<int, std::set<int>> users_movies, std::map<int, std::set<int>> movies_users, int m, int n, int K, std::vector<std::vector<double>> U, std::vector<std::vector<double>> V) {
 
 
 	//initializes V transposed
@@ -487,6 +467,7 @@ std::vector<std::vector<std::vector<double>>> cf_mini_batch_gradient_descent_fin
 
 				//performs the base gradient descent for V
 				//the base gradient for V is divided by the batch size to find the average base gradient for V
+				//Instead of dividing by the batch size, a lesser value for lambda could be used.
 				V[a][k] = V[a][k] - eta * (cf_mini_batch_gradient_base_V[a][k] / batch_size);
 
 				//performs the regularization gradient descent for V
@@ -505,9 +486,6 @@ std::vector<std::vector<std::vector<double>>> cf_mini_batch_gradient_descent_fin
 	//stores the updated U and V
 	updated_U_V.push_back(U);
 	updated_U_V.push_back(V);
-
-	//returns the updated U and V
-	return updated_U_V;
 }
 
 //function which performs various methods of collaborative filtering gradient descent
@@ -642,305 +620,141 @@ int main() {
 
 
 
-	//for debugging
-	//p2 bonus
-	//Collaborative Filtering Batch Gradient Descent on 0.25 of the Bonus Data
+	////for debugging
+	////p2 bonus
+	////Collaborative Filtering Batch Gradient Descent on 0.25 of the Bonus Data
 
-	std::cout << "\n" << "\n" << "Bonus" << std::endl;
+	//std::cout << "\n" << "\n" << "Bonus" << std::endl;
 
-	m = 7000; // upper bound for number of users
-	//n = 300000; // upper bound number of movies
-	n = 280000; // upper bound number of movies
-
-
-	//reinitializes the U and V for the bonus
-	U.assign(m, std::vector<double>(K, 0));
-	V.assign(n, std::vector<double>(K, 0));
-
-	//empties the ratings
-	ratings.clear();
-
-	//empties the test set
-	test_set.clear();
-
-	//empties the users_movies
-	users_movies.clear();
-
-	//empties the movies_users
-	movies_users.clear();
-
-	//empties the users
-	users.clear();
-
-	//empties the movies
-	movies.clear();
+	//m = 7000; // upper bound for number of users
+	////n = 300000; // upper bound number of movies
+	//n = 280000; // upper bound number of movies
 
 
+	////reinitializes the U and V for the bonus
+	//U.assign(m, std::vector<double>(K, 0));
+	//V.assign(n, std::vector<double>(K, 0));
 
-	//resets n_iterations
-	n_iterations = n_iterations_double;
+	////empties the ratings
+	//ratings.clear();
 
-	//resets the eta to 10 times the original value
-	eta = eta_10_times_up;
+	////empties the test set
+	//test_set.clear();
 
-	//muliplying the lambda by 10 appears to slightly increase the MAE
-	lambda = lambda_10_times_up;
+	////empties the users_movies
+	//users_movies.clear();
 
+	////empties the movies_users
+	//movies_users.clear();
 
-	//first level hyperparameter fine tuning
-	std::ifstream file_bonus_debug("ratings.csv");
+	////empties the users
+	//users.clear();
 
-	if (file_bonus_debug.is_open()) {
-		std::getline(file_bonus_debug, line); // skip the first line
-
-		while (std::getline(file_bonus_debug, line)) {
-
-			std::istringstream iss(line);
-			std::string token;
-			// read user, movie, and rating
-			std::getline(iss, token, ',');
-			int user = std::stol(token);
-			std::getline(iss, token, ',');
-			int movie = std::stol(token);
-			std::getline(iss, token, ',');
-			double rating = std::stod(token);
-
-			if (toss_coin(twenty_percent)) {
-				if (toss_coin(1 - test_set_size)) {
-					// if the coin toss is true, add the rating to the training set
-					ratings[std::make_pair(user, movie)] = rating;
-					//double current_rating_a = ratings[std::make_pair(user, movie)];
-					users_movies[user].insert(movie); // add movie to user's list of movies
-					movies_users[movie].insert(user); // add user to movie's list of users
-				}
-				else {
-					// if the coin toss is false, add the rating to the test set
-					test_set[std::make_pair(user, movie)] = rating;
-				}
-
-				// keep track of users and movies that have been added
-				// the Ids might be larger than the number of users and movies
-				users.insert(user);
-				movies.insert(movie);
-			}
-		}
-		//file_bonus.close();
-
-		//flushes the file_bonus
-		file_bonus_debug.clear();
-	}
-	else {
-		std::cout << "Unable to open file" << std::endl;
-	}
-
-	std::cout << "Finish Bonus File Read 1 of 4" << std::endl;
-
-	//	batch_size = ratings.size() * 0.010;
-
-	// initialize U and V with random values
-	for (int i : users) {
-		for (int k = 0; k < K; k++) {
-			U[i][k] = generate_uniform_random_number();
-		}
-	}
-
-	for (int j : movies) {
-		for (int k = 0; k < K; k++) {
-			V[j][k] = generate_uniform_random_number();
-		}
-	}
+	////empties the movies
+	//movies.clear();
 
 
 
+	////resets n_iterations
+	//n_iterations = n_iterations_double;
 
-	//1 of 4 
-	//collaborative filtering batch gradient descent first level of hyperparameter fine tuning for batch gradient descent
-	std::cout << "\n" << "1 of 4:" << std::endl;
-	std::cout << "Doubled Number of Iterations, eta times 10, and lambda times 10" << std::endl;
+	////resets the eta to 10 times the original value
+	//eta = eta_10_times_up;
 
-	//gets updated V and U
-	updated_U_V = cf_batch_gradient_descent_finder(n_iterations, test_set, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
-	std::cout << "1 of 4." << std::endl;
-
-	////set U and V to the updated U and V
-	//U = updated_U_V[0];
-	//V = updated_U_V[1];
-
-	////empty the updated_U_V vector
-	//updated_U_V.clear();
+	////muliplying the lambda by 10 appears to slightly increase the MAE
+	//lambda = lambda_10_times_up;
 
 
-	////initialize the partial derivatives for U and V
-	//std::vector<std::vector<double>> derived_norm_U(m, std::vector<double>(K, 0));
-	//std::vector<std::vector<double>> derived_norm_V(n, std::vector<double>(K, 0));
+	////first level hyperparameter fine tuning
+	//std::ifstream file_bonus_debug("ratings.csv");
 
-	////Using variables for debuggine purposes
+	//if (file_bonus_debug.is_open()) {
+	//	std::getline(file_bonus_debug, line); // skip the first line
 
-	////initialize the difference in ratings for U and V 
-	//std::vector<std::vector<double>> ratings_difference_U_product(m, std::vector<double>(K, 0));
-	//std::vector<std::vector<double>> ratings_difference_V_product(n, std::vector<double>(K, 0));
+	//	while (std::getline(file_bonus_debug, line)) {
 
-	////initialize the gradient regularization for U and V
-	//std::vector<std::vector<double>> cf_gradient_regularization_U(m, std::vector<double>(K, 0));
-	//std::vector<std::vector<double>> cf_gradient_regularization_V(n, std::vector<double>(K, 0));
+	//		std::istringstream iss(line);
+	//		std::string token;
+	//		// read user, movie, and rating
+	//		std::getline(iss, token, ',');
+	//		int user = std::stol(token);
+	//		std::getline(iss, token, ',');
+	//		int movie = std::stol(token);
+	//		std::getline(iss, token, ',');
+	//		double rating = std::stod(token);
 
-	////initialize the gradient descent for U and V
-	//std::vector<std::vector<double>> cf_gradient_descent_U(m, std::vector<double>(K, 0));
-	//std::vector<std::vector<double>> cf_gradient_descent_V(n, std::vector<double>(K, 0));
+	//		if (toss_coin(twenty_percent)) {
+	//			if (toss_coin(1 - test_set_size)) {
+	//				// if the coin toss is true, add the rating to the training set
+	//				ratings[std::make_pair(user, movie)] = rating;
+	//				//double current_rating_a = ratings[std::make_pair(user, movie)];
+	//				users_movies[user].insert(movie); // add movie to user's list of movies
+	//				movies_users[movie].insert(user); // add user to movie's list of users
+	//			}
+	//			else {
+	//				// if the coin toss is false, add the rating to the test set
+	//				test_set[std::make_pair(user, movie)] = rating;
+	//			}
 
-	////initialize the stochastic gradient descent for U and V
-	//std::vector<std::vector<double>> cf_stochastic_gradient_descent_U(m, std::vector<double>(K, 0));
-	//std::vector<std::vector<double>> cf_stochastic_gradient_descent_V(n, std::vector<double>(K, 0));
+	//			// keep track of users and movies that have been added
+	//			// the Ids might be larger than the number of users and movies
+	//			users.insert(user);
+	//			movies.insert(movie);
+	//		}
+	//	}
+	//	//file_bonus.close();
 
-	// initialize U and V with random values
-	for (int i : users) {
-		for (int k = 0; k < K; k++) {
-			U[i][k] = generate_uniform_random_number();
-		}
-	}
+	//	//flushes the file_bonus
+	//	file_bonus_debug.clear();
+	//}
+	//else {
+	//	std::cout << "Unable to open file" << std::endl;
+	//}
 
-	for (int j : movies) {
-		for (int k = 0; k < K; k++) {
-			V[j][k] = generate_uniform_random_number();
-		}
-	}
+	//std::cout << "Finish Bonus File Read 1 of 4" << std::endl;
+
+	////	batch_size = ratings.size() * 0.010;
+
+	//// initialize U and V with random values
+	//for (int i : users) {
+	//	for (int k = 0; k < K; k++) {
+	//		U[i][k] = generate_uniform_random_number();
+	//	}
+	//}
+
+	//for (int j : movies) {
+	//	for (int k = 0; k < K; k++) {
+	//		V[j][k] = generate_uniform_random_number();
+	//	}
+	//}
+
+
+	////1 of 4 
+	////collaborative filtering batch gradient descent first level of hyperparameter fine tuning for batch gradient descent
+	//std::cout << "\n" << "1 of 4:" << std::endl;
+	//std::cout << "Doubled Number of Iterations, eta times 10, and lambda times 10" << std::endl;
+
+	////finds updated V and U
+	//cf_batch_gradient_descent_finder(n_iterations, test_set, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
+	//std::cout << "1 of 4." << std::endl;
+
+	//// initialize U and V with random values
+	//for (int i : users) {
+	//	for (int k = 0; k < K; k++) {
+	//		U[i][k] = generate_uniform_random_number();
+	//	}
+	//}
+
+	//for (int j : movies) {
+	//	for (int k = 0; k < K; k++) {
+	//		V[j][k] = generate_uniform_random_number();
+	//	}
+	//}
 
 	//initialize the copy of U and V
 	copy_U = U;
 	copy_V = V;
-
-
-	////for debugging purposes
-	//// 
-	//// 
-	//// 
-	//
-	////resetting U and V
-	//	U = copy_U;
-	//	V = copy_V;
-	//
-	//	//setting the eta to 1000 times the original value
-	//	eta = 1000 * eta_copy;
-	//	//lambda = lambda / 90;
-	//	lambda = lambda_10_times_up;
-	//	n_iterations = 6 * n_iterations_copy;
-	//	//n_iterations = m;
-	//	//epochs = 100;
-	//	//lambda = lambda_copy;
-	//
-	//	std::cout << "\n" << "\n" << "Collaborative Filtering Stochastic Gradient Descent:" << std::endl;
-	//	std::cout << "\nRuns five times with the same hyperparameters to demonstrate the effects of randomness produced by mt19937" << std::endl;
-	//	std::cout << "\n" << "1 of 5:" << std::endl;
-	//	updated_U_V = cf_stochastic_gradient_descent_finder(test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
-	//	std::cout << "1 of 5." << std::endl;
-	//
-	//	//set U and V to the updated U and V
-	//	U = updated_U_V[0];
-	//	V = updated_U_V[1];
-	//
-	//	//empty the updated_U_V vector
-	//	updated_U_V.clear();
-	////resetting U and V
-	//	U = copy_U;
-	//	V = copy_V;
-	//
-	//	n_iterations = 6 * n_iterations_copy;
-	//	//eta = eta_copy;
-	//	//lambda = lambda_copy;
-	//	//eta = eta_10_times_up*100;
-	//	eta = eta_copy * 1000;
-	//	batch_size = ratings.size() * 0.01;
-	//	std::cout << "\n" << "\n" << "Collaborative Filtering Mini-Batch Gradient Descent:" << std::endl;
-	//	std::cout << "Using the Same Hyperparameters as Collaborative Filtering Stochastic Gradient Descent \nto Analyze Similarity of the Two Methods" << std::endl;
-	//	std::cout << "\nRuns two times with the same hyperparameters to demonstrate the effects of randomness produced by mt19937" << std::endl;
-	//	std::cout << "\n" << "1 of 2:" << std::endl;
-	//	updated_U_V = cf_mini_batch_gradient_descent_finder(batch_size, test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
-	//	std::cout << "1 of 2." << std::endl;
-	//
-	//	//resetting U and V
-	//	U = copy_U;
-	//	V = copy_V;
-	//
-	//	//eta = eta_copy;
-	//	//lambda = lambda_copy;
-	//	//eta = eta_10_times_up*100;
-	//	eta = eta_copy * 1000;
-	//
-	//	std::cout << "\n" << "2 of 2:" << std::endl;
-	//	updated_U_V = cf_mini_batch_gradient_descent_finder(batch_size, test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
-	//	std::cout << "2 of 2." << std::endl;
-	//
-	//	std::cout << "\n" << "\n" << "End of PS2 p2 Main Part:" << std::endl;
-
-
-	////p2 bonus
-
-	////set U and V to the updated U and V
-	//U = updated_U_V[0];
-	//V = updated_U_V[1];
-
-	////empty the updated_U_V vector
-	//updated_U_V.clear();
-
-	////resetting U and V
-	//U = copy_U;
-	//V = copy_V;
-
-	////doubling the number of iterations appears to reduce the MAE by around 0.01
-	//n_iterations = n_iterations_copy;
-
-	////resets the eta to the original value
-	//eta = eta_copy;
-
-	//
-
-
-	////empty the updated_U_V vector
-	//updated_U_V.clear();
-
-	////resetting U and V
-	//U = copy_U;
-	//V = copy_V;
-
-	////setting number of iterations appears to reduce the MAE by around 0.01
-	//n_iterations = n_iterations_copy;
-
-	////resets the eta to the original value
-	//eta = eta_copy;
-
-	//// 1 of 4
-	//// bonus - collaborative filtering first level of hyperparameter fine tuning for batch gradient descent
-	//std::cout << "\n" << "\n" << "Bonus - Collaborative Filetering Batch Gradient Descent:" << std::endl;
-	//std::cout << "\n" << "1 of 4: First Level " << std::endl;
-	//std::cout << "20% of the dataset" << std::endl;
-	//updated_U_V = cf_batch_gradient_descent_finder(n_iterations, test_set_bonus_twenty_percent, eta, lambda, decay, users_bonus_twenty_percent, 
-	//movies_bonus_twenty_percent, ratings_bonus_twenty_percent, U_dot_V_transposed, V_dot_U, users_movies_bonus_twenty_percent, 
-	//movies_users_bonus_twenty_percent, m_bonus_twenty_percent, n_bonus_twenty_percent, K_bonus_twenty_percent, U_bonus_twenty_percent, V_bonus_twenty_percent);
-	//std::cout << "1 of 4." << std::endl;
-
-	////set U and V to the updated U and V
-	//U = updated_U_V[0];
-	//V = updated_U_V[1];
-
-	////empty the updated_U_V vector
-	//updated_U_V.clear();
-
-	////resetting U and V
-	//U = copy_U;
-	//V = copy_V;
-
-	////setting number of iterations appears to reduce the MAE by around 0.01
-	//n_iterations = n_iterations_copy;
-
-	////resets the eta to the original value
-	//eta = eta_copy;
-
-
-
-
-
-
-
+	
 
 	//p2a 
 	// Collaborative Filtering Batch Gradient Descent
@@ -961,15 +775,8 @@ int main() {
 	std::cout << "\n" << "\n" << "Collaborative Filetering Batch Gradient Descent:" << std::endl;
 	std::cout << "\n" << "1 of 5:" << std::endl;
 	std::cout << "Given Hyperparameters" << std::endl;
-	updated_U_V = cf_batch_gradient_descent_finder(n_iterations, test_set, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
+	cf_batch_gradient_descent_finder(n_iterations, test_set, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
 	std::cout << "1 of 5." << std::endl;
-
-	//set U and V to the updated U and V
-	U = updated_U_V[0];
-	V = updated_U_V[1];
-
-	//empty the updated_U_V vector
-	updated_U_V.clear();
 
 	//resetting U and V
 	U = copy_U;
@@ -985,15 +792,9 @@ int main() {
 	//collaborative filtering batch gradient descent found with the doubled number of iterations
 	std::cout << "\n" << "2 of 5:" << std::endl;
 	std::cout << "Doubled Number of Iterations" << std::endl;
-	updated_U_V = cf_batch_gradient_descent_finder(n_iterations, test_set, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
+	cf_batch_gradient_descent_finder(n_iterations, test_set, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
 	std::cout << "2 of 5." << std::endl;
 
-	//set U and V to the updated U and V
-	U = updated_U_V[0];
-	V = updated_U_V[1];
-
-	//empty the updated_U_V vector
-	updated_U_V.clear();
 
 	//resetting U and V
 	U = copy_U;
@@ -1007,8 +808,8 @@ int main() {
 	std::cout << "\n" << "3 of 5:" << std::endl;
 	std::cout << "Doubled Number of Iterations, eta times 10, and unchanged lambda" << std::endl;
 
-	//gets updated U and V
-	updated_U_V = cf_batch_gradient_descent_finder(n_iterations, test_set, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
+	//finds uodated U and V
+	cf_batch_gradient_descent_finder(n_iterations, test_set, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
 	std::cout << "3 of 5." << std::endl;
 
 	//set U and V to the updated U and V
@@ -1036,15 +837,9 @@ int main() {
 	std::cout << "This provided the lowest found MAE." << std::endl;
 
 	//gets updated V and U
-	updated_U_V = cf_batch_gradient_descent_finder(n_iterations, test_set, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
+	cf_batch_gradient_descent_finder(n_iterations, test_set, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
 	std::cout << "4 of 5." << std::endl;
 
-	//set U and V to the updated U and V
-	U = updated_U_V[0];
-	V = updated_U_V[1];
-
-	//empty the updated_U_V vector
-	updated_U_V.clear();
 
 	//resetting U and V
 	U = copy_U;
@@ -1062,7 +857,7 @@ int main() {
 	std::cout << "Doubled Number of Iterations, eta times 10, and lambda divided by 10" << std::endl;
 
 	//gets updated V and U
-	updated_U_V = cf_batch_gradient_descent_finder(n_iterations, test_set, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
+	cf_batch_gradient_descent_finder(n_iterations, test_set, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
 	std::cout << "5 of 5." << std::endl;
 
 	//set U and V to the updated U and V
@@ -1103,7 +898,7 @@ int main() {
 	std::cout << "\n" << "\n" << "Collaborative Filtering Stochastic Gradient Descent:" << std::endl;
 	std::cout << "\nRuns five times with the same hyperparameters to demonstrate the effects of randomness produced by mt19937" << std::endl;
 	std::cout << "\n" << "1 of 5:" << std::endl;
-	updated_U_V = cf_stochastic_gradient_descent_finder(test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
+	updated_U_V = cf_stochastic_gradient_descent_finder(test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
 	std::cout << "1 of 5." << std::endl;
 
 	//set U and V to the updated U and V
@@ -1127,7 +922,7 @@ int main() {
 	//lambda = lambda_copy;
 
 	std::cout << "\n" << "2 of 5:" << std::endl;
-	updated_U_V = cf_stochastic_gradient_descent_finder(test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
+	updated_U_V = cf_stochastic_gradient_descent_finder(test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
 	std::cout << "2 of 5." << std::endl;
 
 	//set U and V to the updated U and V
@@ -1152,7 +947,7 @@ int main() {
 	//lambda = lambda_copy;
 
 	std::cout << "\n" << "3 of 5:" << std::endl;
-	updated_U_V = cf_stochastic_gradient_descent_finder(test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
+	updated_U_V = cf_stochastic_gradient_descent_finder(test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
 	std::cout << "3 of 5." << std::endl;
 
 	//set U and V to the updated U and V
@@ -1176,7 +971,7 @@ int main() {
 	//lambda = lambda_copy;
 
 	std::cout << "\n" << "4 of 5:" << std::endl;
-	updated_U_V = cf_stochastic_gradient_descent_finder(test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
+	updated_U_V = cf_stochastic_gradient_descent_finder(test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
 	std::cout << "4 of 5." << std::endl;
 
 	//set U and V to the updated U and V
@@ -1202,7 +997,7 @@ int main() {
 	//lambda = lambda_copy;
 
 	std::cout << "\n" << "5 of 5:" << std::endl;
-	updated_U_V = cf_stochastic_gradient_descent_finder(test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
+	updated_U_V = cf_stochastic_gradient_descent_finder(test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
 	std::cout << "5 of 5." << std::endl;
 
 	//set U and V to the updated U and V
@@ -1229,18 +1024,8 @@ int main() {
 	std::cout << "Using the Same Hyperparameters as Collaborative Filtering Stochastic Gradient Descent \nto Analyze Similarity of the Two Methods" << std::endl;
 	std::cout << "\nRuns two times with the same hyperparameters to demonstrate the effects of randomness produced by mt19937" << std::endl;
 	std::cout << "\n" << "1 of 2:" << std::endl;
-	updated_U_V = cf_mini_batch_gradient_descent_finder(batch_size, test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
+	cf_mini_batch_gradient_descent_finder(batch_size, test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
 	std::cout << "1 of 2." << std::endl;
-
-	//set U and V to the updated U and V
-	U = updated_U_V[0];
-	V = updated_U_V[1];
-
-	//finds the MAE
-	//mae_finder(test_set, U, V);
-
-	//empty the updated_U_V vector
-	updated_U_V.clear();
 
 	//resetting U and V
 	U = copy_U;
@@ -1252,16 +1037,8 @@ int main() {
 	eta = eta_copy * 1000;
 
 	std::cout << "\n" << "2 of 2:" << std::endl;
-	updated_U_V = cf_mini_batch_gradient_descent_finder(batch_size, test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
+	cf_mini_batch_gradient_descent_finder(batch_size, test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
 	std::cout << "2 of 2." << std::endl;
-
-	//set U and V to the updated U and V
-	U = updated_U_V[0];
-	V = updated_U_V[1];
-
-
-	//empty the updated_U_V vector
-	updated_U_V.clear();
 
 	std::cout << "\n" << "\n" << "End of PS2 p2 Main Part:" << std::endl;
 
@@ -1379,15 +1156,9 @@ int main() {
 	std::cout << "Doubled Number of Iterations, eta times 10, and lambda times 10" << std::endl;
 
 	//gets updated V and U
-	updated_U_V = cf_batch_gradient_descent_finder(n_iterations, test_set, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
+	cf_batch_gradient_descent_finder(n_iterations, test_set, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
 	std::cout << "1 of 4." << std::endl;
 
-	//set U and V to the updated U and V
-	U = updated_U_V[0];
-	V = updated_U_V[1];
-
-	//empty the updated_U_V vector
-	updated_U_V.clear();
 
 	
 	//second level hyperparameter fine tuning
@@ -1493,16 +1264,10 @@ int main() {
 	std::cout << "Doubled Number of Iterations, eta times 10, and lambda times 10" << std::endl;
 
 	//gets updated V and U
-	updated_U_V = cf_batch_gradient_descent_finder(n_iterations, test_set, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
+	cf_batch_gradient_descent_finder(n_iterations, test_set, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
 	std::cout << "2 of 4." << std::endl;
 
-	//set U and V to the updated U and V
-	U = updated_U_V[0];
-	V = updated_U_V[1];
-
-	//empty the updated_U_V vector
-	updated_U_V.clear();
-
+	
 
 	//third level hyperparameter fine tuning
 	
@@ -1607,15 +1372,9 @@ int main() {
 	std::cout << "Doubled Number of Iterations, eta times 10, and lambda times 10" << std::endl;
 
 	//gets updated V and U
-	updated_U_V = cf_batch_gradient_descent_finder(n_iterations, test_set, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
+	cf_batch_gradient_descent_finder(n_iterations, test_set, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
 	std::cout << "3 of 4." << std::endl;
 
-	//set U and V to the updated U and V
-	U = updated_U_V[0];
-	V = updated_U_V[1];
-
-	//empty the updated_U_V vector
-	updated_U_V.clear();
 
 	//fourth level hyperparameter fine tuning
 	//returns to the beginning of the file
@@ -1722,15 +1481,9 @@ int main() {
 	std::cout << "Doubled Number of Iterations, eta times 10, and lambda times 10" << std::endl;
 
 	//gets updated V and U
-	updated_U_V = cf_batch_gradient_descent_finder(n_iterations, test_set, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, V_dot_U, users_movies, movies_users, m, n, K, U, V);
+	cf_batch_gradient_descent_finder(n_iterations, test_set, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
 	std::cout << "4 of 4." << std::endl;
 
-	//set U and V to the updated U and V
-	U = updated_U_V[0];
-	V = updated_U_V[1];
-
-	//empty the updated_U_V vector
-	updated_U_V.clear();
 	
 	//returns 0 to indicate that the program has ran without errors
 	return 0;
