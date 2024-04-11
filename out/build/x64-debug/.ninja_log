@@ -1,11 +1,11 @@
 # ninja log v5
 45	3403	7334178554638684	tests/CMakeFiles/my_test.dir/my_test.cpp.obj	ae03f97f22b28c33
-9	2081	7344517621741870	CMakeFiles/CMakeS24CS696_PS2_p2.dir/collaborative_filtering_template-3.cpp.obj	8ab845bf13ab9fa
+14	2718	7345157652150794	CMakeFiles/CMakeS24CS696_PS2_p2.dir/collaborative_filtering_template-3.cpp.obj	8ab845bf13ab9fa
 3409	9462	7334178615038656	external/googletest/googlemock/CMakeFiles/gmock_main.dir/src/gmock_main.cc.obj	6d2486ad124d2c1c
 65	6473	7334178585272609	external/googletest/googlemock/CMakeFiles/gmock.dir/src/gmock-all.cc.obj	b2faefb8b3176c7a
 73	9979	7334178620253904	external/googletest/googlemock/CMakeFiles/gmock_main.dir/__/googletest/src/gtest-all.cc.obj	9d78e809ffd8434c
 82	6611	7334178586622537	external/googletest/googlemock/CMakeFiles/gmock_main.dir/src/gmock-all.cc.obj	32c787564156548f
-2082	2514	7344517625201885	CMakeS24CS696_PS2_p2.exe	401128420dca4602
+2720	3396	7345157656950852	CMakeS24CS696_PS2_p2.exe	401128420dca4602
 57	9897	7334178619453876	external/googletest/googlemock/CMakeFiles/gmock.dir/__/googletest/src/gtest-all.cc.obj	cedf03dd4a249e12
 9897	10112	7334178621483881	lib/gmock.lib	fbc3e5afdd1ea766
 6474	13974	7334178660386262	external/googletest/googletest/CMakeFiles/gtest.dir/src/gtest-all.cc.obj	4ddd146c77d68a32
@@ -16,5 +16,17 @@
 14173	15070	7334178671419543	tests/my_test.exe	1dbcdf0e06b1358f
 14173	15070	7334178671419543	tests/my_test[1]_tests.cmake	1dbcdf0e06b1358f
 14173	15070	7334178671419543	C:/Users/Owner/source/repos/S24CS696hw/S24CS696PS2P2/out/build/x64-debug/tests/my_test[1]_tests.cmake	1dbcdf0e06b1358f
-14	2718	7345157652150794	CMakeFiles/CMakeS24CS696_PS2_p2.dir/collaborative_filtering_template-3.cpp.obj	8ab845bf13ab9fa
-2720	3396	7345157656950852	CMakeS24CS696_PS2_p2.exe	401128420dca4602
+31	3342	7345170177979755	CMakeFiles/CMakeS24CS696_PS2_p2.dir/collaborative_filtering_template-3.cpp.obj	8ab845bf13ab9fa
+3344	3917	7345170182951621	CMakeS24CS696_PS2_p2.exe	401128420dca4602
+9	2713	7345177765180875	CMakeFiles/CMakeS24CS696_PS2_p2.dir/collaborative_filtering_template-3.cpp.obj	8ab845bf13ab9fa
+2715	3075	7345177768120931	CMakeS24CS696_PS2_p2.exe	401128420dca4602
+45	1695	7345181570749001	CMakeFiles/CMakeS24CS696_PS2_p2.dir/collaborative_filtering_template-3.cpp.obj	8ab845bf13ab9fa
+1696	1941	7345181572709008	CMakeS24CS696_PS2_p2.exe	401128420dca4602
+22	1808	7345182866396657	CMakeFiles/CMakeS24CS696_PS2_p2.dir/collaborative_filtering_template-3.cpp.obj	8ab845bf13ab9fa
+1809	2135	7345182869246642	CMakeS24CS696_PS2_p2.exe	401128420dca4602
+25	1606	7345184131685032	CMakeFiles/CMakeS24CS696_PS2_p2.dir/collaborative_filtering_template-3.cpp.obj	8ab845bf13ab9fa
+1607	1833	7345184133535063	CMakeS24CS696_PS2_p2.exe	401128420dca4602
+46	1769	7345185437217688	CMakeFiles/CMakeS24CS696_PS2_p2.dir/collaborative_filtering_template-3.cpp.obj	8ab845bf13ab9fa
+1770	2107	7345185440077210	CMakeS24CS696_PS2_p2.exe	401128420dca4602
+9	2247	7345188921044573	CMakeFiles/CMakeS24CS696_PS2_p2.dir/collaborative_filtering_template-3.cpp.obj	8ab845bf13ab9fa
+2249	2565	7345188923724569	CMakeS24CS696_PS2_p2.exe	401128420dca4602

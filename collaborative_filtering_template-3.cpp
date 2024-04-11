@@ -243,10 +243,10 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 			//stores the current user
 			int current_user = i;
 
-			//stores the current user's movie set3
 
 			//initializes the base gradient for U. This ensures that the base gradient for U is set to 0 for each user
 			std::vector<std::vector<double>>cf_batch_gradient_base_U(m, std::vector<double>(K, 0));
+
 
 			//iterates through all the columns of U by an increment of 1
 			for (int k = 0; k < K; k++) {
@@ -555,7 +555,7 @@ int main() {
 
 	//int epochs = 4;
 
-	std::vector<std::vector<std::vector<double>>> updated_U_V;
+//	std::vector<std::vector<std::vector<double>>> updated_U_V;
 
 	
 	// read the userids, movieids, and ratings from the file for the main part
@@ -749,6 +749,21 @@ int main() {
 	//	}
 	//}
 
+
+	// initialize U and V with random values
+for (int i : users) {
+	for (int k = 0; k < K; k++) {
+		U[i][k] = generate_uniform_random_number();
+	}
+}
+
+for (int j : movies) {
+	for (int k = 0; k < K; k++) {
+		V[j][k] = generate_uniform_random_number();
+	}
+}
+
+
 	//initialize the copy of U and V
 	copy_U = U;
 	copy_V = V;
@@ -757,15 +772,15 @@ int main() {
 	//p2a 
 	// Collaborative Filtering Batch Gradient Descent
 
-	//resetting U and V
-	U = copy_U;
-	V = copy_V;
+	////resetting U and V
+	//U = copy_U;
+	//V = copy_V;
 
-	//setting number of iterations appears to reduce the MAE by around 0.01
-	n_iterations = n_iterations_copy;
+	////setting number of iterations appears to reduce the MAE by around 0.01
+	//n_iterations = n_iterations_copy;
 
-	//resets the eta to the original value
-	eta = eta_copy;
+	////resets the eta to the original value
+	//eta = eta_copy;
 
 
 	// 1 of 5
@@ -810,13 +825,6 @@ int main() {
 	cf_batch_gradient_descent_finder(n_iterations, test_set, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
 	std::cout << "3 of 5." << std::endl;
 
-	//set U and V to the updated U and V
-	U = updated_U_V[0];
-	V = updated_U_V[1];
-
-	//empty the updated_U_V vector
-	updated_U_V.clear();
-
 
 	//resetting U and V
 	U = copy_U;
@@ -858,13 +866,6 @@ int main() {
 	cf_batch_gradient_descent_finder(n_iterations, test_set, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
 	std::cout << "5 of 5." << std::endl;
 
-	//set U and V to the updated U and V
-	U = updated_U_V[0];
-	V = updated_U_V[1];
-
-	//empty the updated_U_V vector
-	updated_U_V.clear();
-
 
 	//p2b-i
 	//Collaborative Filtering Stochastic Gradient Descent
@@ -899,12 +900,6 @@ int main() {
 	cf_stochastic_gradient_descent_finder(test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
 	std::cout << "1 of 5." << std::endl;
 
-	//set U and V to the updated U and V
-	U = updated_U_V[0];
-	V = updated_U_V[1];
-
-	//empty the updated_U_V vector
-	updated_U_V.clear();
 
 	//resetting U and V
 	U = copy_U;
@@ -922,14 +917,6 @@ int main() {
 	std::cout << "\n" << "2 of 5:" << std::endl;
 	cf_stochastic_gradient_descent_finder(test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
 	std::cout << "2 of 5." << std::endl;
-
-	//set U and V to the updated U and V
-	U = updated_U_V[0];
-	V = updated_U_V[1];
-
-
-	//empty the updated_U_V vector
-	updated_U_V.clear();
 
 	//resetting U and V
 	U = copy_U;
@@ -985,13 +972,7 @@ int main() {
 	cf_stochastic_gradient_descent_finder(test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
 	std::cout << "5 of 5." << std::endl;
 
-	//set U and V to the updated U and V
-	U = updated_U_V[0];
-	V = updated_U_V[1];
-
-
-	//empty the updated_U_V vector
-	updated_U_V.clear();
+	
 
 	//p2-ii
 	//Collaborative Filtering Stochastic Gradient Descent
