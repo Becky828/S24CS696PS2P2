@@ -35,3 +35,6 @@
 ratings.csv
 very_abridged_Dataset.csv
 GMOCK-ALL.ipch
+
+*.vs
+out
