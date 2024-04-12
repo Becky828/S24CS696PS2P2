@@ -745,6 +745,14 @@ int main() {
 	
 
 
+
+
+
+
+
+
+
+
 	// initialize U and V with random values
 for (int i : users) {
 	for (int k = 0; k < K; k++) {
