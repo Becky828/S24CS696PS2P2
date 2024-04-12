@@ -241,7 +241,7 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 		for (int i : users) {
 
 			//stores the current user
-			int current_user = i;
+			//int current_user = i;
 
 
 			//initializes the base gradient for U. This ensures that the base gradient for U is set to 0 for each user
@@ -252,23 +252,25 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 			for (int k = 0; k < K; k++) {
 
 				//performs the summation of the base gradient for all samples relating to U.
-				for (int j : users_movies[current_user]) {
-					int current_movie = j;
+				for (int j : users_movies[i]) {
+					//int current_movie = j;
 
 					//finds the dot product of U and V transposed, wherein i is the current user and j is the current movie in the current user's movie set
-					U_dot_V_transposed = dot_product(U[i], V[j]);
+				//	U_dot_V_transposed = dot_product(U[i], V[j]);
 					
 					//finds the current rating
-					double current_rating = ratings.at(std::make_pair(current_user, current_movie));
+					//double current_rating = ratings.at(std::make_pair(i, j));
 
 					//finds the current rating difference
-					double rating_difference = U_dot_V_transposed - current_rating;
+					//double rating_difference = U_dot_V_transposed - current_rating;
 
 					//updates the base gradient for U 
 					// by adding the product of the difference between the dot product of U and V transposed and the current rating 
 					// and the current element of V 
 					// to the current element of the base gradient for U
-					cf_batch_gradient_base_U[i][k] = cf_batch_gradient_base_U[i][k] + (rating_difference)*V[j][k];
+					//cf_batch_gradient_base_U[i][k] = cf_batch_gradient_base_U[i][k] + (rating_difference)*V[j][k];
+					cf_batch_gradient_base_U[i][k] = cf_batch_gradient_base_U[i][k] + (dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j)) * V[j][k]);
+
 				}
 
 				//performs the base gradient descent for U
@@ -284,7 +286,7 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 		for (int j : movies) {
 
 			//stores the current movie
-			int current_movie = j;
+			//int current_movie = j;
 
 
 			//initializes the base gradient for U. This ensures that the base gradient for U is set to 0 for each movie
@@ -295,22 +297,24 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 				for (int i : movies_users[j]) {
 
 					//finds the dot product of U and V transposed, wherin i is the current user and j is the current movie in the current user's movie set
-					U_dot_V_transposed = dot_product(U[i], V[j]);
+				//	U_dot_V_transposed = dot_product(U[i], V[j]);
 
 					//stores the current user
-					int current_user = i;
+					//int current_user = i;//
 
 					//finds the current rating
-					double current_rating = ratings.at(std::make_pair(current_user, current_movie));
+					//double current_rating = ratings.at(std::make_pair(current_user, current_movie));
 
 					//finds the current rating difference
-					double rating_difference = U_dot_V_transposed - current_rating;
+					//double rating_difference = U_dot_V_transposed - current_rating;
 
 					//updates the base gradient for V 
 					// by adding the product of the difference between the dot product of U and V transposed and the current rating 
 					// and the current element of U
 					// to the current element of the base gradient for V
-					cf_batch_gradient_base_V[j][k] = cf_batch_gradient_base_V[j][k] + (rating_difference)*U[i][k];
+					//cf_batch_gradient_base_V[j][k] = cf_batch_gradient_base_V[j][k] + (rating_difference)*U[i][k];
+					cf_batch_gradient_base_V[j][k] = cf_batch_gradient_base_V[j][k] + ((dot_product(U[i], V[j])) - ratings.at(std::make_pair(i, j)) * U[i][k]);
+
 				}
 
 				//performs the base gradient descent for V
@@ -681,7 +685,7 @@ int main() {
 			std::getline(iss, token, ',');
 			double rating = std::stod(token);
 
-			if (toss_coin(twenty_percent)) {
+			if (toss_coin(0.15)) {
 				if (toss_coin(1 - test_set_size)) {
 					// if the coin toss is true, add the rating to the training set
 					ratings[std::make_pair(user, movie)] = rating;
