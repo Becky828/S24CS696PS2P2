@@ -618,10 +618,6 @@ int main() {
 
 
 
-
-
-
-
 	////for debugging
 	////p2 bonus
 	////Collaborative Filtering Batch Gradient Descent on 0.25 of the Bonus Data
