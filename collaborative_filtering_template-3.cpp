@@ -658,14 +658,16 @@ int main() {
 
 
 	//resets n_iterations
-	n_iterations = n_iterations_double;
+	// = n_iterations_double;
+	n_iterations = n_iterations_copy;
 
 	//resets the eta to 10 times the original value
-	eta = eta_10_times_up;
+	//eta = eta_10_times_up;
+	eta = eta_copy;
 
 	//muliplying the lambda by 10 appears to slightly increase the MAE
-	lambda = lambda_10_times_up;
-
+	//lambda = lambda_10_times_up;
+	lambda = lambda_copy;
 
 	//first level hyperparameter fine tuning
 	std::ifstream file_bonus_debug("ratings.csv");
