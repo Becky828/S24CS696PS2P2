@@ -632,6 +632,9 @@ int main() {
 	//n = 300000; // upper bound number of movies
 	n = 280000; // upper bound number of movies
 
+	//for debugging
+	//K = 2;
+	K = 5;
 
 	//reinitializes the U and V for the bonus
 	U.assign(m, std::vector<double>(K, 0));
@@ -654,10 +657,6 @@ int main() {
 
 	//empties the movies
 	movies.clear();
-
-	//for debugging
-	K = 2;
-	//K = 5;
 
 	//resets n_iterations
 	// = n_iterations_double;
