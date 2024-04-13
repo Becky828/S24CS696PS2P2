@@ -527,9 +527,9 @@ int main() {
 	//Full Dataset
 	int K = 15; // number of latent dimensions	
 	int m = 2000; // upper bound for number of users	
-	int m_bonus = 300000; // upper bound for number of users
+	int m_bonus = 270600; // upper bound for number of users
 	int n = 2000; // upper bound number of movies	
-	int n_bonus = 7000; // upper bound number of movies
+	int n_bonus = 6800; // upper bound number of movies
 	int batch_size = 0; // batch size
 
 	//Abirdged Dataset
