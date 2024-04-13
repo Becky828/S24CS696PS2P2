@@ -288,6 +288,7 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 			//stores the current movie
 			//int current_movie = j;
 
+			double current_movie_user_sum = 0;
 
 			//initializes the base gradient for U. This ensures that the base gradient for U is set to 0 for each movie
 			std::vector<std::vector<double>> cf_batch_gradient_base_V(n, std::vector<double>(K, 0));
@@ -313,8 +314,12 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 					// and the current element of U
 					// to the current element of the base gradient for V
 					//cf_batch_gradient_base_V[j][k] = cf_batch_gradient_base_V[j][k] + (rating_difference)*U[i][k];
-					cf_batch_gradient_base_V[j][k] = cf_batch_gradient_base_V[j][k] + ( (dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j)) * U[i][k]) );
-
+					//cf_batch_gradient_base_V[j][k] = cf_batch_gradient_base_V[j][k] + ( (dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j)) * U[i][k]) );
+					current_movie_user_sum += (dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j)));
+					cf_batch_gradient_base_V[j][k] = current_movie_user_sum * U[i][k];
+				}
+				for (int i : movies_users[j]) {
+					cf_batch_gradient_base_V[j][k] = cf_batch_gradient_base_V[j][k] * U[i][k];
 				}
 
 				//performs the base gradient descent for V
