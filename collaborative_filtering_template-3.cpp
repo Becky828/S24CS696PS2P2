@@ -269,7 +269,7 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 					// and the current element of V 
 					// to the current element of the base gradient for U
 					//cf_batch_gradient_base_U[i][k] = cf_batch_gradient_base_U[i][k] + (rating_difference)*V[j][k];
-					cf_batch_gradient_base_U[i][k] = cf_batch_gradient_base_U[i][k] + (dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j)) * V[j][k]);
+					cf_batch_gradient_base_U[i][k] = cf_batch_gradient_base_U[i][k] + ( (dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j)) * V[j][k]));
 
 				}
 
@@ -313,7 +313,7 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 					// and the current element of U
 					// to the current element of the base gradient for V
 					//cf_batch_gradient_base_V[j][k] = cf_batch_gradient_base_V[j][k] + (rating_difference)*U[i][k];
-					cf_batch_gradient_base_V[j][k] = cf_batch_gradient_base_V[j][k] + ((dot_product(U[i], V[j])) - ratings.at(std::make_pair(i, j)) * U[i][k]);
+					cf_batch_gradient_base_V[j][k] = cf_batch_gradient_base_V[j][k] + ( (dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j)) * U[i][k]) );
 
 				}
 
