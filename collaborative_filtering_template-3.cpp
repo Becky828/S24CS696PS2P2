@@ -655,7 +655,8 @@ int main() {
 	//empties the movies
 	movies.clear();
 
-
+	//for debugging
+	K = 5;
 
 	//resets n_iterations
 	// = n_iterations_double;
@@ -738,7 +739,9 @@ int main() {
 	//1 of 4 
 	//collaborative filtering batch gradient descent first level of hyperparameter fine tuning for batch gradient descent
 	std::cout << "\n" << "1 of 4:" << std::endl;
-	std::cout << "Doubled Number of Iterations, eta times 10, and lambda times 10" << std::endl;
+	//std::cout << "Doubled Number of Iterations, eta times 10, and lambda times 10" << std::endl;
+	std::cout << "Given Hyperparameters" << std::endl;
+
 
 	//finds updated V and U
 	cf_batch_gradient_descent_finder(n_iterations, test_set, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
