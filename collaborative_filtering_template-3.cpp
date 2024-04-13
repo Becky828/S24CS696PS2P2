@@ -269,7 +269,7 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 					// and the current element of V 
 					// to the current element of the base gradient for U
 					//cf_batch_gradient_base_U[i][k] = cf_batch_gradient_base_U[i][k] + (rating_difference)*V[j][k];
-					cf_batch_gradient_base_U[i][k] = cf_batch_gradient_base_U[i][k] + ( (dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j)) * V[j][k]));
+					cf_batch_gradient_base_U[i][k] = cf_batch_gradient_base_U[i][k] + ( (dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j)) * V[j][k]) );
 
 				}
 
@@ -303,7 +303,7 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 					//int current_user = i;//
 
 					//finds the current rating
-					//double current_rating = ratings.at(std::make_pair(current_user, current_movie));
+					//double current_rating = ratings.at(std::make_pair(i, j));
 
 					//finds the current rating difference
 					//double rating_difference = U_dot_V_transposed - current_rating;
@@ -629,8 +629,8 @@ int main() {
 	n = 280000; // upper bound number of movies
 
 	//for debugging
-	//K = 2;
-	K = 5;
+	K = 2;
+	//K = 5;
 
 	//reinitializes the U and V for the bonus
 	U.assign(m, std::vector<double>(K, 0));
