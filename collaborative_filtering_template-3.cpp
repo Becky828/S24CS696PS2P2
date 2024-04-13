@@ -656,7 +656,8 @@ int main() {
 	movies.clear();
 
 	//for debugging
-	K = 5;
+	K = 2;
+	//K = 5;
 
 	//resets n_iterations
 	// = n_iterations_double;
