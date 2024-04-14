@@ -755,8 +755,13 @@ int main() {
 
 	//1 of 4 
 	//collaborative filtering batch gradient descent first level of hyperparameter fine tuning for batch gradient descent
+	std::cout << "Bonus - Fine Tuning Hyperparameters for Stochastic Gradient Descent" << std::endl;
+
+	std::cout << "Twenty Percent of Ratings" << std::endl;
+
 	std::cout << "\n" << "1 of 4:" << std::endl;
 	//std::cout << "Doubled Number of Iterations, eta times 10, and lambda times 10" << std::endl;
+
 	std::cout << "Given Hyperparameters" << std::endl;
 
 
@@ -767,7 +772,25 @@ int main() {
 	//cf_batch_gradient_descent_finder(n_iterations, test_set, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
 	//std::cout << "1 of 4." << std::endl;
 
-	
+	eta = 1000 * eta_copy;
+	//	//lambda = lambda / 90;
+	lambda = lambda_10_times_up;
+	n_iterations = 6 * n_iterations_copy;
+
+
+	std::cout << "Twenty Percent of Ratings" << std::endl;
+
+	std::cout << "\n" << "2 of 4:" << std::endl;
+	//std::cout << "Doubled Number of Iterations, eta times 10, and lambda times 10" << std::endl;
+
+	std::cout << "1000 * eta, 10 * lambda, 6 * n_iterations " << std::endl;
+
+
+	cf_stochastic_gradient_descent_finder(test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
+	std::cout << "2 of 4." << std::endl;
+	//reinitializes the U and V for the bonus
+	U.assign(m, std::vector<double>(K, 0));
+	V.assign(n, std::vector<double>(K, 0));
 
 
 
