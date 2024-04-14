@@ -134,7 +134,7 @@ void cf_stochastic_gradient_descent_finder(std::map<std::pair<int, int>, double>
 		//stores the randomly selected rating value
 		//double current_rating = it->second;
 
-		double rating_difference = dot_product(U[i], V[j]) - it->second;
+		
 
 
 		//iterates through the set of users by an increment of 1. This provides the index required for iterating through the rows of U.
@@ -144,6 +144,7 @@ void cf_stochastic_gradient_descent_finder(std::map<std::pair<int, int>, double>
 		//initializes the base gradient for U. This ensures that the base gradient for U is set to 0 for each user
 			//std::vector<std::vector<double>>cf_stochastic_gradient_base_U(m, std::vector<double>(K, 0));
 
+			double rating_difference = dot_product(U[a], V[j]) - it->second;
 
 			//iterates through the columns of U by an increment of 1
 			for (int k = 0; k < K; k++) {
@@ -177,6 +178,9 @@ void cf_stochastic_gradient_descent_finder(std::map<std::pair<int, int>, double>
 			//double rating_difference = dot_product(U[i], V[b]) - it->second;
 
 			//iterates through the columns of V by an increment of 1
+
+			double rating_difference = dot_product(U[i], V[b]) - it->second;
+
 			for (int k = 0; k < K; k++) {
 
 				//finds the dot product of U and V transposed, wherein i is the current user that was randomly selected and a is the current movie
