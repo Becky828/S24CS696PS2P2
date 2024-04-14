@@ -1013,6 +1013,130 @@ int main() {
 
 
 
+
+	//resets U and V with the copy
+	U = copy_U;
+	V = copy_V;
+
+	eta = 5400 * eta_copy;
+	//	//lambda = lambda / 90;
+	lambda = 100 * lambda_copy;
+	n_iterations = 5 * n_iterations_copy;
+
+
+	std::cout << "\nTwenty Percent of Ratings" << std::endl;
+
+	std::cout << "12 of 5:" << std::endl;
+	//std::cout << "Doubled Number of Iterations, eta times 10, and lambda times 10" << std::endl;
+
+	std::cout << "1000 * eta, 10 * lambda, n_iterations \n" << std::endl;
+
+
+	cf_stochastic_gradient_descent_finder(test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
+	std::cout << "12 of 5." << std::endl;
+
+
+	cf_stochastic_gradient_descent_finder(test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
+	std::cout << "11 of 5." << std::endl;
+
+
+
+
+	//resets U and V with the copy
+	U = copy_U;
+	V = copy_V;
+
+	eta = 5300 * eta_copy;
+	//	//lambda = lambda / 90;
+	lambda = 100 * lambda_copy;
+	n_iterations = 5 * n_iterations_copy;
+
+
+	std::cout << "\nTwenty Percent of Ratings" << std::endl;
+
+	std::cout << "13 of 5:" << std::endl;
+	//std::cout << "Doubled Number of Iterations, eta times 10, and lambda times 10" << std::endl;
+
+	std::cout << "1000 * eta, 10 * lambda, n_iterations \n" << std::endl;
+
+
+	cf_stochastic_gradient_descent_finder(test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
+	std::cout << "13 of 5." << std::endl;
+
+	std::cout << "\nLatest" << std::endl;
+
+
+	//resets U and V with the copy
+	U = copy_U;
+	V = copy_V;
+
+	eta = 5300 * eta_copy;
+	//	//lambda = lambda / 90;
+	lambda = 10 * lambda_copy;
+	n_iterations = 5 * n_iterations_copy;
+
+
+	std::cout << "\nTwenty Percent of Ratings" << std::endl;
+
+	std::cout << "14 of 5:" << std::endl;
+	//std::cout << "Doubled Number of Iterations, eta times 10, and lambda times 10" << std::endl;
+
+	std::cout << "1000 * eta, 10 * lambda, n_iterations \n" << std::endl;
+
+
+	cf_stochastic_gradient_descent_finder(test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
+	std::cout << "14 of 5." << std::endl;
+
+
+	//resets U and V with the copy
+	U = copy_U;
+	V = copy_V;
+
+	eta = 5300 * eta_copy;
+	//	//lambda = lambda / 90;
+	lambda = 1/10 * lambda_copy;
+	n_iterations = 5 * n_iterations_copy;
+
+
+	std::cout << "\nTwenty Percent of Ratings" << std::endl;
+
+	std::cout << "15 of 5:" << std::endl;
+	//std::cout << "Doubled Number of Iterations, eta times 10, and lambda times 10" << std::endl;
+
+	std::cout << "1000 * eta, 10 * lambda, n_iterations \n" << std::endl;
+
+
+	cf_stochastic_gradient_descent_finder(test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
+	std::cout << "15 of 5." << std::endl;
+
+
+
+	//resets U and V with the copy
+	U = copy_U;
+	V = copy_V;
+
+	eta = 5200 * eta_copy;
+	//	//lambda = lambda / 90;
+	lambda = 100 * lambda_copy;
+	n_iterations = 5 * n_iterations_copy;
+
+
+	std::cout << "\nTwenty Percent of Ratings" << std::endl;
+
+	std::cout << "16 of 5:" << std::endl;
+	//std::cout << "Doubled Number of Iterations, eta times 10, and lambda times 10" << std::endl;
+
+	std::cout << "1000 * eta, 10 * lambda, n_iterations \n" << std::endl;
+
+
+	cf_stochastic_gradient_descent_finder(test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
+	std::cout << "16 of 5." << std::endl;
+
+
+
+
+
+
 	//Commented out for debugging
 
 
