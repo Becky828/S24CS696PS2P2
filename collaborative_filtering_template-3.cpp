@@ -264,12 +264,14 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 
 				for (int k = 0; k < K; k++) {
 					cf_batch_gradient_base_U[i][k] = cf_batch_gradient_base_U[i][k] + ((U_dot_V_transposed - ratings.at(std::make_pair(i, j)) * V[j][k]));
-				}
-				for (int k = 0; k < K; k++) {
-					U[i][k] = U[i][k] - eta * (cf_batch_gradient_base_U[i][k]);
-					U[i][k] = U[i][k] - eta * (2 * lambda * U[i][k]);
-				}
+				}				
 			}
+
+			for (int k = 0; k < K; k++) {
+				U[i][k] = U[i][k] - eta * (cf_batch_gradient_base_U[i][k]);
+				U[i][k] = U[i][k] - eta * (2 * lambda * U[i][k]);
+			}
+
 			//iterates through all the columns of U by an increment of 1
 			//for (int k = 0; k < K; k++) {
 
@@ -325,11 +327,12 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 
 				for (int k = 0; k < K; k++) {
 					cf_batch_gradient_base_V[j][k] = cf_batch_gradient_base_V[j][k] + ((U_dot_V_transposed - ratings.at(std::make_pair(i, j)) * U[i][k]));
-				}
-				for (int k = 0; k < K; k++) {
-					V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_V[j][k]);
-					V[j][k] = V[j][k] - eta * (2 * lambda * V[j][k]);
-				}
+				}			
+			}
+
+			for (int k = 0; k < K; k++) {
+				V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_V[j][k]);
+				V[j][k] = V[j][k] - eta * (2 * lambda * V[j][k]);
 			}
 
 			////iterates through all the columns of V by an increment of 1
