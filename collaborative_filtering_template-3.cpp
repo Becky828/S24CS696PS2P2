@@ -714,7 +714,8 @@ int main() {
 			std::getline(iss, token, ',');
 			double rating = std::stod(token);
 
-			if (toss_coin(0.15)) {
+			if (toss_coin(0.01)) {
+			//if (toss_coin(twenty_percent)) {
 				if (toss_coin(1 - test_set_size)) {
 					// if the coin toss is true, add the rating to the training set
 					ratings[std::make_pair(user, movie)] = rating;
@@ -768,6 +769,8 @@ int main() {
 	n_iterations = n_iterations_copy;
 	eta = eta_copy;
 	lambda = lambda_copy;
+
+	cf_batch_gradient_descent_finder(n_iterations, test_set, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
 
 	//1 of 4 
 	//collaborative filtering batch gradient descent first level of hyperparameter fine tuning for batch gradient descent
