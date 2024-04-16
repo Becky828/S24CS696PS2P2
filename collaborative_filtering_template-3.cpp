@@ -134,7 +134,7 @@ void cf_stochastic_gradient_descent_finder(std::map<std::pair<int, int>, double>
 		//stores the randomly selected rating value
 		//double current_rating = it->second;
 
-		
+
 
 
 		//iterates through the set of users by an increment of 1. This provides the index required for iterating through the rows of U.
@@ -258,19 +258,36 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 
 			//initializes the base gradient for U. This ensures that the base gradient for U is set to 0 for each user
 			std::vector<std::vector<double>>cf_batch_gradient_base_U(m, std::vector<double>(K, 0));
+			std::map<int, double> users_movies_ratings_difference;
 
 			for (int j : users_movies[i]) {
-				U_dot_V_transposed = dot_product(U[i], V[j]);
-
-				for (int k = 0; k < K; k++) {
-					cf_batch_gradient_base_U[i][k] = cf_batch_gradient_base_U[i][k] + ((U_dot_V_transposed - ratings.at(std::make_pair(i, j)) * V[j][k]));
-				}				
+				users_movies_ratings_difference[j] = (dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j)));
 			}
 
+			//for (int j : users_movies[i]) {
+				//U_dot_V_transposed = dot_product(U[i], V[j]);
+
 			for (int k = 0; k < K; k++) {
+				//U_dot_V_transposed = dot_product(U[i], V[k]);
+				/*for (int j : users_movies[i]) {
+					cf_batch_gradient_base_U[i][k] = cf_batch_gradient_base_U[i][k] + ((U_dot_V_transposed - ratings.at(std::make_pair(i, j)) * V[j][k]));
+				}*/
+
+				for (int j : users_movies[i]) {
+					cf_batch_gradient_base_U[i][k] = cf_batch_gradient_base_U[i][k] + (users_movies_ratings_difference[j] * V[j][k]);
+				}
+
 				U[i][k] = U[i][k] - eta * (cf_batch_gradient_base_U[i][k]);
 				U[i][k] = U[i][k] - eta * (2 * lambda * U[i][k]);
 			}
+
+
+			//}
+
+			/*for (int k = 0; k < K; k++) {
+				U[i][k] = U[i][k] - eta * (cf_batch_gradient_base_U[i][k]);
+				U[i][k] = U[i][k] - eta * (2 * lambda * U[i][k]);
+			}*/
 
 			//iterates through all the columns of U by an increment of 1
 			//for (int k = 0; k < K; k++) {
@@ -321,19 +338,42 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 
 			//initializes the base gradient for U. This ensures that the base gradient for U is set to 0 for each movie
 			std::vector<std::vector<double>> cf_batch_gradient_base_V(n, std::vector<double>(K, 0));
+			std::map<int, double> movies_users_ratings_difference;
+
 
 			for (int i : movies_users[j]) {
-				U_dot_V_transposed = dot_product(U[i], V[j]);
-
-				for (int k = 0; k < K; k++) {
-					cf_batch_gradient_base_V[j][k] = cf_batch_gradient_base_V[j][k] + ((U_dot_V_transposed - ratings.at(std::make_pair(i, j)) * U[i][k]));
-				}			
+				movies_users_ratings_difference[i] = (dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j)));
 			}
 
 			for (int k = 0; k < K; k++) {
+				for (int i : movies_users[j]) {
+					cf_batch_gradient_base_V[j][k] = cf_batch_gradient_base_V[j][k] + movies_users_ratings_difference[j] * U[j][k];
+				}
 				V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_V[j][k]);
 				V[j][k] = V[j][k] - eta * (2 * lambda * V[j][k]);
 			}
+
+			/*for (int k = 0; k < K; k++) {
+				U_dot_V_transposed = dot_product(U[k], V[j]);
+				for (int i : movies_users[j]) {
+					cf_batch_gradient_base_V[j][k] = cf_batch_gradient_base_V[j][k] + ((U_dot_V_transposed - ratings.at(std::make_pair(i, j)) * U[i][k]));
+				}
+				V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_V[j][k]);
+				V[j][k] = V[j][k] - eta * (2 * lambda * V[j][k]);
+			}*/
+
+			//for (int i : movies_users[j]) {
+			//	//U_dot_V_transposed = dot_product(U[i], V[j]);
+
+			//	for (int k = 0; k < K; k++) {
+			//		cf_batch_gradient_base_V[j][k] = cf_batch_gradient_base_V[j][k] + ((dot_product(U[i], V[k]) - ratings.at(std::make_pair(i, j)) * U[i][k]));
+			//	}			
+			//}
+
+			//for (int k = 0; k < K; k++) {
+			//	V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_V[j][k]);
+			//	V[j][k] = V[j][k] - eta * (2 * lambda * V[j][k]);
+			//}
 
 			////iterates through all the columns of V by an increment of 1
 			//for (int k = 0; k < K; k++) {
@@ -465,7 +505,7 @@ void cf_mini_batch_gradient_descent_finder(int batch_size, std::map<std::pair<in
 					// by adding the product of the difference between the dot product of U and V transposed and the current rating 
 					// and the current element of V 
 					// to the current element of the base gradient for U					
-					cf_mini_batch_gradient_base_U[a][k] = cf_mini_batch_gradient_base_U[a][k] + (rating_difference*V[j][k]);
+					cf_mini_batch_gradient_base_U[a][k] = cf_mini_batch_gradient_base_U[a][k] + (rating_difference * V[j][k]);
 				}
 
 				//performs the base gradient descent for U
@@ -609,7 +649,7 @@ int main() {
 
 //	std::vector<std::vector<std::vector<double>>> updated_U_V;
 
-	
+
 	// read the userids, movieids, and ratings from the file for the main part
 	if (file.is_open()) {
 		std::getline(file, line); // skip the first line
@@ -667,8 +707,8 @@ int main() {
 
 
 	////for debugging
-	
-	
+
+
 	////p2 bonus
 	////Collaborative Filtering Batch Gradient Descent on 0.25 of the Bonus Data
 
@@ -686,12 +726,12 @@ int main() {
 
 	std::cout << "\n" << "\n" << "Bonus" << std::endl;
 
-	
+
 
 	//for debugging
 	//K = 2;
 	//K = 5;
-	
+
 
 	//empties the ratings
 	ratings.clear();
@@ -743,7 +783,7 @@ int main() {
 			double rating = std::stod(token);
 
 			if (toss_coin(0.01)) {
-			//if (toss_coin(twenty_percent)) {
+				//if (toss_coin(twenty_percent)) {
 				if (toss_coin(1 - test_set_size)) {
 					// if the coin toss is true, add the rating to the training set
 					ratings[std::make_pair(user, movie)] = rating;
@@ -1117,7 +1157,7 @@ int main() {
 
 	eta = 5310 * eta_copy;
 	//	//lambda = lambda / 90;
-	lambda = 1/10 * lambda_copy;
+	lambda = 1 / 10 * lambda_copy;
 	n_iterations = 5 * n_iterations_copy;
 
 
@@ -2001,7 +2041,7 @@ int main() {
 //	cf_batch_gradient_descent_finder(n_iterations, test_set, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
 //	std::cout << "4 of 4." << std::endl;
 
-	
+
 	//returns 0 to indicate that the program has ran without errors
 	return 0;
 
