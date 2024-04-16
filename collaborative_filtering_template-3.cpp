@@ -347,7 +347,7 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 
 			for (int k = 0; k < K; k++) {
 				for (int i : movies_users[j]) {
-					cf_batch_gradient_base_V[j][k] = cf_batch_gradient_base_V[j][k] + movies_users_ratings_difference[j] * U[j][k];
+					cf_batch_gradient_base_V[j][k] = cf_batch_gradient_base_V[j][k] + movies_users_ratings_difference[j] * U[i][k];
 				}
 				V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_V[j][k]);
 				V[j][k] = V[j][k] - eta * (2 * lambda * V[j][k]);
