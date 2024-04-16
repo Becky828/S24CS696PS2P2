@@ -100,3 +100,9 @@
 //https://code.visualstudio.com/docs/editor/debugging
 //https://code.visualstudio.com/docs/cpp/config-msvc#_prerequisites
 //https://stackoverflow.com/questions/3702115/creating-a-directory-in-cmake
+//https://stackoverflow.com/questions/26281979/how-do-you-loop-through-a-stdmaps
+//https://stackoverflow.com/questions/10124679/what-happens-if-i-read-a-maps-value-where-the-key-does-not-exist
+//https://www.tutorialspoint.com/cpp_standard_library/cpp_map_at.htm
+//https://stackoverflow.com/questions/561997/determining-exception-type-after-the-exception-is-caught
+//https://learn.microsoft.com/en-us/cpp/cpp/errors-and-exception-handling-modern-cpp?view=msvc-170
+//https://www.geeksforgeeks.org/how-to-skip-over-an-element-in-map/
