@@ -298,27 +298,40 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 				//auto current_user_movie_set = users_movies.at(i);
 				//for (int j : current_user_movie_set) {
 				//double users_movies_ratings_difference = 0;
-				for (int j : users_movies.at(i)) {
+				/*for (int j : users_movies.at(i)) {
 
 				users_movies_ratings_difference[j] = (dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j)));
+				}*/
+
+				//	for (int k = 0; k < K; k++) {
+				//	//U_dot_V_transposed = dot_product(U[i], V[k]);
+				//	/*for (int j : users_movies[i]) {
+				//		cf_batch_gradient_base_U[i][k] = cf_batch_gradient_base_U[i][k] + ((U_dot_V_transposed - ratings.at(std::make_pair(i, j)) * V[j][k]));
+				//	}*/
+
+				//	for (int j : users_movies.at(i)){
+				//	//for (int j : current_user_movie_set) {
+				//		cf_batch_gradient_base_U[i][k] = cf_batch_gradient_base_U[i][k] + (users_movies_ratings_difference[j] *	V[j][k]);
+
+				//		//cf_batch_gradient_base_U[i][k] = cf_batch_gradient_base_U[i][k] + (users_movies_ratings_difference[j] * V[j][k]);
+				//	}
+
+				//	U[i][k] = U[i][k] - eta * (cf_batch_gradient_base_U[i][k]);
+				//	U[i][k] = U[i][k] - eta * (2 * lambda * U[i][k]);
+				//}
+
+
+				for (int j : users_movies.at(i)) {
+					double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
+					for (int k = 0; k < K; k++) {
+						cf_batch_gradient_base_U[i][k] = cf_batch_gradient_base_U[i][k] + (ratings_difference * V[j][k]);
+					}
 				}
 
 				for (int k = 0; k < K; k++) {
-				//U_dot_V_transposed = dot_product(U[i], V[k]);
-				/*for (int j : users_movies[i]) {
-					cf_batch_gradient_base_U[i][k] = cf_batch_gradient_base_U[i][k] + ((U_dot_V_transposed - ratings.at(std::make_pair(i, j)) * V[j][k]));
-				}*/
-
-				for (int j : users_movies.at(i)){
-				//for (int j : current_user_movie_set) {
-					cf_batch_gradient_base_U[i][k] = cf_batch_gradient_base_U[i][k] + (users_movies_ratings_difference[j] *	V[j][k]);
-
-					//cf_batch_gradient_base_U[i][k] = cf_batch_gradient_base_U[i][k] + (users_movies_ratings_difference[j] * V[j][k]);
+					U[i][k] = U[i][k] - eta * (cf_batch_gradient_base_U[i][k]);
+					U[i][k] = U[i][k] - eta * (2 * lambda * U[i][k]);
 				}
-
-				U[i][k] = U[i][k] - eta * (cf_batch_gradient_base_U[i][k]);
-				U[i][k] = U[i][k] - eta * (2 * lambda * U[i][k]);
-			}
 
 			}
 			/*if (e == nullptr) {
@@ -437,28 +450,39 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 			{
 				found = false;
 			}
-			
+
 			if (found) {
 				//auto current_movie_user_set = movies_users.at(j);
+				//for (int i : movies_users.at(j)) {
+				//	movies_users_ratings_difference[i] = (dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j)));
+				//}
+
+				////double ratings_difference = 
+
+				//for (int k = 0; k < K; k++) {
+				//	for (int i : movies_users.at(j)) {
+
+				//		//for (int i : current_movie_user_set) {
+				//			//cf_batch_gradient_base_V[j][k] = cf_batch_gradient_base_V[j][k] + ( (dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j) )	* U[i][k]) );
+				//		//}
+				//		//for (int i : movies_users[j]) {
+				//		cf_batch_gradient_base_V[j][k] = cf_batch_gradient_base_V[j][k] + movies_users_ratings_difference[j] * U[i][k];
+				//		//}
+				//	}
+				//	V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_V[j][k]);
+				//	V[j][k] = V[j][k] - eta * (2 * lambda * V[j][k]);
+				//	
+				//}
+
 				for (int i : movies_users.at(j)) {
-					movies_users_ratings_difference[i] = (dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j)));
-				}
-
-				//double ratings_difference = 
-
-				for (int k = 0; k < K; k++) {
-					for (int i : movies_users.at(j)) {
-
-						//for (int i : current_movie_user_set) {
-							//cf_batch_gradient_base_V[j][k] = cf_batch_gradient_base_V[j][k] + ( (dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j) )	* U[i][k]) );
-						//}
-						//for (int i : movies_users[j]) {
-						cf_batch_gradient_base_V[j][k] = cf_batch_gradient_base_V[j][k] + movies_users_ratings_difference[j] * U[i][k];
-						//}
+					double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
+					for (int k = 0; k < K; k++) {
+						cf_batch_gradient_base_V[j][k] = cf_batch_gradient_base_V[j][k] + (ratings_difference * U[i][k]);
 					}
+				}
+				for (int k = 0; k < K; k++) {
 					V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_V[j][k]);
 					V[j][k] = V[j][k] - eta * (2 * lambda * V[j][k]);
-					
 				}
 			}
 
