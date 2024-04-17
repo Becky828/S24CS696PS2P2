@@ -446,6 +446,7 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 					}*/
 					V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_V[j][k]);
 					V[j][k] = V[j][k] - eta * (2 * lambda * V[j][k]);
+					
 				}
 			}
 
