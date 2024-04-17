@@ -261,7 +261,7 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 
 			//initializes the base gradient for U. This ensures that the base gradient for U is set to 0 for each user
 			std::vector<std::vector<double>>cf_batch_gradient_base_U(m, std::vector<double>(K, 0));
-			//std::map<int, double> users_movies_ratings_difference;
+			std::map<int, double> users_movies_ratings_difference;
 
 
 			//auto current_user_movie_set = users_movies[i];
@@ -297,9 +297,11 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 			if (found) {
 				//auto current_user_movie_set = users_movies.at(i);
 				//for (int j : current_user_movie_set) {
-				//for (int j : users_movies.at(i)) {
-				//users_movies_ratings_difference[j] = (dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j)));
-				//}
+				//double users_movies_ratings_difference = 0;
+				for (int j : users_movies.at(i)) {
+
+				users_movies_ratings_difference[j] = (dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j)));
+				}
 
 				for (int k = 0; k < K; k++) {
 				//U_dot_V_transposed = dot_product(U[i], V[k]);
@@ -309,7 +311,7 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 
 				for (int j : users_movies.at(i)){
 				//for (int j : current_user_movie_set) {
-					cf_batch_gradient_base_U[i][k] = cf_batch_gradient_base_U[i][k] + ( (dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j)) *	V[j][k]) );
+					cf_batch_gradient_base_U[i][k] = cf_batch_gradient_base_U[i][k] + (users_movies_ratings_difference[j] *	V[j][k]);
 
 					//cf_batch_gradient_base_U[i][k] = cf_batch_gradient_base_U[i][k] + (users_movies_ratings_difference[j] * V[j][k]);
 				}
@@ -420,7 +422,7 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 
 			//initializes the base gradient for U. This ensures that the base gradient for U is set to 0 for each movie
 			std::vector<std::vector<double>> cf_batch_gradient_base_V(n, std::vector<double>(K, 0));
-			//std::map<int, double> movies_users_ratings_difference;
+			std::map<int, double> movies_users_ratings_difference;
 			bool found = true;
 
 			//auto current_movie_user_set = movies_users[j];
@@ -438,18 +440,22 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 			
 			if (found) {
 				//auto current_movie_user_set = movies_users.at(j);
-				/*for (int i : current_movie_user_set) {
+				for (int i : movies_users.at(j)) {
 					movies_users_ratings_difference[i] = (dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j)));
-				}*/
+				}
+
+				//double ratings_difference = 
+
 				for (int k = 0; k < K; k++) {
 					for (int i : movies_users.at(j)) {
 
-					//for (int i : current_movie_user_set) {
-						cf_batch_gradient_base_V[j][k] = cf_batch_gradient_base_V[j][k] + ( (dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j) )	* U[i][k]) );
-					}
-					/*for (int i : movies_users[j]) {
+						//for (int i : current_movie_user_set) {
+							//cf_batch_gradient_base_V[j][k] = cf_batch_gradient_base_V[j][k] + ( (dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j) )	* U[i][k]) );
+						//}
+						//for (int i : movies_users[j]) {
 						cf_batch_gradient_base_V[j][k] = cf_batch_gradient_base_V[j][k] + movies_users_ratings_difference[j] * U[i][k];
-					}*/
+						//}
+					}
 					V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_V[j][k]);
 					V[j][k] = V[j][k] - eta * (2 * lambda * V[j][k]);
 					
