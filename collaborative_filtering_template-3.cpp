@@ -261,7 +261,7 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 
 			//initializes the base gradient for U. This ensures that the base gradient for U is set to 0 for each user
 			std::vector<std::vector<double>>cf_batch_gradient_base_U(m, std::vector<double>(K, 0));
-			std::map<int, double> users_movies_ratings_difference;
+			//sstd::map<int, double> users_movies_ratings_difference;
 
 
 			//auto current_user_movie_set = users_movies[i];
@@ -435,7 +435,7 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 
 			//initializes the base gradient for U. This ensures that the base gradient for U is set to 0 for each movie
 			std::vector<std::vector<double>> cf_batch_gradient_base_V(n, std::vector<double>(K, 0));
-			std::map<int, double> movies_users_ratings_difference;
+			//std::map<int, double> movies_users_ratings_difference;
 			bool found = true;
 
 			//auto current_movie_user_set = movies_users[j];
