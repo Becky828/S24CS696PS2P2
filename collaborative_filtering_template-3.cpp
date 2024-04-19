@@ -260,7 +260,9 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 			//double current_user_movie_sum = 0;
 
 			//initializes the base gradient for U. This ensures that the base gradient for U is set to 0 for each user
-			std::vector<std::vector<double>>cf_batch_gradient_base_U(m, std::vector<double>(K, 0));
+			//std::vector<std::vector<double>>cf_batch_gradient_base_U(m, std::vector<double>(K, 0));
+			std::vector<std::vector<double>>cf_batch_gradient_base_and_norm_U(m, std::vector<double>(K, 0));
+
 			//sstd::map<int, double> users_movies_ratings_difference;
 
 
@@ -324,13 +326,22 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 				for (int j : users_movies.at(i)) {
 					double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
 					for (int k = 0; k < K; k++) {
-						cf_batch_gradient_base_U[i][k] = cf_batch_gradient_base_U[i][k] + (ratings_difference * V[j][k]);
+						//cf_batch_gradient_base_U[i][k] = cf_batch_gradient_base_U[i][k] + (ratings_difference * V[j][k]);
+
+						//finds the full gradient for U by adding the product of the difference between the dot product of U and V transposed and the current rating
+						//and the partial derivative of the norm of the current element of U
+						cf_batch_gradient_base_and_norm_U[i][k] = cf_batch_gradient_base_and_norm_U[i][k]
+							+
+							((ratings_difference * V[j][k]) + (2 * lambda * U[i][k]));
+
 					}
 				}
 
 				for (int k = 0; k < K; k++) {
-					U[i][k] = U[i][k] - eta * (cf_batch_gradient_base_U[i][k]);
-					U[i][k] = U[i][k] - eta * (2 * lambda * U[i][k]);
+
+					//performs the full gradient descent for U
+					U[i][k] = U[i][k] - eta * (cf_batch_gradient_base_and_norm_U[i][k]);
+					//U[i][k] = U[i][k] - eta * (2 * lambda * U[i][k]);
 				}
 
 			}
@@ -434,7 +445,9 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 			//double current_movie_user_sum = 0;
 
 			//initializes the base gradient for U. This ensures that the base gradient for U is set to 0 for each movie
-			std::vector<std::vector<double>> cf_batch_gradient_base_V(n, std::vector<double>(K, 0));
+			//std::vector<std::vector<double>> cf_batch_gradient_base_V(n, std::vector<double>(K, 0));
+			std::vector<std::vector<double>> cf_batch_gradient_base_and_norm_V(n, std::vector<double>(K, 0));
+
 			//std::map<int, double> movies_users_ratings_difference;
 			bool found = true;
 
@@ -477,12 +490,16 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 				for (int i : movies_users.at(j)) {
 					double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
 					for (int k = 0; k < K; k++) {
-						cf_batch_gradient_base_V[j][k] = cf_batch_gradient_base_V[j][k] + (ratings_difference * U[i][k]);
+						cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
+							+ 
+							((ratings_difference * U[i][k]) + (2 * lambda * V[j][k]));
 					}
 				}
 				for (int k = 0; k < K; k++) {
-					V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_V[j][k]);
-					V[j][k] = V[j][k] - eta * (2 * lambda * V[j][k]);
+
+					//performs the full gradient descent for V
+					V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
+					//V[j][k] = V[j][k] - eta * (2 * lambda * V[j][k]);
 				}
 			}
 
