@@ -343,7 +343,7 @@ void cf_mini_batch_gradient_descent_finder(int batch_size, std::map<std::pair<in
 			//iterates through all the columns of U by an increment of 1
 			//for (int k = 0; k < K; k++) {
 
-				//performs the summation of the base gradient for a subset of samples relating to U
+			//performs the summation of the base gradient for a subset of samples relating to U
 			for (auto it : ratings_batch) {
 
 				//stores i and j
@@ -355,7 +355,6 @@ void cf_mini_batch_gradient_descent_finder(int batch_size, std::map<std::pair<in
 
 				//iterates through the columns of U by an increment of 1
 				for (int k = 0; k < K; k++) {
-
 
 					// updates the base gradient for U 
 					// by adding the product of the difference between the dot product of U and V transposed and the current rating 
@@ -555,9 +554,34 @@ int main() {
 	std::vector<std::vector<double>> copy_U(m, std::vector<double>(K, 0));
 	std::vector<std::vector<double>> copy_V(n, std::vector<double>(K, 0));
 
+	n_iterations = 4 * n_iterations_copy;
+
+	eta = eta_10_times_up;
+
+	lambda = lambda_10_times_up;
 
 
 	////for debugging
+	
+	// initialize U and V with random values
+	for (int i : users) {
+		for (int k = 0; k < K; k++) {
+			U[i][k] = generate_uniform_random_number();
+		}
+	}
+
+	for (int j : movies) {
+		for (int k = 0; k < K; k++) {
+			V[j][k] = generate_uniform_random_number();
+		}
+	}
+
+	//initialize the copy of U and V
+	copy_U = U;
+	copy_V = V;
+
+	cf_batch_gradient_descent_finder(n_iterations, test_set, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
+
 
 
 	////p2 bonus
@@ -565,8 +589,8 @@ int main() {
 
 	m = 7000; // upper bound for number of users
 	//n = 300000; // upper bound number of movies
-	n = 280000; // upper bound number of movies
-
+	//n = 280000; // upper bound number of movies
+	n = 285000; // upper bound number of movies
 	//reinitializes the U and V for the bonus
 	U.assign(m, std::vector<double>(K, 0));
 	V.assign(n, std::vector<double>(K, 0));
