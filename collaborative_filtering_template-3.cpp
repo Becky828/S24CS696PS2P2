@@ -411,7 +411,7 @@ void cf_mini_batch_gradient_descent_finder(int batch_size, std::map<std::pair<in
 
 					for (int k = 0; k < K; k++) {
 
-						//performs the base gradient descent for V
+						//performs the base gradient descent for V 
 						//the base gradient for V is divided by the batch size to find the average base gradient for V
 						V[a][k] = V[a][k] - eta * (cf_mini_batch_gradient_base_and_norm_V[a][k] / batch_size);
 					}
