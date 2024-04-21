@@ -106,3 +106,10 @@
 //https://stackoverflow.com/questions/561997/determining-exception-type-after-the-exception-is-caught
 //https://learn.microsoft.com/en-us/cpp/cpp/errors-and-exception-handling-modern-cpp?view=msvc-170
 //https://www.geeksforgeeks.org/how-to-skip-over-an-element-in-map/
+//https://study.com/academy/lesson/what-is-a-finite-series.html#:~:text=The%20formula%20of%20a%20finite%20series%20is,written%20after%20the%20summation%20symbol.
+//https://en.wikipedia.org/wiki/Matrix_splitting
+//https://stackoverflow.com/questions/3318333/split-a-vector-into-chunks
+//https://stackoverflow.com/questions/9811235/best-way-to-split-a-vector-into-two-smaller-arrays
+//https://www.w3schools.com/cpp/cpp_break.asp
+//https://stackoverflow.com/questions/315306/is-if-expensive
+//https://www.reddit.com/r/computerscience/comments/ph8cmg/does_the_number_of_checks_in_an_if_statement/

@@ -260,28 +260,969 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 
 			//is entered only if the movie has at least one user
 			if (found) {
-				
-				//iterates through all users in the movie's user set by an increment of 1
-				for (int i : movies_users.at(j)) {
-					double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
-					for (int k = 0; k < K; k++) {
-						cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
-							+ 
-							((ratings_difference * U[i][k]) + (2 * lambda * V[j][k]));
+
+				if ((j >=  0) && (j > 6999)) {
+					//iterates through all users in the movie's user set by an increment of 1
+					for (int i : movies_users.at(j)) {
+						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
+						for (int k = 0; k < K; k++) {
+							cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
+								+
+								((ratings_difference * U[i][k]) + (2 * lambda * V[j][k]));
+						}
 					}
+
+					//iterates through all the columns of V by an increment of 1
+					for (int k = 0; k < K; k++) {
+
+						// updates the full gradient for V
+						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+						// and the current element of U 
+						// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
+						// to the current element of the full gradient for V	
+						V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
+					}
+					continue;
 				}
 
-				//iterates through all the columns of V by an increment of 1
-				for (int k = 0; k < K; k++) {
 
-					// updates the full gradient for V
-					// by adding the product of the difference between the dot product of U and V transposed and the current rating 
-					// and the current element of U 
-					// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
-					// to the current element of the full gradient for V	
-					V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
+				if ((j >= 7000) && (j < 13999)) {
+					//iterates through all users in the movie's user set by an increment of 1
+					for (int i : movies_users.at(j)) {
+						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
+						for (int k = 0; k < K; k++) {
+							cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
+								+
+								((ratings_difference * U[i][k]) + (2 * lambda * V[j][k]));
+						}
+					}
+
+					//iterates through all the columns of V by an increment of 1
+					for (int k = 0; k < K; k++) {
+
+						// updates the full gradient for V
+						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+						// and the current element of U 
+						// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
+						// to the current element of the full gradient for V	
+						V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
+					}
+					continue;
 				}
-			}			
+
+				if ((j >= 14000) && (j < 20999)) {
+					//iterates through all users in the movie's user set by an increment of 1
+					for (int i : movies_users.at(j)) {
+						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
+						for (int k = 0; k < K; k++) {
+							cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
+								+
+								((ratings_difference * U[i][k]) + (2 * lambda * V[j][k]));
+						}
+					}
+
+					//iterates through all the columns of V by an increment of 1
+					for (int k = 0; k < K; k++) {
+
+						// updates the full gradient for V
+						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+						// and the current element of U 
+						// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
+						// to the current element of the full gradient for V	
+						V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
+					}
+					continue;
+				}	
+
+				if ((j >= 21000) && (j < 27999)) {
+					//iterates through all users in the movie's user set by an increment of 1
+					for (int i : movies_users.at(j)) {
+						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
+						for (int k = 0; k < K; k++) {
+							cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
+								+
+								((ratings_difference * U[i][k]) + (2 * lambda * V[j][k]));
+						}
+					}
+
+					//iterates through all the columns of V by an increment of 1
+					for (int k = 0; k < K; k++) {
+
+						// updates the full gradient for V
+						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+						// and the current element of U 
+						// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
+						// to the current element of the full gradient for V	
+						V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
+					}
+					continue;
+				}
+
+				if ((j >= 28000) && (j < 34999)) {
+					//iterates through all users in the movie's user set by an increment of 1
+					for (int i : movies_users.at(j)) {
+						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
+						for (int k = 0; k < K; k++) {
+							cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
+								+
+								((ratings_difference * U[i][k]) + (2 * lambda * V[j][k]));
+						}
+					}
+
+					//iterates through all the columns of V by an increment of 1
+					for (int k = 0; k < K; k++) {
+
+						// updates the full gradient for V
+						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+						// and the current element of U 
+						// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
+						// to the current element of the full gradient for V	
+						V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
+					}
+					continue;
+				}
+
+				if ((j >= 35000) && (j < 41999)) {
+					//iterates through all users in the movie's user set by an increment of 1
+					for (int i : movies_users.at(j)) {
+						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
+						for (int k = 0; k < K; k++) {
+							cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
+								+
+								((ratings_difference * U[i][k]) + (2 * lambda * V[j][k]));
+						}
+					}
+
+					//iterates through all the columns of V by an increment of 1
+					for (int k = 0; k < K; k++) {
+
+						// updates the full gradient for V
+						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+						// and the current element of U 
+						// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
+						// to the current element of the full gradient for V	
+						V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
+					}
+					continue;
+				}
+
+				if ((j >= 42000) && (j < 48999)) {
+					//iterates through all users in the movie's user set by an increment of 1
+					for (int i : movies_users.at(j)) {
+						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
+						for (int k = 0; k < K; k++) {
+							cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
+								+
+								((ratings_difference * U[i][k]) + (2 * lambda * V[j][k]));
+						}
+					}
+
+					//iterates through all the columns of V by an increment of 1
+					for (int k = 0; k < K; k++) {
+
+						// updates the full gradient for V
+						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+						// and the current element of U 
+						// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
+						// to the current element of the full gradient for V	
+						V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
+					}
+					continue;
+				}	
+
+				if ((j >= 49000) && (j < 55999)) {
+					//iterates through all users in the movie's user set by an increment of 1
+					for (int i : movies_users.at(j)) {
+						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
+						for (int k = 0; k < K; k++) {
+							cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
+								+
+								((ratings_difference * U[i][k]) + (2 * lambda * V[j][k]));
+						}
+					}
+
+					//iterates through all the columns of V by an increment of 1
+					for (int k = 0; k < K; k++) {
+
+						// updates the full gradient for V
+						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+						// and the current element of U 
+						// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
+						// to the current element of the full gradient for V	
+						V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
+					}
+					continue;
+				}
+
+				if ((j >= 56000) && (j < 62999)) {
+					//iterates through all users in the movie's user set by an increment of 1
+					for (int i : movies_users.at(j)) {
+						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
+						for (int k = 0; k < K; k++) {
+							cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
+								+
+								((ratings_difference * U[i][k]) + (2 * lambda * V[j][k]));
+						}
+					}
+
+					//iterates through all the columns of V by an increment of 1
+					for (int k = 0; k < K; k++) {
+
+						// updates the full gradient for V
+						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+						// and the current element of U 
+						// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
+						// to the current element of the full gradient for V	
+						V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
+					}
+					continue;
+				}
+
+				if ((j >= 63000) && (j < 69999)) {
+					//iterates through all users in the movie's user set by an increment of 1
+					for (int i : movies_users.at(j)) {
+						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
+						for (int k = 0; k < K; k++) {
+							cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
+								+
+								((ratings_difference * U[i][k]) + (2 * lambda * V[j][k]));
+						}
+					}
+
+					//iterates through all the columns of V by an increment of 1
+					for (int k = 0; k < K; k++) {
+
+						// updates the full gradient for V
+						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+						// and the current element of U 
+						// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
+						// to the current element of the full gradient for V	
+						V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
+					}
+					continue;
+				}
+
+				if ((j >= 70000) && (j < 76999)) {
+					//iterates through all users in the movie's user set by an increment of 1
+					for (int i : movies_users.at(j)) {
+						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
+						for (int k = 0; k < K; k++) {
+							cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
+								+
+								((ratings_difference * U[i][k]) + (2 * lambda * V[j][k]));
+						}
+					}
+
+					//iterates through all the columns of V by an increment of 1
+					for (int k = 0; k < K; k++) {
+
+						// updates the full gradient for V
+						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+						// and the current element of U 
+						// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
+						// to the current element of the full gradient for V	
+						V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
+					}
+					continue;
+				}
+
+				if ((j >= 77000) && (j < 83999)) {
+					//iterates through all users in the movie's user set by an increment of 1
+					for (int i : movies_users.at(j)) {
+						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
+						for (int k = 0; k < K; k++) {
+							cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
+								+
+								((ratings_difference * U[i][k]) + (2 * lambda * V[j][k]));
+						}
+					}
+
+					//iterates through all the columns of V by an increment of 1
+					for (int k = 0; k < K; k++) {
+
+						// updates the full gradient for V
+						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+						// and the current element of U 
+						// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
+						// to the current element of the full gradient for V	
+						V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
+					}
+					continue;
+				}
+
+				if ((j >= 84000) && (j < 90999)) {
+					//iterates through all users in the movie's user set by an increment of 1
+					for (int i : movies_users.at(j)) {
+						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
+						for (int k = 0; k < K; k++) {
+							cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
+								+
+								((ratings_difference * U[i][k]) + (2 * lambda * V[j][k]));
+						}
+					}
+
+					//iterates through all the columns of V by an increment of 1
+					for (int k = 0; k < K; k++) {
+
+						// updates the full gradient for V
+						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+						// and the current element of U 
+						// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
+						// to the current element of the full gradient for V	
+						V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
+					}
+					continue;
+				}
+
+				if ((j >= 91000) && (j < 97999)) {
+					//iterates through all users in the movie's user set by an increment of 1
+					for (int i : movies_users.at(j)) {
+						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
+						for (int k = 0; k < K; k++) {
+							cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
+								+
+								((ratings_difference * U[i][k]) + (2 * lambda * V[j][k]));
+						}
+					}
+
+					//iterates through all the columns of V by an increment of 1
+					for (int k = 0; k < K; k++) {
+
+						// updates the full gradient for V
+						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+						// and the current element of U 
+						// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
+						// to the current element of the full gradient for V	
+						V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
+					}
+					continue;
+				}
+
+				if ((j >= 98000) && (j < 104999)) {
+					//iterates through all users in the movie's user set by an increment of 1
+					for (int i : movies_users.at(j)) {
+						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
+						for (int k = 0; k < K; k++) {
+							cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
+								+
+								((ratings_difference * U[i][k]) + (2 * lambda * V[j][k]));
+						}
+					}
+
+					//iterates through all the columns of V by an increment of 1
+					for (int k = 0; k < K; k++) {
+
+						// updates the full gradient for V
+						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+						// and the current element of U 
+						// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
+						// to the current element of the full gradient for V	
+						V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
+					}
+					continue;
+				}
+
+
+				if ((j >= 105000) && (j < 111999)) {
+					//iterates through all users in the movie's user set by an increment of 1
+					for (int i : movies_users.at(j)) {
+						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
+						for (int k = 0; k < K; k++) {
+							cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
+								+
+								((ratings_difference * U[i][k]) + (2 * lambda * V[j][k]));
+						}
+					}
+
+					//iterates through all the columns of V by an increment of 1
+					for (int k = 0; k < K; k++) {
+
+						// updates the full gradient for V
+						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+						// and the current element of U 
+						// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
+						// to the current element of the full gradient for V	
+						V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
+					}
+					continue;
+				}
+
+				if ((j >= 112000) && (j < 118999)) {
+					//iterates through all users in the movie's user set by an increment of 1
+					for (int i : movies_users.at(j)) {
+						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
+						for (int k = 0; k < K; k++) {
+							cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
+								+
+								((ratings_difference * U[i][k]) + (2 * lambda * V[j][k]));
+						}
+					}
+
+					//iterates through all the columns of V by an increment of 1
+					for (int k = 0; k < K; k++) {
+
+						// updates the full gradient for V
+						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+						// and the current element of U 
+						// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
+						// to the current element of the full gradient for V	
+						V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
+					}
+					continue;
+				}
+
+				if ((j >= 119000) && (j < 125999)) {
+					//iterates through all users in the movie's user set by an increment of 1
+					for (int i : movies_users.at(j)) {
+						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
+						for (int k = 0; k < K; k++) {
+							cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
+								+
+								((ratings_difference * U[i][k]) + (2 * lambda * V[j][k]));
+						}
+					}
+
+					//iterates through all the columns of V by an increment of 1
+					for (int k = 0; k < K; k++) {
+
+						// updates the full gradient for V
+						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+						// and the current element of U 
+						// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
+						// to the current element of the full gradient for V	
+						V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
+					}
+					continue;
+				}
+
+				if ((j >= 126000) && (j < 132999)) {
+					//iterates through all users in the movie's user set by an increment of 1
+					for (int i : movies_users.at(j)) {
+						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
+						for (int k = 0; k < K; k++) {
+							cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
+								+
+								((ratings_difference * U[i][k]) + (2 * lambda * V[j][k]));
+						}
+					}
+
+					//iterates through all the columns of V by an increment of 1
+					for (int k = 0; k < K; k++) {
+
+						// updates the full gradient for V
+						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+						// and the current element of U 
+						// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
+						// to the current element of the full gradient for V	
+						V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
+					}
+					continue;
+				}
+				
+				if ((j >= 133000) && (j < 139999)) {
+					//iterates through all users in the movie's user set by an increment of 1
+					for (int i : movies_users.at(j)) {
+						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
+						for (int k = 0; k < K; k++) {
+							cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
+								+
+								((ratings_difference * U[i][k]) + (2 * lambda * V[j][k]));
+						}
+					}
+
+					//iterates through all the columns of V by an increment of 1
+					for (int k = 0; k < K; k++) {
+
+						// updates the full gradient for V
+						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+						// and the current element of U 
+						// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
+						// to the current element of the full gradient for V	
+						V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
+					}
+					continue;
+				}
+
+				if ((j >= 140000) && (j < 146999)) {
+					//iterates through all users in the movie's user set by an increment of 1
+					for (int i : movies_users.at(j)) {
+						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
+						for (int k = 0; k < K; k++) {
+							cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
+								+
+								((ratings_difference * U[i][k]) + (2 * lambda * V[j][k]));
+						}
+					}
+
+					//iterates through all the columns of V by an increment of 1
+					for (int k = 0; k < K; k++) {
+
+						// updates the full gradient for V
+						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+						// and the current element of U 
+						// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
+						// to the current element of the full gradient for V	
+						V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
+					}
+					continue;
+				}
+
+				if ((j >= 147000) && (j < 153999)) {
+					//iterates through all users in the movie's user set by an increment of 1
+					for (int i : movies_users.at(j)) {
+						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
+						for (int k = 0; k < K; k++) {
+							cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
+								+
+								((ratings_difference * U[i][k]) + (2 * lambda * V[j][k]));
+						}
+					}
+
+					//iterates through all the columns of V by an increment of 1
+					for (int k = 0; k < K; k++) {
+
+						// updates the full gradient for V
+						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+						// and the current element of U 
+						// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
+						// to the current element of the full gradient for V	
+						V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
+					}
+					continue;
+				}
+
+				if ((j >= 154000) && (j < 160999)) {
+					//iterates through all users in the movie's user set by an increment of 1
+					for (int i : movies_users.at(j)) {
+						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
+						for (int k = 0; k < K; k++) {
+							cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
+								+
+								((ratings_difference * U[i][k]) + (2 * lambda * V[j][k]));
+						}
+					}
+
+					//iterates through all the columns of V by an increment of 1
+					for (int k = 0; k < K; k++) {
+
+						// updates the full gradient for V
+						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+						// and the current element of U 
+						// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
+						// to the current element of the full gradient for V	
+						V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
+					}
+					continue;
+				}
+
+				if ((j >= 161000) && (j < 167999)) {
+					//iterates through all users in the movie's user set by an increment of 1
+					for (int i : movies_users.at(j)) {
+						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
+						for (int k = 0; k < K; k++) {
+							cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
+								+
+								((ratings_difference * U[i][k]) + (2 * lambda * V[j][k]));
+						}
+					}
+
+					//iterates through all the columns of V by an increment of 1
+					for (int k = 0; k < K; k++) {
+
+						// updates the full gradient for V
+						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+						// and the current element of U 
+						// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
+						// to the current element of the full gradient for V	
+						V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
+					}
+					continue;
+				}
+
+				if ((j >= 168000) && (j < 174999)) {
+					//iterates through all users in the movie's user set by an increment of 1
+					for (int i : movies_users.at(j)) {
+						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
+						for (int k = 0; k < K; k++) {
+							cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
+								+
+								((ratings_difference * U[i][k]) + (2 * lambda * V[j][k]));
+						}
+					}
+
+					//iterates through all the columns of V by an increment of 1
+					for (int k = 0; k < K; k++) {
+
+						// updates the full gradient for V
+						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+						// and the current element of U 
+						// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
+						// to the current element of the full gradient for V	
+						V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
+					}
+					continue;
+				}
+
+				if ((j >= 175000) && (j < 181999)) {
+					//iterates through all users in the movie's user set by an increment of 1
+					for (int i : movies_users.at(j)) {
+						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
+						for (int k = 0; k < K; k++) {
+							cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
+								+
+								((ratings_difference * U[i][k]) + (2 * lambda * V[j][k]));
+						}
+					}
+
+					//iterates through all the columns of V by an increment of 1
+					for (int k = 0; k < K; k++) {
+
+						// updates the full gradient for V
+						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+						// and the current element of U 
+						// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
+						// to the current element of the full gradient for V	
+						V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
+					}
+					continue;
+				}
+
+				if ((j >= 182000) && (j < 188999)) {
+					//iterates through all users in the movie's user set by an increment of 1
+					for (int i : movies_users.at(j)) {
+						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
+						for (int k = 0; k < K; k++) {
+							cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
+								+
+								((ratings_difference * U[i][k]) + (2 * lambda * V[j][k]));
+						}
+					}
+
+					//iterates through all the columns of V by an increment of 1
+					for (int k = 0; k < K; k++) {
+
+						// updates the full gradient for V
+						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+						// and the current element of U 
+						// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
+						// to the current element of the full gradient for V	
+						V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
+					}
+					continue;
+				}
+
+				if ((j >= 189000) && (j < 195999)) {
+					//iterates through all users in the movie's user set by an increment of 1
+					for (int i : movies_users.at(j)) {
+						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
+						for (int k = 0; k < K; k++) {
+							cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
+								+
+								((ratings_difference * U[i][k]) + (2 * lambda * V[j][k]));
+						}
+					}
+
+					//iterates through all the columns of V by an increment of 1
+					for (int k = 0; k < K; k++) {
+
+						// updates the full gradient for V
+						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+						// and the current element of U 
+						// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
+						// to the current element of the full gradient for V	
+						V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
+					}
+					continue;
+				}
+
+				if ((j >= 196000) && (j < 202999)) {
+					//iterates through all users in the movie's user set by an increment of 1
+					for (int i : movies_users.at(j)) {
+						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
+						for (int k = 0; k < K; k++) {
+							cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
+								+
+								((ratings_difference * U[i][k]) + (2 * lambda * V[j][k]));
+						}
+					}
+
+					//iterates through all the columns of V by an increment of 1
+					for (int k = 0; k < K; k++) {
+
+						// updates the full gradient for V
+						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+						// and the current element of U 
+						// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
+						// to the current element of the full gradient for V	
+						V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
+					}
+					continue;
+				}
+
+				if ((j >= 203000) && (j < 209999)) {
+					//iterates through all users in the movie's user set by an increment of 1
+					for (int i : movies_users.at(j)) {
+						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
+						for (int k = 0; k < K; k++) {
+							cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
+								+
+								((ratings_difference * U[i][k]) + (2 * lambda * V[j][k]));
+						}
+					}
+
+					//iterates through all the columns of V by an increment of 1
+					for (int k = 0; k < K; k++) {
+
+						// updates the full gradient for V
+						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+						// and the current element of U 
+						// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
+						// to the current element of the full gradient for V	
+						V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
+					}
+					continue;
+				}
+
+				if ((j >= 210000) && (j < 216999)) {
+					//iterates through all users in the movie's user set by an increment of 1
+					for (int i : movies_users.at(j)) {
+						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
+						for (int k = 0; k < K; k++) {
+							cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
+								+
+								((ratings_difference * U[i][k]) + (2 * lambda * V[j][k]));
+						}
+					}
+
+					//iterates through all the columns of V by an increment of 1
+					for (int k = 0; k < K; k++) {
+
+						// updates the full gradient for V
+						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+						// and the current element of U 
+						// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
+						// to the current element of the full gradient for V	
+						V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
+					}
+					continue;
+				}
+
+				if ((j >= 217000) && (j < 223999)) {
+					//iterates through all users in the movie's user set by an increment of 1
+					for (int i : movies_users.at(j)) {
+						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
+						for (int k = 0; k < K; k++) {
+							cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
+								+
+								((ratings_difference * U[i][k]) + (2 * lambda * V[j][k]));
+						}
+					}
+
+					//iterates through all the columns of V by an increment of 1
+					for (int k = 0; k < K; k++) {
+
+						// updates the full gradient for V
+						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+						// and the current element of U 
+						// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
+						// to the current element of the full gradient for V	
+						V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
+					}
+					continue;
+				}
+
+				if ((j >= 224000) && (j < 230999)) {
+					//iterates through all users in the movie's user set by an increment of 1
+					for (int i : movies_users.at(j)) {
+						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
+						for (int k = 0; k < K; k++) {
+							cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
+								+
+								((ratings_difference * U[i][k]) + (2 * lambda * V[j][k]));
+						}
+					}
+
+					//iterates through all the columns of V by an increment of 1
+					for (int k = 0; k < K; k++) {
+
+						// updates the full gradient for V
+						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+						// and the current element of U 
+						// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
+						// to the current element of the full gradient for V	
+						V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
+					}
+					continue;
+				}
+
+				if ((j >= 231000) && (j < 237999)) {
+					//iterates through all users in the movie's user set by an increment of 1
+					for (int i : movies_users.at(j)) {
+						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
+						for (int k = 0; k < K; k++) {
+							cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
+								+
+								((ratings_difference * U[i][k]) + (2 * lambda * V[j][k]));
+						}
+					}
+
+					//iterates through all the columns of V by an increment of 1
+					for (int k = 0; k < K; k++) {
+
+						// updates the full gradient for V
+						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+						// and the current element of U 
+						// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
+						// to the current element of the full gradient for V	
+						V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
+					}
+					continue;
+				}
+
+				if ((j >= 238000) && (j < 244999)) {
+					//iterates through all users in the movie's user set by an increment of 1
+					for (int i : movies_users.at(j)) {
+						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
+						for (int k = 0; k < K; k++) {
+							cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
+								+
+								((ratings_difference * U[i][k]) + (2 * lambda * V[j][k]));
+						}
+					}
+
+					//iterates through all the columns of V by an increment of 1
+					for (int k = 0; k < K; k++) {
+
+						// updates the full gradient for V
+						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+						// and the current element of U 
+						// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
+						// to the current element of the full gradient for V	
+						V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
+					}
+					continue;
+				}
+
+				if ((j >= 245000) && (j < 251999)) {
+					//iterates through all users in the movie's user set by an increment of 1
+					for (int i : movies_users.at(j)) {
+						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
+						for (int k = 0; k < K; k++) {
+							cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
+								+
+								((ratings_difference * U[i][k]) + (2 * lambda * V[j][k]));
+						}
+					}
+
+					//iterates through all the columns of V by an increment of 1
+					for (int k = 0; k < K; k++) {
+
+						// updates the full gradient for V
+						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+						// and the current element of U 
+						// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
+						// to the current element of the full gradient for V	
+						V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
+					}
+					continue;
+				}
+
+				if ((j >= 252000) && (j < 258999)) {
+					//iterates through all users in the movie's user set by an increment of 1
+					for (int i : movies_users.at(j)) {
+						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
+						for (int k = 0; k < K; k++) {
+							cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
+								+
+								((ratings_difference * U[i][k]) + (2 * lambda * V[j][k]));
+						}
+					}
+
+					//iterates through all the columns of V by an increment of 1
+					for (int k = 0; k < K; k++) {
+
+						// updates the full gradient for V
+						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+						// and the current element of U 
+						// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
+						// to the current element of the full gradient for V	
+						V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
+					}
+					continue;
+				}
+
+				if ((j >= 259000) && (j < 265999)) {
+					//iterates through all users in the movie's user set by an increment of 1
+					for (int i : movies_users.at(j)) {
+						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
+						for (int k = 0; k < K; k++) {
+							cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
+								+
+								((ratings_difference * U[i][k]) + (2 * lambda * V[j][k]));
+						}
+					}
+
+					//iterates through all the columns of V by an increment of 1
+					for (int k = 0; k < K; k++) {
+
+						// updates the full gradient for V
+						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+						// and the current element of U 
+						// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
+						// to the current element of the full gradient for V	
+						V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
+					}
+					continue;
+				}
+
+				if ((j >= 266000) && (j < 272999)) {
+					//iterates through all users in the movie's user set by an increment of 1
+					for (int i : movies_users.at(j)) {
+						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
+						for (int k = 0; k < K; k++) {
+							cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
+								+
+								((ratings_difference * U[i][k]) + (2 * lambda * V[j][k]));
+						}
+					}
+
+					//iterates through all the columns of V by an increment of 1
+					for (int k = 0; k < K; k++) {
+
+						// updates the full gradient for V
+						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+						// and the current element of U 
+						// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
+						// to the current element of the full gradient for V	
+						V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
+					}
+					continue;
+				}
+
+				if ((j >= 273000) && (j < 279999)) {
+					//iterates through all users in the movie's user set by an increment of 1
+					for (int i : movies_users.at(j)) {
+						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
+						for (int k = 0; k < K; k++) {
+							cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
+								+
+								((ratings_difference * U[i][k]) + (2 * lambda * V[j][k]));
+						}
+					}
+
+					//iterates through all the columns of V by an increment of 1
+					for (int k = 0; k < K; k++) {
+
+						// updates the full gradient for V
+						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+						// and the current element of U 
+						// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
+						// to the current element of the full gradient for V	
+						V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
+					}
+					continue;
+				}
+			}
 		}
 
 		//prints the current iteration
@@ -1439,7 +2380,6 @@ for (int j : movies) {
 	std::cout << "\n" << "5 of 5:" << std::endl;
 	cf_stochastic_gradient_descent_finder(test_set, n_iterations, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
 	std::cout << "5 of 5." << std::endl;
-
 	
 
 	//p2-ii
