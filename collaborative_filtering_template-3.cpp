@@ -1495,15 +1495,18 @@ int main() {
 	std::vector<std::vector<double>> copy_U(m, std::vector<double>(K, 0));
 	std::vector<std::vector<double>> copy_V(n, std::vector<double>(K, 0));
 
-	n_iterations = 4 * n_iterations_copy;
-
-	eta = eta_10_times_up;
-
-	lambda = lambda_10_times_up;
+	
 
 
 	//////for debugging
 	//
+	// 
+	// 
+	//n_iterations = 4 * n_iterations_copy;
+
+	//eta = eta_10_times_up;
+
+	//lambda = lambda_10_times_up;
 	//// initialize U and V with random values
 	//for (int i : users) {
 	//	for (int k = 0; k < K; k++) {
@@ -1656,7 +1659,7 @@ int main() {
 	eta = eta_copy;
 	lambda = lambda_copy;
 
-	cf_batch_gradient_descent_finder(n_iterations, test_set, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
+	//cf_batch_gradient_descent_finder(n_iterations, test_set, eta, lambda, decay, users, movies, ratings, U_dot_V_transposed, users_movies, movies_users, m, n, K, U, V);
 
 	////1 of 4 
 	////collaborative filtering batch gradient descent first level of hyperparameter fine tuning for batch gradient descent
