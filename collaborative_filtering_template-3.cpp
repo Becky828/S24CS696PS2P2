@@ -237,10 +237,11 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 			}
 		}
 
-		int greatest_number_of_users_of_a_movie = 0;
+		int movies_with_at_most_one_eighth_max_numbers_of_users_in_any_movie_set = 0;
+			int max_users_in_any_movie_set = 0;
 		for (int j : movies) {
-			if (greatest_number_of_users_of_a_movie < movies_users[j].size()) {
-				greatest_number_of_users_of_a_movie = movies_users[j].size();
+			if (max_users_in_any_movie_set < movies_users[j].size()) {
+				max_users_in_any_movie_set = movies_users[j].size();
 			}
 		}
 		//iterates through the set of movies by an increment of 1. This provides the index required for iterating through the rows of V.
@@ -267,9 +268,10 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 			//is entered only if the movie has at least one user
 			if (found) {
 
-				if (movies_users.at(j).size() <= ceil(greatest_number_of_users_of_a_movie/8)) {
+				if (movies_users.at(j).size() <= ceil(max_users_in_any_movie_set/8)) {
 					//iterates through all users in the movie's user set by an increment of 1
 					for (int i : movies_users.at(j)) {
+						++movies_with_at_most_one_eighth_max_numbers_of_users_in_any_movie_set;
 						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
 						for (int k = 0; k < K; k++) {
 							cf_batch_gradient_base_and_norm_V[j][k] = cf_batch_gradient_base_and_norm_V[j][k]
