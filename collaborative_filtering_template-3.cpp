@@ -267,7 +267,7 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 			//is entered only if the movie has at least one user
 			if (found) {
 
-				if (j <= ceil(greatest_number_of_users_of_a_movie/8)) {
+				if (movies_users.at(j).size() <= ceil(greatest_number_of_users_of_a_movie/8)) {
 					//iterates through all users in the movie's user set by an increment of 1
 					for (int i : movies_users.at(j)) {
 						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
