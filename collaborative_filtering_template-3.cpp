@@ -130,13 +130,13 @@ void cf_stochastic_gradient_descent_finder(std::map<std::pair<int, int>, double>
 
 			//finds the rating difference by subtracting the current rating from the dot product of U and V transposed
 			double rating_difference = dot_product(U[a], V[j]) - it->second;
-		
+
 			//iterates through the columns of U by an increment of 1
 			for (int k = 0; k < K; k++) {
 
 				//performs the full gradient descent for U
-				U[a][k] = U[a][k] - eta * 
-					((rating_difference * V[j][k]) + (2 * lambda * U[a][k]));			
+				U[a][k] = U[a][k] - eta *
+					((rating_difference * V[j][k]) + (2 * lambda * U[a][k]));
 			}
 		}
 
@@ -150,7 +150,7 @@ void cf_stochastic_gradient_descent_finder(std::map<std::pair<int, int>, double>
 			for (int k = 0; k < K; k++) {
 
 				//performs the full gradient descent for V
-				V[b][k] = V[b][k] - eta * ((rating_difference * U[i][k]) + (2 * lambda * V[b][k]));				
+				V[b][k] = V[b][k] - eta * ((rating_difference * U[i][k]) + (2 * lambda * V[b][k]));
 			}
 		}
 
@@ -193,7 +193,7 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 
 			//initializes found as true
 			bool found = true;
-			
+
 			//initializes the full gradient for U. This ensures that the full gradient for U is set to 0 for each user. The full gradient for U is composed of the base gradient for U and the partial derivative 
 			// of the regularization term in respect to U
 			std::vector<std::vector<double>>cf_batch_gradient_base_and_norm_U(m, std::vector<double>(K, 0));
@@ -211,17 +211,17 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 
 			//is entered only if the user has any movie or movies
 			if (found) {
-				
+
 				//iterates through all movies in the user's movie set by an increment of 1
 				for (int j : users_movies.at(i)) {
 					double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
 					for (int k = 0; k < K; k++) {
 
-					// updates the full gradient for U 
-					// by adding the product of the difference between the dot product of U and V transposed and the current rating 
-					// and the current element of V 
-					// and the product of 2 times lambda and the current element of U (the partial derivative of the regularization term in respect to U[i])
-					// to the current element of the full gradient for U	
+						// updates the full gradient for U 
+						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+						// and the current element of V 
+						// and the product of 2 times lambda and the current element of U (the partial derivative of the regularization term in respect to U[i])
+						// to the current element of the full gradient for U	
 						cf_batch_gradient_base_and_norm_U[i][k] = cf_batch_gradient_base_and_norm_U[i][k]
 							+
 							((ratings_difference * V[j][k]) + (2 * lambda * U[i][k]));
@@ -234,10 +234,16 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 					//performs the full gradient descent for U
 					U[i][k] = U[i][k] - eta * (cf_batch_gradient_base_and_norm_U[i][k]);
 				}
-			}			
+			}
 		}
 
-	//iterates through the set of movies by an increment of 1. This provides the index required for iterating through the rows of V.
+		int greatest_number_of_users_of_a_movie = 0;
+		for (int j : movies) {
+			if (greatest_number_of_users_of_a_movie < movies_users[j].size()) {
+				greatest_number_of_users_of_a_movie = movies_users[j].size();
+			}
+		}
+		//iterates through the set of movies by an increment of 1. This provides the index required for iterating through the rows of V.
 		for (int j : movies) {
 
 			//initializes the full gradient for U. This ensures that the full gradient for V is set to 0 for each user. The full gradient for V is composed of the base gradient for V and the partial derivative 
@@ -261,7 +267,7 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 			//is entered only if the movie has at least one user
 			if (found) {
 
-				
+				if (j <= ceil(greatest_number_of_users_of_a_movie/8)) {
 					//iterates through all users in the movie's user set by an increment of 1
 					for (int i : movies_users.at(j)) {
 						double ratings_difference = dot_product(U[i], V[j]) - ratings.at(std::make_pair(i, j));
@@ -282,7 +288,8 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 						// to the current element of the full gradient for V	
 						V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
 					}
-					
+
+				}
 			}
 		}
 
@@ -373,7 +380,7 @@ void cf_mini_batch_gradient_descent_finder(int batch_size, std::map<std::pair<in
 					//performs the base gradient descent for U
 					//the base gradient for U is divided by the batch size to find the average base gradient for U
 					U[a][k] = U[a][k] - eta * (cf_mini_batch_gradient_base_and_norm_U[a][k] / batch_size);
-				}			
+				}
 			}
 		}
 
@@ -388,36 +395,36 @@ void cf_mini_batch_gradient_descent_finder(int batch_size, std::map<std::pair<in
 			//for (int k = 0; k < K; k++) {
 
 				//performs the summation of the base gradient for a subset of samples relating to V
-				for (auto it : ratings_batch) {
+			for (auto it : ratings_batch) {
 
-					//stores i and j
-					int i = it.first.first;
-					int j = it.first.second;
+				//stores i and j
+				int i = it.first.first;
+				int j = it.first.second;
 
-					//finds the current rating difference
-					double rating_difference = dot_product(U[i], V[a]) - it.second;
+				//finds the current rating difference
+				double rating_difference = dot_product(U[i], V[a]) - it.second;
 
-					//iterates through the columns of V by an increment of 1
-					for (int k = 0; k < K; k++) {
+				//iterates through the columns of V by an increment of 1
+				for (int k = 0; k < K; k++) {
 
-						// updates the base gradient for V
-						// by adding the product of the difference between the dot product of U and V transposed and the current rating 
-						// and the current element of U 
-						// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
-						// to the current element of the full gradient for V							
-						cf_mini_batch_gradient_base_and_norm_V[a][k] = cf_mini_batch_gradient_base_and_norm_V[a][k]
-							+
-							((rating_difference * U[i][k]) + (2 * lambda * V[a][k]));
-					}
+					// updates the base gradient for V
+					// by adding the product of the difference between the dot product of U and V transposed and the current rating 
+					// and the current element of U 
+					// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
+					// to the current element of the full gradient for V							
+					cf_mini_batch_gradient_base_and_norm_V[a][k] = cf_mini_batch_gradient_base_and_norm_V[a][k]
+						+
+						((rating_difference * U[i][k]) + (2 * lambda * V[a][k]));
+				}
 
-					for (int k = 0; k < K; k++) {
+				for (int k = 0; k < K; k++) {
 
-						//performs the base gradient descent for V 
-						//the base gradient for V is divided by the batch size to find the average base gradient for V
-						V[a][k] = V[a][k] - eta * (cf_mini_batch_gradient_base_and_norm_V[a][k] / batch_size);
-					}
-				}				
-			}		
+					//performs the base gradient descent for V 
+					//the base gradient for V is divided by the batch size to find the average base gradient for V
+					V[a][k] = V[a][k] - eta * (cf_mini_batch_gradient_base_and_norm_V[a][k] / batch_size);
+				}
+			}
+		}
 
 		//prints the current iteration
 		std::cout << "Finished collaborative filtering mini-batch iteration " << t << endl;
@@ -556,7 +563,7 @@ int main() {
 	std::vector<std::vector<double>> copy_U(m, std::vector<double>(K, 0));
 	std::vector<std::vector<double>> copy_V(n, std::vector<double>(K, 0));
 
-	
+
 
 
 	//////for debugging
@@ -695,7 +702,7 @@ int main() {
 
 	std::cout << "Finish Bonus File Read 1 of 4" << std::endl;
 
-		batch_size = ratings.size() * 0.010;
+	batch_size = ratings.size() * 0.010;
 
 	////end of debugging zone
 
