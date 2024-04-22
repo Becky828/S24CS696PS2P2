@@ -295,6 +295,8 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 			}
 		}
 
+		int average_number_of_computed_movie_sets = ceil(movies_with_at_most_one_eighth_max_numbers_of_users_in_any_movie_set / movies.size());
+
 		//prints the current iteration
 		std::cout << "Finished collaborative filtering batch gradient descent iteration " << t << endl;
 
