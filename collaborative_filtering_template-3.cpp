@@ -493,6 +493,9 @@ int main() {
 
 	double test_set_size = 0.1; // percentage of the data will be used for testing
 	double test_set_size_bonus = 0.1; // percentage of the data will be used for testing
+	double one_percent = 0.01; // percentage of the data will be used for testing
+	double five_percent = 0.05; // percentage of the data will be used for testing
+	double ten_percent = 0.1; // percentage of the data will be used for testing
 	double twenty_percent = 0.2; // percentage of the data will be used for first level fine tuning the hyperparameters
 	double thirty_percent = 0.3; // percentage of the data will be used for second level fine tuning the hyperparameters
 	double forty_percent = 0.4; // percentage of the data will be used for third level fine tuning the hyperparameters
@@ -608,8 +611,8 @@ int main() {
 
 	m = 7000; // upper bound for number of users
 	//n = 300000; // upper bound number of movies
-	//n = 280000; // upper bound number of movies
-	n = 285000; // upper bound number of movies
+	n = 280000; // upper bound number of movies
+	//n = 285000; // upper bound number of movies
 	//reinitializes the U and V for the bonus
 	U.assign(m, std::vector<double>(K, 0));
 	V.assign(n, std::vector<double>(K, 0));
@@ -679,7 +682,7 @@ int main() {
 			double rating = std::stod(token);
 
 			//if (toss_coin(0.01)) {
-			if (toss_coin(twenty_percent)) {
+			if (toss_coin(five_percent)) {
 				if (toss_coin(1 - test_set_size)) {
 					// if the coin toss is true, add the rating to the training set
 					ratings[std::make_pair(user, movie)] = rating;
