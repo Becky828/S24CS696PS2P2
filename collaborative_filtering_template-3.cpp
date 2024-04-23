@@ -239,6 +239,7 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 
 		int movies_with_at_most_one_eighth_max_numbers_of_users_in_any_movie_set = 0;
 			int max_users_in_any_movie_set = 0;
+			int average_number_of_computed_movie_sets = 0;
 		for (int j : movies) {
 			if (max_users_in_any_movie_set < movies_users[j].size()) {
 				max_users_in_any_movie_set = movies_users[j].size();
@@ -268,7 +269,7 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 			//is entered only if the movie has at least one user
 			if (found) {
 
-				if (movies_users.at(j).size() <= ceil(max_users_in_any_movie_set/8)) {
+				if (movies_users.at(j).size() <= ceil(max_users_in_any_movie_set/1024)) {
 					//iterates through all users in the movie's user set by an increment of 1
 					for (int i : movies_users.at(j)) {
 						++movies_with_at_most_one_eighth_max_numbers_of_users_in_any_movie_set;
@@ -289,13 +290,15 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 						// and the product of 2 times lambda and the current element of V (the partial derivative of the regularization term in respect to V[j])
 						// to the current element of the full gradient for V	
 						V[j][k] = V[j][k] - eta * (cf_batch_gradient_base_and_norm_V[j][k]);
-					}
 
+						//for debugging
+						average_number_of_computed_movie_sets = ceil(movies_with_at_most_one_eighth_max_numbers_of_users_in_any_movie_set / movies.size());
+					}
 				}
 			}
 		}
 
-		int average_number_of_computed_movie_sets = ceil(movies_with_at_most_one_eighth_max_numbers_of_users_in_any_movie_set / movies.size());
+		average_number_of_computed_movie_sets = ceil(movies_with_at_most_one_eighth_max_numbers_of_users_in_any_movie_set / movies.size());
 
 		//prints the current iteration
 		std::cout << "Finished collaborative filtering batch gradient descent iteration " << t << endl;
