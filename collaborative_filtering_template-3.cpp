@@ -682,7 +682,7 @@ int main() {
 			double rating = std::stod(token);
 
 			//if (toss_coin(0.01)) {
-			if (toss_coin(five_percent)) {
+			if (toss_coin(twenty_percent)) {
 				if (toss_coin(1 - test_set_size)) {
 					// if the coin toss is true, add the rating to the training set
 					ratings[std::make_pair(user, movie)] = rating;
