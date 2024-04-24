@@ -75,20 +75,6 @@ void mae_finder(std::map<std::pair<int, int>, double> test_set, std::vector<std:
 
 //Custom Functions
 
-//function which finds the transpose of V
-std::vector<std::vector<double>>  v_transposer(int K, std::vector<std::vector<double>> V, std::set<int> movies, int n) {
-
-	//initializes the V transposed
-	std::vector<std::vector<double>> V_transposed(V[0].size(), std::vector<double>(n, 0));
-	for (int j : movies) {
-		for (int k = 0; k < K; k++) {
-			V_transposed[k][j] = V[j][k];
-		}
-	}
-
-	return V_transposed;
-}
-
 
 //Collaborative Filtering Stochastic Gradient Descent
 
@@ -240,6 +226,7 @@ void cf_batch_gradient_descent_finder(int n_iterations, std::map<std::pair<int, 
 		int movies_with_at_most_one_eighth_max_numbers_of_users_in_any_movie_set = 0;
 		int max_users_in_any_movie_set = 0;
 		int average_number_of_computed_movie_sets = 0;
+
 		for (int j : movies) {
 			if (max_users_in_any_movie_set < movies_users[j].size()) {
 				max_users_in_any_movie_set = movies_users[j].size();
