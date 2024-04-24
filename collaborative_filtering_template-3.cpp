@@ -554,6 +554,23 @@ int main() {
 	//muliplying the lambda by 10 appears to slightly increase the MAE
 	lambda = lambda_10_times_up;
 
+	// initialize U and V with random values
+	for (int i : users) {
+		for (int k = 0; k < K; k++) {
+			U[i][k] = generate_uniform_random_number();
+		}
+	}
+
+	for (int j : movies) {
+		for (int k = 0; k < K; k++) {
+			V[j][k] = generate_uniform_random_number();
+		}
+	}
+
+	copy_U = U;
+	copy_V = V;
+
+
 	//4 of 5
 	//collaborative filtering batch gradient descent found with the doubled number of iterations, eta times 10, and lambda times 10
 	std::cout << "\n" << "4 of 5:" << std::endl;
